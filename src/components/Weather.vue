@@ -1,7 +1,7 @@
 <template>
   <div class="weather">
     <div class="weatherIcon">
-      <img :src="'/assets/icons/' + iconType + '/' + weather.iconId + '.png'" />
+      <img :src="'assets/icons/' + iconType + '/' + weather.iconId + '.png'" />
     </div>
     <div class="weatherValue">
       <p>{{weather.temperature.value}} °<span class="g">{{weather.temperature.unit}}</span></p>
