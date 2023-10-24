@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import {
   Mail,
+  Moon,
   Calendar,
   ListTodo,
   Music,
@@ -11,6 +12,7 @@ import {
 
 const icons = {
   Mail,
+  Moon,
   Calendar,
   ListTodo,
   Music,

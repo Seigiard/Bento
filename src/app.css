@@ -6,9 +6,11 @@
 
 /* V A R I A B L E S */
 
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap'); /* Font Import */
-
 :root {
+  --ff-font-default: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
+    system-ui, sans-serif;
+  --ff-font-condensed: Bahnschrift, 'DIN Alternate', 'Franklin Gothic Medium',
+    'Nimbus Sans Narrow', sans-serif-condensed, system-ui, sans-serif;
   /* Font Size */
   --fg-primary: 12vh; /* Time and Greetings */
   --fg-secondary: 3vh; /* Greetings and Weather widger */
@@ -22,11 +24,11 @@
 
   /* Light Colors  */
   --accent: #57a0d9; /* Hover color */
-  --background: #f5f5f5; /* Background color */
+  --background: #c4c5cf; /* Background color */
   --cards: #e4e6e6; /* Cards color */
 
   /* Image background  */
-  --imgbg: url(/assets/background.jpg); /* Image URL */
+  --imgbg: url(/assets/background.svg); /* Image URL */
   --imgcol: linear-gradient(
     rgba(255, 255, 255, 0.7),
     rgba(255, 255, 255, 0.7)
@@ -45,8 +47,8 @@
 
   /* Image background  */
   --imgcol: linear-gradient(
-    rgba(0, 0, 0, 0.85),
-    rgba(0, 0, 0, 0.85)
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.5)
   ); /* Filter color */
 }
 
@@ -56,7 +58,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Open Sans', sans-serif;
+  font-family: system-ui, sans-serif;
+  font-family: var(--ff-font-default);
+  font-weight: normal;
   transition: 0.2s ease-in-out;
 }
 
@@ -78,10 +82,12 @@ body {
 
 .withImageBackground {
   background-image: var(--imgcol), var(--imgbg);
-  background-size: cover;
+  background-size: cover, cover;
+  background-repeat: no-repeat;
+  background-position: top center;
 }
 
-#themeButton {
+.themeButton {
   position: absolute;
   margin: 2em 2em 0 0;
   right: 0;
@@ -92,7 +98,7 @@ body {
   background-color: #00000000;
 }
 
-#themeIcon {
+.themeIcon {
   width: 25px;
   height: 25px;
 }
@@ -159,6 +165,7 @@ body {
   font-size: var(--fg-primary);
   font-weight: bolder;
   color: var(--fg);
+  font-variant-numeric: tabular-nums;
 }
 
 .currentDay {

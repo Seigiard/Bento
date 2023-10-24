@@ -1,4 +1,6 @@
 <template>
+  <Theme />
+
   <!-- Clock and Greetings  -->
   <div class="timeBlock">
     <Time></Time>
@@ -21,6 +23,7 @@
 </template>
 
 <script>
+  import Theme from './Theme.vue';
   import Time from './Time.vue';
   import Date from './Date.vue';
   import Greetings from './Greetings.vue';
@@ -31,6 +34,7 @@
 
   export default {
     components: {
+      Theme,
       Time,
       Date,
       Greetings,
