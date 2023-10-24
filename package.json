@@ -2,6 +2,33 @@
   "name": "bento",
   "version": "1.2.5",
   "description": "🍱 Minimalist, elegant and hackable startpage inspired by the Bento box!",
-  "author": "Miguel Ávila",
-  "license": "ISC"
+  "author": "Andrej Borisenko, Miguel Ávila",
+  "license": "ISC",
+  "scripts": {
+    "clean": "exec rm -rf ./dist",
+    "predev": "npm run clean",
+    "dev": "parcel ./src/index.html",
+    "prebuild": "npm run clean",
+    "build": "parcel build ./src/index.html --public-url ./",
+    "prebuild-dev": "npm run clean",
+    "build-dev": "parcel build ./src/index.html --no-optimize --public-url ./",
+    "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose",
+    "publish": "npm run build && npm run push-gh-pages",
+    "publish-dev": "npm run build-dev && npm run push-gh-pages"
+  },
+  "source": "src/index.html",
+  "staticFiles": {
+    "staticPath": "assets",
+    "staticOutPath": "assets"
+  },
+  "dependencies": {
+    "lucide-vue-next": "^0.288.0",
+    "vue": "^3.3.6"
+  },
+  "devDependencies": {
+    "@parcel/transformer-vue": "^2.10.0",
+    "push-dir": "^0.4.1",
+    "parcel": "latest",
+    "parcel-reporter-static-files-copy": "^1.5.3"
+  }
 }

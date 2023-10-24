@@ -26,7 +26,7 @@
   --cards: #e4e6e6; /* Cards color */
 
   /* Image background  */
-  --imgbg: url(assets/background.jpg); /* Image URL */
+  --imgbg: url(/assets/background.jpg); /* Image URL */
   --imgcol: linear-gradient(
     rgba(255, 255, 255, 0.7),
     rgba(255, 255, 255, 0.7)
@@ -155,16 +155,13 @@ body {
   justify-content: center;
 }
 
-#hour,
-#separator,
-#minutes {
+.time {
   font-size: var(--fg-primary);
   font-weight: bolder;
   color: var(--fg);
 }
 
-#month,
-#day {
+.currentDay {
   font-size: var(--fg-date);
   font-weight: bold;
   color: var(--fg);
@@ -293,19 +290,11 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-}
-
-.list__1 {
-  grid-column: 1;
-  grid-row: 1 / span 2;
-}
-.list__2 {
-  grid-column: 2;
-  grid-row: 1 / span 2;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
 }
 .listIcon {
-  /* margin-top: 3vh; */
-  margin-bottom: 2vh;
+  margin-bottom: 1vh;
   color: var(--fg);
   width: var(--icon);
   height: var(--icon);
