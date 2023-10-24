@@ -5,7 +5,7 @@
   "author": "Andrej Borisenko, Miguel Ávila",
   "license": "ISC",
   "scripts": {
-    "clean": "exec rm -rf ./dist",
+    "clean": "exec rm -rf ./dist/*",
     "predev": "npm run clean",
     "dev": "parcel ./src/index.html",
     "prebuild": "npm run clean",
