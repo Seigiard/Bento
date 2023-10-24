@@ -1,6 +1,6 @@
 <template>
   <button class="themeButton" @click="toggleTheme">
-    <Icon name="Moon" class="themeIcon" />
+    <Icon :name="icon" class="themeIcon" />
   </button>
 </template>
 
@@ -9,7 +9,18 @@ import CONFIG from '../export-config';
 
 export default {
   data() {
-    darkTheme: undefined;
+    return {
+      darkTheme: isDarkThemeEnabled()
+    }
+  },
+  computed: {
+    icon() {
+      if (this.darkTheme) {
+        return 'Sun';
+      } else {
+        return 'Moon';
+      }
+    }
   },
   mounted() {
     if (CONFIG.imageBackground) {
@@ -38,22 +49,29 @@ export default {
   },
   methods: {
     toggleTheme() {
-      if (this.darkTheme !== 'enabled') {
+      if (!this.darkTheme) {
         this.enableDark();
       } else {
         this.disableDark();
       }
     },
+    updateDarkThemeValue() {
+      this.darkTheme = isDarkThemeEnabled();
+    },
     enableDark() {
       document.body.classList.add('darktheme');
       localStorage.setItem('darkTheme', 'enabled');
-      this.darkTheme = localStorage.getItem('darkTheme');
+      this.updateDarkThemeValue();
     },
     disableDark() {
       document.body.classList.remove('darktheme');
       localStorage.setItem('darkTheme', null);
-      this.darkTheme = localStorage.getItem('darkTheme');
+      this.updateDarkThemeValue();
     }
   }
+}
+
+function isDarkThemeEnabled() {
+  return localStorage.getItem('darkTheme') === 'enabled';
 }
 </script>

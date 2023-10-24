@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import {
   Mail,
   Moon,
+  Sun,
   Calendar,
   ListTodo,
   Music,
@@ -13,12 +14,12 @@ import {
 const icons = {
   Mail,
   Moon,
+  Sun,
   Calendar,
   ListTodo,
   Music,
   Coffee,
   PawPrint
-
 };
 
 const props = defineProps({
