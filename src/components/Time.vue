@@ -28,6 +28,7 @@ export default {
 
 function getTime() {
   return Intl.DateTimeFormat(navigator.language, {
+    timeStyle: 'short',
     hour: 'numeric',
     minute: 'numeric',
   }).format()
