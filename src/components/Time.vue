@@ -27,10 +27,8 @@ export default {
 }
 
 function getTime() {
-  return Intl.DateTimeFormat(navigator.language, {
-    timeStyle: 'short',
-    hour: 'numeric',
-    minute: 'numeric',
+  return Intl.DateTimeFormat(navigator.language || 'en-GB', {
+    timeStyle: 'short'
   }).format()
 }
 </script>

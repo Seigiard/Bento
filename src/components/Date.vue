@@ -25,7 +25,7 @@ export default {
 }
 
 function getDate() {
-  return Intl.DateTimeFormat(navigator.language, {
+  return Intl.DateTimeFormat(navigator?.language || 'en-GB', {
     month: 'short',
     day: 'numeric',
   }).format()
