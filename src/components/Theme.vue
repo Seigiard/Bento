@@ -1,5 +1,5 @@
 <template>
-  <button class="themeButton" @click="toggleTheme">
+  <button class="themeButton" @click="toggleTheme" aria-label="Switch Theme">
     <Icon :name="icon" class="themeIcon" />
   </button>
 </template>

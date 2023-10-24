@@ -82,7 +82,7 @@ body {
 
 .withImageBackground {
   background-image: var(--imgcol), var(--imgbg);
-  background-size: cover, contain;
+  background-size: cover, 100% auto;
   background-repeat: no-repeat;
   background-position: top center;
 }

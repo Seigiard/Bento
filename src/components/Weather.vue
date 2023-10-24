@@ -1,10 +1,10 @@
 <template>
   <div class="weather">
     <div class="weatherIcon">
-      <img :src="'assets/icons/' + iconType + '/' + weather.iconId + '.png'" />
+      <img :src="'assets/icons/' + iconType + '/' + weather.iconId + '.png'" alt="" />
     </div>
     <div class="weatherValue">
-      <p>{{weather.temperature.value}} °<span class="g">{{weather.temperature.unit}}</span></p>
+      <p>{{weather.temperature.value}} °{{weather.temperature.unit}}</p>
     </div>
     <div class="weatherDescription">
       <p>{{weather.description}}</p>
