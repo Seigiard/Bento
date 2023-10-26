@@ -1,5 +1,7 @@
 {
   "plugins": {
-    "postcss-dark-theme-class": true
+    "postcss-dark-theme-class": {
+      "rootSelector": ["html", "svg", ":root"]
+    }
   }
 }

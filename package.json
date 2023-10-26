@@ -5,7 +5,7 @@
   "author": "Andrej Borisenko, Miguel Ávila",
   "license": "ISC",
   "scripts": {
-    "clean": "exec rm -rf ./dist/* && sleep 1",
+    "clean": "exec rm -rf ./dist/* && exec rm -rf ./.parcel-cache/* && sleep 1",
     "dev": "npm run clean && parcel ./src/index.html",
     "build": "npm run clean && parcel build ./src/index.html --public-url ./",
     "build-dev": "npm run clean && parcel build ./src/index.html --no-optimize --public-url ./",
@@ -23,8 +23,8 @@
     "vue": "^3.3.6"
   },
   "devDependencies": {
-    "@parcel/transformer-vue": "^2.10.0",
-    "parcel": "latest",
+    "@parcel/transformer-vue": "^2.10.1",
+    "parcel": "^2.10.1",
     "parcel-reporter-static-files-copy": "^1.5.3",
     "postcss-dark-theme-class": "^1.0.0",
     "push-dir": "^0.4.1"
