@@ -17,7 +17,9 @@
   --fg-date: 8vh; /* Date */
   --fg-list: 2vh; /* Links List */
   --icon: 3vh; /* Icon Size */
+}
 
+html {
   /* Fonts Color */
   --fg: #3a3a3a; /* Foreground color */
   --sfg: #494949; /* Sceondary Foreground color */
@@ -35,21 +37,23 @@
   ); /* Filter color */
 }
 
-.darktheme {
-  /* Dark Colors  */
-  --accent: #57a0d9; /* Hover color */
-  --background: #19171a; /* Background color */
-  --cards: #201e21; /* Cards color */
+@media (prefers-color-scheme: dark) {
+  html {
+    /* Fonts Color */
+    --fg: #d8dee9; /* Foreground color */
+    --sfg: #2c292e; /* Secondary Foreground color */
 
-  /* Fonts Color */
-  --fg: #d8dee9; /* Foreground color */
-  --sfg: #2c292e; /* Secondary Foreground color */
+    /* Dark Colors  */
+    --accent: #57a0d9; /* Hover color */
+    --background: #19171a; /* Background color */
+    --cards: #201e21; /* Cards color */
 
-  /* Image background  */
-  --imgcol: linear-gradient(
-    rgba(0, 0, 0, 0.2),
-    rgba(0, 0, 0, 0)
-  ); /* Filter color */
+    /* Image background  */
+    --imgcol: linear-gradient(
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0)
+    ); /* Filter color */
+  }
 }
 
 /* S T Y L E S */

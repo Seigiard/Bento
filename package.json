@@ -5,13 +5,10 @@
   "author": "Andrej Borisenko, Miguel Ávila",
   "license": "ISC",
   "scripts": {
-    "clean": "exec rm -rf ./dist/*",
-    "predev": "npm run clean",
-    "dev": "parcel ./src/index.html",
-    "prebuild": "npm run clean",
-    "build": "parcel build ./src/index.html --public-url ./",
-    "prebuild-dev": "npm run clean",
-    "build-dev": "parcel build ./src/index.html --no-optimize --public-url ./",
+    "clean": "exec rm -rf ./dist/* && sleep 1",
+    "dev": "npm run clean && parcel ./src/index.html",
+    "build": "npm run clean && parcel build ./src/index.html --public-url ./",
+    "build-dev": "npm run clean && parcel build ./src/index.html --no-optimize --public-url ./",
     "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose",
     "publish": "npm run build && npm run push-gh-pages",
     "publish-dev": "npm run build-dev && npm run push-gh-pages"
@@ -27,8 +24,9 @@
   },
   "devDependencies": {
     "@parcel/transformer-vue": "^2.10.0",
-    "push-dir": "^0.4.1",
     "parcel": "latest",
-    "parcel-reporter-static-files-copy": "^1.5.3"
+    "parcel-reporter-static-files-copy": "^1.5.3",
+    "postcss-dark-theme-class": "^1.0.0",
+    "push-dir": "^0.4.1"
   }
 }

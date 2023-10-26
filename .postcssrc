@@ -1,0 +1,5 @@
+{
+  "plugins": {
+    "postcss-dark-theme-class": true
+  }
+}
