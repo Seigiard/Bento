@@ -187,15 +187,19 @@ body {
   color: var(--fg);
 }
 
-.weatherIcon img {
-  width: 70px;
+.weatherIcon {
   height: 70px;
+}
+.weatherIcon img {
+  margin-top: -13px;
+  margin-bottom: -13px;
+  width: 96px;
+  height: 96px;
 }
 
 .weatherValue p {
   font-size: var(--fg-secondary);
   font-weight: bolder;
-  margin-left: 15px;
   color: var(--fg);
 }
 

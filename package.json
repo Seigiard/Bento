@@ -5,10 +5,10 @@
   "author": "Andrej Borisenko, Miguel Ávila",
   "license": "ISC",
   "scripts": {
-    "clean": "exec rm -rf ./dist/* && exec rm -rf ./.parcel-cache/* && sleep 1",
-    "dev": "npm run clean && parcel ./src/index.html",
-    "build": "npm run clean && parcel build ./src/index.html --public-url ./",
-    "build-dev": "npm run clean && parcel build ./src/index.html --no-optimize --public-url ./",
+    "clean": "exec rm -rf ./dist/* && exec rm -rf ./.parcel-cache/*",
+    "dev": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html --public-url ./",
+    "build-dev": "parcel build ./src/index.html --no-optimize --public-url ./",
     "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose",
     "publish": "npm run build && npm run push-gh-pages",
     "publish-dev": "npm run build-dev && npm run push-gh-pages"
