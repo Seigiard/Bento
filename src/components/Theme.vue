@@ -26,7 +26,7 @@ export default {
       return themeList[(currentThemeId + 1) % themeList.length]
     },
     icon() {
-      return themeSettings[this.theme]
+      return themeSettings[this.theme] || 'SunMoon'
     }
   },
   mounted() {
@@ -60,13 +60,13 @@ export default {
     },
     setTheme(theme) {
       if (theme === 'system') {
-        html.classList.remove('is-dark', 'is-light')
+        this.html.classList.remove('is-dark', 'is-light')
       } else if (theme === 'light') {
-        html.classList.add('is-light')
-        html.classList.remove('is-dark')
+        this.html.classList.add('is-light')
+        this.html.classList.remove('is-dark')
       } else if (theme === 'dark') {
-        html.classList.add('is-dark')
-        html.classList.remove('is-light')
+        this.html.classList.add('is-dark')
+        this.html.classList.remove('is-light')
       }
       this.updateThemeValue(theme)
     },
