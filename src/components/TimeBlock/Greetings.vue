@@ -1,9 +1,18 @@
 <template>
-  <span>{{greetings}}, {{name}}!</span>
+  <div class="greetings">
+    <span>{{ greetings }}, {{ name }}!</span>
+  </div>
 </template>
 
+<style>
+.greetings {
+  font-size: var(--fg-secondary);
+  color: var(--fg);
+}
+</style>
+
 <script>
-import CONFIG from '../export-config.js';
+import CONFIG from '../../export-config.js';
 
 export default {
   data() {

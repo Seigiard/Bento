@@ -1,33 +1,56 @@
 <template>
-  <button class="themeButton" @click="toggleTheme" :title="theme + ' theme'" aria-label="Switch Theme">
+  <button
+    class="themeButton"
+    @click="toggleTheme"
+    :title="theme + ' theme'"
+    aria-label="Switch Theme"
+  >
     <Icon :name="icon" class="themeIcon" />
   </button>
 </template>
 
+<style>
+.themeButton {
+  position: absolute;
+  margin: 2em 2em 0 0;
+  right: 0;
+  top: 0;
+  color: var(--fg);
+  border: none;
+  cursor: pointer;
+  background-color: #00000000;
+}
+
+.themeIcon {
+  width: 25px;
+  height: 25px;
+}
+</style>
+
 <script>
 import CONFIG from '../export-config';
 const themeSettings = {
-  'light': 'Sun',
-  'dark': 'Moon',
-  'system': 'SunMoon'
-}
-const themeList = Object.keys(themeSettings)
+  light: 'Sun',
+  dark: 'Moon',
+  system: 'SunMoon',
+};
+const themeList = Object.keys(themeSettings);
 
 export default {
   data() {
     return {
       html: document.documentElement,
-      theme: getLocalStorageTheme()
-    }
+      theme: getLocalStorageTheme(),
+    };
   },
   computed: {
     nextTheme() {
-      const currentThemeId = themeList.indexOf(this.theme) || 0
-      return themeList[(currentThemeId + 1) % themeList.length]
+      const currentThemeId = themeList.indexOf(this.theme) || 0;
+      return themeList[(currentThemeId + 1) % themeList.length];
     },
     icon() {
-      return themeSettings[this.theme] || 'SunMoon'
-    }
+      return themeSettings[this.theme] || 'SunMoon';
+    },
   },
   mounted() {
     if (CONFIG.imageBackground) {
@@ -56,26 +79,26 @@ export default {
   },
   methods: {
     toggleTheme() {
-      this.setTheme(this.nextTheme)
+      this.setTheme(this.nextTheme);
     },
     setTheme(theme) {
       if (theme === 'system') {
-        this.html.classList.remove('is-dark', 'is-light')
+        this.html.classList.remove('is-dark', 'is-light');
       } else if (theme === 'light') {
-        this.html.classList.add('is-light')
-        this.html.classList.remove('is-dark')
+        this.html.classList.add('is-light');
+        this.html.classList.remove('is-dark');
       } else if (theme === 'dark') {
-        this.html.classList.add('is-dark')
-        this.html.classList.remove('is-light')
+        this.html.classList.add('is-dark');
+        this.html.classList.remove('is-light');
       }
-      this.updateThemeValue(theme)
+      this.updateThemeValue(theme);
     },
     updateThemeValue(value) {
       setLocalStorageTheme(value);
       this.theme = value;
-    }
-  }
-}
+    },
+  },
+};
 
 function getLocalStorageTheme() {
   return localStorage.getItem('theme');

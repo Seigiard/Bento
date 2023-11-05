@@ -79,34 +79,11 @@ body {
   justify-content: center;
 }
 
-.notransition {
-  -webkit-transition: none;
-  -moz-transition: none;
-  -o-transition: none;
-  transition: none;
-}
-
 .withImageBackground {
   background-image: var(--imgcol), var(--imgbg);
   background-size: cover, 100% auto;
   background-repeat: no-repeat;
   background-position: top center;
-}
-
-.themeButton {
-  position: absolute;
-  margin: 2em 2em 0 0;
-  right: 0;
-  top: 0;
-  color: var(--fg);
-  border: none;
-  cursor: pointer;
-  background-color: #00000000;
-}
-
-.themeIcon {
-  width: 25px;
-  height: 25px;
 }
 
 .container {
@@ -130,93 +107,6 @@ body {
 .card:has(.button):hover {
   transform: translateY(-0.2rem);
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.35);
-}
-
-.timeBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.weatherBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.date {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.weather {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.clock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.time {
-  font-size: var(--fg-primary);
-  font-weight: bolder;
-  color: var(--fg);
-  font-variant-numeric: tabular-nums;
-}
-
-.currentDay {
-  font-size: var(--fg-date);
-  font-weight: bold;
-  color: var(--fg);
-}
-
-#day {
-  margin-left: 1.5rem;
-}
-
-#greetings {
-  font-size: var(--fg-secondary);
-  color: var(--fg);
-}
-
-.weatherIcon {
-  height: 70px;
-}
-.weatherIcon img {
-  margin-top: -13px;
-  margin-bottom: -13px;
-  width: 96px;
-  height: 96px;
-}
-
-.weatherValue p {
-  font-size: var(--fg-secondary);
-  font-weight: bolder;
-  color: var(--fg);
-}
-
-.weatherDescription p {
-  font-size: var(--fg-secondary);
-  margin-left: 15px;
-  color: var(--fg);
-}
-
-.reduceGap {
-  grid-gap: 2rem !important;
-}
-
-.removeGap {
-  grid-gap: 0 !important;
 }
 
 .buttonsContainer {
@@ -303,10 +193,6 @@ body {
 
   .weatherBlock {
     display: none;
-  }
-
-  #greetings {
-    font-size: var(--fg-secondary);
   }
 
   .button {

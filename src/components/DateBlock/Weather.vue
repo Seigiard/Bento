@@ -12,8 +12,42 @@
   </div>
 </template>
 
+<style>
+.weather {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weatherIcon {
+  height: 70px;
+}
+.weatherIcon img {
+  margin-top: -13px;
+  margin-bottom: -13px;
+  width: 96px;
+  height: 96px;
+}
+
+.weatherValue p {
+  font-size: var(--fg-secondary);
+  font-weight: bolder;
+  color: var(--fg);
+}
+
+.weatherDescription p {
+  font-size: var(--fg-secondary);
+  margin-left: 15px;
+  color: var(--fg);
+}
+
+.reduceGap {
+  grid-gap: 2rem !important;
+}
+</style>
+
 <script>
-import CONFIG from '../export-config';
+import CONFIG from '../../export-config';
 
 const SvgIconsMap = {
   unknown: 'not-available',
