@@ -19,6 +19,7 @@
     "staticOutPath": "assets"
   },
   "dependencies": {
+    "@parcel/service-worker": "^2.10.2",
     "chart.js": "^4.4.0",
     "lucide-vue-next": "^0.291.0",
     "vue": "^3.3.7",
