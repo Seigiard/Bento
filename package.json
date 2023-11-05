@@ -19,14 +19,19 @@
     "staticOutPath": "assets"
   },
   "dependencies": {
-    "lucide-vue-next": "^0.288.0",
-    "vue": "^3.3.6"
+    "chart.js": "^4.4.0",
+    "lucide-vue-next": "^0.291.0",
+    "vue": "^3.3.7",
+    "vue-chartjs": "^5.2.0"
   },
   "devDependencies": {
-    "@parcel/transformer-vue": "^2.10.1",
-    "parcel": "^2.10.1",
+    "@parcel/transformer-vue": "^2.10.2",
+    "parcel": "^2.10.2",
     "parcel-reporter-static-files-copy": "^1.5.3",
     "postcss-dark-theme-class": "^1.0.0",
     "push-dir": "^0.4.1"
+  },
+  "optionalDependencies": {
+    "@parcel/watcher-darwin-x64": "^2.3.0"
   }
 }
