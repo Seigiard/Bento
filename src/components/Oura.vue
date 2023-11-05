@@ -1,16 +1,18 @@
 <template>
   <div class="oura">
-    <Line v-if="loaded" :data="chartData" :options="options" />
+    <div class="chart">
+      <Line v-if="loaded" :data="chartData" :options="options" />
+    </div>
     <div class="ouraStats">
-      <div class="card ouraStat">
+      <div class="ouraStat">
         <strong>{{ readiness }}</strong
         >Readiness
       </div>
-      <div class="card ouraStat">
+      <div class="ouraStat">
         <strong>{{ sleep }}</strong
         >Sleep
       </div>
-      <div class="card ouraStat">
+      <div class="ouraStat">
         <strong>{{ hrv }}</strong
         >HVR
       </div>
@@ -20,11 +22,14 @@
 </template>
 
 <style>
+.chart {
+  width: 100%;
+  margin-left: -3vh;
+  margin-top: -1vh;
+}
 .oura canvas {
   width: 100%;
-  height: 28vh;
-  margin-left: -4vh;
-  margin-top: -1vh;
+  height: 100%;
 }
 
 .ouraStats {
@@ -32,7 +37,7 @@
   display: flex;
   flex-direction: row;
   grid-gap: 5vh;
-  padding: 3vh 0 0;
+  padding: 3vh 5vh 0;
 }
 
 .ouraStat {
@@ -42,7 +47,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 3vh 0;
+  color: var(--fg);
   font-size: var(--fg-ouraStat-secondary);
 }
 

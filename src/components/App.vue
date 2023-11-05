@@ -2,25 +2,34 @@
   <Theme />
   <div class="container">
     <!-- Clock and Greetings  -->
-    <div class="timeBlock">
-      <Time></Time>
-      <div id="greetings"><Greetings /></div>
-    </div>
+    <ContainerBlock position="1 / 1 / 3 / 4">
+      <div class="timeBlock">
+        <Time></Time>
+        <div id="greetings"><Greetings /></div>
+      </div>
+    </ContainerBlock>
 
     <!-- Date and Weather  -->
-    <div class="weatherBlock">
-      <Date />
-      <Weather />
-    </div>
+    <ContainerBlock position="1 / 4 / 3 / 7">
+      <div class="weatherBlock">
+        <Date />
+        <Weather />
+      </div>
+    </ContainerBlock>
 
-    <Oura />
-
-    <BlockRight />
+    <ContainerBlock position="3 / 1 / 6 / 4">
+      <Oura />
+    </ContainerBlock>
+    <ContainerBlock position="3 / 4 / 6 / 7">
+      <BlockLeft />
+      <BlockRight />
+    </ContainerBlock>
   </div>
 </template>
 
 <script>
 import Theme from './Theme.vue';
+import ContainerBlock from './ContainerBlock';
 import Time from './Time.vue';
 import Date from './Date.vue';
 import Greetings from './Greetings.vue';
@@ -32,6 +41,7 @@ import Oura from './Oura.vue';
 export default {
   components: {
     Theme,
+    ContainerBlock,
     Time,
     Date,
     Greetings,
