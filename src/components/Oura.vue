@@ -1,7 +1,7 @@
 <template>
   <div class="oura">
     <div class="chart">
-      <Line v-if="loaded" :data="chartData" :options="options" />
+      <Line :data="chartData" :options="options" />
     </div>
     <div class="ouraStats">
       <div class="ouraStat">
@@ -84,7 +84,6 @@ const STEP = 40;
 export default {
   data() {
     return {
-      loaded: false,
       options: chartOptions,
       rawData: {},
     };
@@ -93,13 +92,9 @@ export default {
     Line,
   },
   async mounted() {
-    await fetch('https://long-rose-salmon-sock.cyclic.app/')
-      .then((r) => r.json())
-      .then((data) => {
-        this.rawData = data;
-        this.loaded = true;
-      });
-    this.loaded = true;
+    this.rawData = await fetch(
+      'https://long-rose-salmon-sock.cyclic.app/'
+    ).then((r) => r.json());
   },
   computed: {
     chartData() {
@@ -145,13 +140,13 @@ export default {
       return Object.values(this.rawData).map((d) => d.sleep);
     },
     readiness() {
-      return this.chartReadinessData.slice(-1)[0];
+      return this.chartReadinessData?.slice(-1)?.[0] ?? '--';
     },
     sleep() {
-      return this.chartSleepData.slice(-1)[0];
+      return this.chartSleepData?.slice(-1)?.[0] ?? '--';
     },
     hrv() {
-      return this.chartHrvBalanceData.slice(-1)[0];
+      return this.chartHrvBalanceData?.slice(-1)?.[0] ?? '--';
     },
   },
 };
