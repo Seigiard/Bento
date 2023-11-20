@@ -1,7 +1,8 @@
 <template>
   <div class="linksBlockLeft">
     <div class="buttonsContainer">
-      <a v-for="button in buttons"
+      <a
+        v-for="button in buttons"
         :href="button.link"
         :target="openInNewTab ? '_blank' : ''"
         :title="button.name"
@@ -14,14 +15,14 @@
 </template>
 
 <script>
-  import CONFIG from '../export-config';
+import CONFIG from '../config';
 
-  export default {
-    data() {
-      return {
-        buttons: CONFIG.firstButtonsContainer,
-        openInNewTab: CONFIG.openInNewTab,
-      };
-    }
-  }
+export default {
+  data() {
+    return {
+      buttons: CONFIG.firstButtonsContainer,
+      openInNewTab: CONFIG.openInNewTab,
+    };
+  },
+};
 </script>

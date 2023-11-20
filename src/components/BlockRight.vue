@@ -4,12 +4,13 @@
       <div class="card list" v-for="list in lists">
         <Icon :name="list.icon" class="listIcon" :stroke-width="2" />
 
-        <a v-for="link in list.links"
+        <a
+          v-for="link in list.links"
           :target="openInNewTab ? '_blank' : ''"
           :href="link.link"
           class="listItem"
-          >
-          {{link.name}}
+        >
+          {{ link.name }}
         </a>
       </div>
     </div>
@@ -17,14 +18,14 @@
 </template>
 
 <script>
-  import CONFIG from '../export-config';
+import CONFIG from '../config';
 
-  export default {
-    data() {
-      return {
-        lists: CONFIG.firstListsContainer,
-        openInNewTab: CONFIG.openInNewTab,
-      };
-    }
-  }
+export default {
+  data() {
+    return {
+      lists: CONFIG.firstListsContainer,
+      openInNewTab: CONFIG.openInNewTab,
+    };
+  },
+};
 </script>

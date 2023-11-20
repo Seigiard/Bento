@@ -6,11 +6,11 @@ import {
   Sun,
   SunMoon,
   Calendar,
-  ListTodo,
+  BookMarked,
   Music,
   Coffee,
   PawPrint,
-} from "lucide-vue-next";
+} from 'lucide-vue-next';
 
 const icons = {
   Mail,
@@ -18,26 +18,32 @@ const icons = {
   Sun,
   SunMoon,
   Calendar,
-  ListTodo,
+  BookMarked,
   Music,
   Coffee,
-  PawPrint
+  PawPrint,
 };
 
 const props = defineProps({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   size: Number,
   color: String,
   strokeWidth: Number,
-  class: String
-})
+  class: String,
+});
 
-const icon = computed(() => icons[props.name] ||  icons.PawPrint);
+const icon = computed(() => icons[props.name] || icons.PawPrint);
 </script>
 
 <template>
-  <component :is="icon" :size="size" :color="color" :stroke-width="strokeWidth" :class="class" />
+  <component
+    :is="icon"
+    :size="size"
+    :color="color"
+    :stroke-width="strokeWidth"
+    :class="class"
+  />
 </template>

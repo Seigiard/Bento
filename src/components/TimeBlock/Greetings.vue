@@ -12,7 +12,7 @@
 </style>
 
 <script>
-import CONFIG from '../../export-config.js';
+import CONFIG from '../../config';
 
 export default {
   data() {

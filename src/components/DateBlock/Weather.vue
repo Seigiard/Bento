@@ -47,7 +47,7 @@
 </style>
 
 <script>
-import CONFIG from '../../export-config';
+import CONFIG from '../../config';
 
 const SvgIconsMap = {
   unknown: 'not-available',

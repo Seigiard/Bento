@@ -28,7 +28,7 @@
 </style>
 
 <script>
-import CONFIG from '../export-config';
+import CONFIG from '../config';
 const themeSettings = {
   light: 'Sun',
   dark: 'Moon',
