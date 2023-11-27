@@ -72,7 +72,7 @@ export const chartOptions = {
         font: {
           family:
             "Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, system-ui, sans-serif",
-          size: '14vh',
+          size: '14vmin',
         },
       },
     },

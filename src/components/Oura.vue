@@ -24,8 +24,8 @@
 <style>
 .chart {
   width: 100%;
-  margin-left: -3vh;
-  margin-top: -1vh;
+  margin-left: -3vmin;
+  margin-top: -1vmin;
 }
 .oura canvas {
   width: 100%;
@@ -36,8 +36,8 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  grid-gap: 5vh;
-  padding: 3vh 5vh 0;
+  grid-gap: 5vmin;
+  padding: 3vmin 5vmin 0;
 }
 
 .ouraStat {

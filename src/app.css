@@ -12,13 +12,13 @@
   --ff-font-condensed: Bahnschrift, 'DIN Alternate', 'Franklin Gothic Medium',
     'Nimbus Sans Narrow', sans-serif-condensed, system-ui, sans-serif;
   /* Font Size */
-  --fg-primary: 12vh; /* Time and Greetings */
-  --fg-secondary: 3vh; /* Greetings and Weather widger */
-  --fg-ouraStat: 6vh; /* Oura Widget */
-  --fg-ouraStat-secondary: 2vh;
-  --fg-date: 8vh; /* Date */
-  --fg-list: 2vh; /* Links List */
-  --icon: 3vh; /* Icon Size */
+  --fg-primary: 11vmin; /* Time and Greetings */
+  --fg-secondary: 3vmin; /* Greetings and Weather widger */
+  --fg-ouraStat: 6vmin; /* Oura Widget */
+  --fg-ouraStat-secondary: 2vmin;
+  --fg-date: 8vmin; /* Date */
+  --fg-list: 2vmin; /* Links List */
+  --icon: 3vmin; /* Icon Size */
 }
 
 html {
@@ -87,14 +87,14 @@ body {
 }
 
 .container {
-  width: 145vh;
-  height: 95vh;
+  width: 100vmin;
+  height: 100vmin;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 5vh;
-  grid-row-gap: 10vh;
-  padding: 3vh;
+  grid-column-gap: 5vmin;
+  grid-row-gap: 10vmin;
+  padding: 3vmin;
 }
 
 .card {
@@ -114,8 +114,8 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(1, 1fr);
-  grid-gap: 3vh;
-  padding: 0 0 5vh 0;
+  grid-gap: 3vmin;
+  padding: 0 0 5vmin 0;
 }
 
 .button {
@@ -123,7 +123,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 6vh 0;
+  padding: 6vmin 0;
 }
 
 .buttonIcon {
@@ -153,11 +153,11 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-top: 2vh;
-  padding-bottom: 2vh;
+  padding-top: 2vmin;
+  padding-bottom: 2vmin;
 }
 .listIcon {
-  margin-bottom: 1vh;
+  margin-bottom: 1vmin;
   color: var(--fg);
   width: var(--icon);
   height: var(--icon);
@@ -166,7 +166,7 @@ body {
   text-decoration: none;
   font-size: var(--fg-list);
   color: var(--fg);
-  margin-top: 1vh;
+  margin-top: 1vmin;
   padding: 8px 12px;
   border-radius: 5px;
   font-weight: bold;
@@ -196,7 +196,7 @@ body {
   }
 
   .button {
-    grid-gap: 3vw;
+    grid-gap: 3vmin;
     padding-left: 100px;
     padding-right: 100px;
   }
