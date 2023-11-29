@@ -86,6 +86,10 @@ body {
   background-position: top center;
 }
 
+#app {
+  display: contents;
+}
+
 .container {
   width: 100vmin;
   height: 100vmin;
@@ -115,7 +119,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(1, 1fr);
   grid-gap: 3vmin;
-  padding: 0 0 5vmin 0;
+  padding: 0 0 3vmin 0;
 }
 
 .button {
@@ -123,7 +127,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 6vmin 0;
+  padding: 4vmin 0;
 }
 
 .buttonIcon {
@@ -145,7 +149,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(1, 1fr);
-  grid-gap: 3rem;
+  grid-gap: 3vmin;
 }
 
 .list {
@@ -179,25 +183,24 @@ body {
 }
 
 /* M E D I A - Q U E R I E S */
-
-@media only screen and (max-width: 68.75em) {
+@media only screen and (max-width: 68rem) {
   .container {
-    grid-gap: 20px;
-    padding: 40px;
+    grid-gap: 2vmin;
+    padding: 4vmin;
   }
+}
 
-  .timeBlock {
-    grid-row: 1 / span 2;
-    grid-column: 1 / span 4;
+@media only screen and (max-width: 45rem) {
+  body {
+    width: 100%;
+    height: auto;
   }
-
-  .weatherBlock {
-    display: none;
-  }
-
-  .button {
-    grid-gap: 3vmin;
-    padding-left: 100px;
-    padding-right: 100px;
+  .container {
+    width: 100%;
+    height: auto;
+    padding: 8vmin;
+    display: flex;
+    flex-direction: column;
+    gap: 5vmin;
   }
 }

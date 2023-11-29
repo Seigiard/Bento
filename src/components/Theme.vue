@@ -22,8 +22,8 @@
 }
 
 .themeIcon {
-  width: 25px;
-  height: 25px;
+  width: clamp(20px, 2vmin, 32px);
+  height: clamp(20px, 2vmin, 32px);
 }
 </style>
 

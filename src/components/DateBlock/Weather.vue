@@ -20,29 +20,26 @@
 }
 
 .weatherIcon {
-  height: 70px;
+  height: 7vmin;
 }
 .weatherIcon img {
-  margin-top: -13px;
-  margin-bottom: -13px;
-  width: 96px;
-  height: 96px;
+  margin-top: -1vmin;
+  margin-bottom: -1vmin;
+  width: 9vmin;
+  height: 9vmin;
 }
 
 .weatherValue p {
   font-size: var(--fg-secondary);
   font-weight: bolder;
   color: var(--fg);
+  text-wrap: nowrap;
 }
 
 .weatherDescription p {
   font-size: var(--fg-secondary);
-  margin-left: 15px;
+  margin-left: 2vmin;
   color: var(--fg);
-}
-
-.reduceGap {
-  grid-gap: 2rem !important;
 }
 </style>
 

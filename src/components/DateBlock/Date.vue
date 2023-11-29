@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 2vh;
 }
 
 .currentDay {
