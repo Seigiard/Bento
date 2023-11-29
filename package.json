@@ -21,17 +21,17 @@
     "staticOutPath": "assets"
   },
   "dependencies": {
-    "@parcel/service-worker": "^2.10.2",
+    "@parcel/service-worker": "^2.10.3",
     "chart.js": "^4.4.0",
-    "lucide-vue-next": "^0.291.0",
-    "vue": "^3.3.7",
+    "lucide-vue-next": "^0.294.0",
+    "vue": "^3.3.9",
     "vue-chartjs": "^5.2.0"
   },
   "devDependencies": {
-    "@parcel/transformer-vue": "^2.10.2",
-    "parcel": "^2.10.2",
+    "@parcel/transformer-vue": "^2.10.3",
+    "parcel": "^2.10.3",
     "parcel-reporter-static-files-copy": "^1.5.3",
-    "postcss-dark-theme-class": "^1.0.0",
+    "postcss-dark-theme-class": "^1.1.0",
     "push-dir": "^0.4.1"
   },
   "optionalDependencies": {
