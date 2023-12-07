@@ -23,8 +23,8 @@
 
 html {
   /* Fonts Color */
-  --fg: #3a3a3a; /* Foreground color */
-  --sfg: #494949; /* Sceondary Foreground color */
+  --fgColor: #3a3a3a; /* Foreground color */
+  --sfgColor: #494949; /* Sceondary Foreground color */
 
   /* Light Colors  */
   --accent: #57a0d9; /* Hover color */
@@ -37,13 +37,15 @@ html {
     rgba(255, 255, 255, 0.2),
     rgba(255, 255, 255, 0)
   ); /* Filter color */
+
+  color: var(--fgColor);
 }
 
 @media (prefers-color-scheme: dark) {
   html {
     /* Fonts Color */
-    --fg: #d8dee9; /* Foreground color */
-    --sfg: #2c292e; /* Secondary Foreground color */
+    --fgColor: #d8dee9; /* Foreground color */
+    --sfgColor: #2c292e; /* Secondary Foreground color */
 
     /* Dark Colors  */
     --accent: #57a0d9; /* Hover color */
@@ -79,6 +81,14 @@ body {
   justify-content: center;
 }
 
+svg {
+  stroke: var(--fgColor);
+}
+a {
+  text-decoration: none;
+  color: var(--fgColor);
+}
+
 .withImageBackground {
   background-image: var(--imgcol), var(--imgbg);
   background-size: cover, 100% auto;
@@ -105,7 +115,6 @@ body {
   background-color: var(--cards);
   box-shadow: 0 5px 7px rgba(0, 0, 0, 0.35);
   border-radius: 5px;
-  color: var(--fg);
 }
 
 .card:has(.button):hover {
@@ -133,14 +142,13 @@ body {
 .buttonIcon {
   width: var(--icon);
   height: var(--icon);
-  color: var(--fg);
 }
 
 .button:hover {
   background-color: var(--accent);
 }
 .button:hover svg {
-  stroke: var(--sfg);
+  stroke: var(--sfgColor);
 }
 
 .listsContainer {
@@ -154,32 +162,21 @@ body {
 
 .list {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   flex-direction: column;
-  padding-top: 2vmin;
-  padding-bottom: 2vmin;
-}
-.listIcon {
-  margin-bottom: 1vmin;
-  color: var(--fg);
-  width: var(--icon);
-  height: var(--icon);
+  padding: 2vmin 1vmin;
 }
 .listItem {
   text-decoration: none;
   font-size: var(--fg-list);
-  color: var(--fg);
-  margin-top: 1vmin;
-  padding: 8px 12px;
+  padding: 1.5vmin 2vmin;
   border-radius: 5px;
-  font-weight: bold;
-  text-align: center;
-  width: 80%;
+  text-align: left;
 }
 .listItem:hover {
   background-color: var(--accent);
-  color: var(--sfg);
+  color: var(--sfgColor);
 }
 
 /* M E D I A - Q U E R I E S */

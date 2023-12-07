@@ -32,14 +32,12 @@
 .weatherValue p {
   font-size: var(--fg-secondary);
   font-weight: bolder;
-  color: var(--fg);
   text-wrap: nowrap;
 }
 
 .weatherDescription p {
   font-size: var(--fg-secondary);
   margin-left: 2vmin;
-  color: var(--fg);
 }
 </style>
 

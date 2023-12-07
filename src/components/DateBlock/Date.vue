@@ -15,7 +15,6 @@
 .currentDay {
   font-size: var(--fg-date);
   font-weight: bold;
-  color: var(--fg);
 }
 </style>
 

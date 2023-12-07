@@ -47,7 +47,6 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  color: var(--fg);
   font-size: var(--fg-ouraStat-secondary);
 }
 
@@ -69,7 +68,8 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'vue-chartjs';
-import { bgPlugin, colors, chartOptions } from './Oura.chart.js';
+import { colors, chartOptions } from './Oura.chart.js';
+import { LocalStorageConnector } from '../libs/localStorage.js';
 
 ChartJS.register(
   CategoryScale,
@@ -80,12 +80,15 @@ ChartJS.register(
   Legend
 );
 
-const STEP = 40;
+const LOCAL_STORAGE_KEY = 'oura';
+
+const lsData = new LocalStorageConnector(LOCAL_STORAGE_KEY);
+
 export default {
   data() {
     return {
       options: chartOptions,
-      rawData: {},
+      rawData: lsData.get({}),
     };
   },
   components: {
@@ -93,8 +96,9 @@ export default {
   },
   async mounted() {
     this.rawData = await fetch(
-      'https://long-rose-salmon-sock.cyclic.app/'
+      'https://long-rose-salmon-sock.cyclic.app/oura'
     ).then((r) => r.json());
+    lsData.set(this.rawData);
   },
   computed: {
     chartData() {

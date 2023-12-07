@@ -7,7 +7,6 @@
 <style>
 .greetings {
   font-size: var(--fg-secondary);
-  color: var(--fg);
 }
 </style>
 

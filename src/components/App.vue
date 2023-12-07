@@ -17,7 +17,7 @@
 
     <ContainerBlock position="3 / 4 / 6 / 7">
       <BlockLeft />
-      <BlockRight />
+      <Raindrop />
     </ContainerBlock>
   </div>
 </template>
@@ -29,7 +29,7 @@ import TimeBlock from './TimeBlock/TimeBlock.vue';
 import DateBlock from './DateBlock/DateBlock.vue';
 import Oura from './Oura.vue';
 import BlockLeft from './BlockLeft.vue';
-import BlockRight from './BlockRight.vue';
+import Raindrop from './Raindrop.vue';
 
 export default {
   components: {
@@ -39,7 +39,7 @@ export default {
     DateBlock,
     Oura,
     BlockLeft,
-    BlockRight,
+    Raindrop,
   },
   setup() {
     if ('serviceWorker' in navigator) {

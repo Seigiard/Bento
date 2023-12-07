@@ -74,54 +74,6 @@ const CONFIG = {
   // ┬  ┬┌─┐┌┬┐┌─┐
   // │  │└─┐ │ └─┐
   // ┴─┘┴└─┘ ┴ └─┘
-
-  // First Links Container
-  firstListsContainer: [
-    {
-      icon: 'Music',
-      id: '1',
-      links: [
-        {
-          name: 'Inspirational',
-          link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        },
-        {
-          name: 'Classic',
-          link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        },
-        {
-          name: 'Oldies',
-          link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        },
-        {
-          name: 'Rock',
-          link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        },
-      ],
-    },
-    {
-      icon: 'Coffee',
-      id: '2',
-      links: [
-        {
-          name: 'Linkedin',
-          link: 'https://www.linkedin.com',
-        },
-        {
-          name: 'Dribbble',
-          link: 'https://www.dribbble.com',
-        },
-        {
-          name: 'Trello',
-          link: 'https://www.trello.com',
-        },
-        {
-          name: 'Slack',
-          link: 'https://www.slack.com',
-        },
-      ],
-    },
-  ],
 };
 
 export default CONFIG;

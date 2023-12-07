@@ -14,7 +14,6 @@
 .time {
   font-size: var(--fg-primary);
   font-weight: bolder;
-  color: var(--fg);
   font-variant-numeric: tabular-nums;
 }
 </style>

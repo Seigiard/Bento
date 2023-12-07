@@ -15,7 +15,6 @@
   margin: 2em 2em 0 0;
   right: 0;
   top: 0;
-  color: var(--fg);
   border: none;
   cursor: pointer;
   background-color: #00000000;
