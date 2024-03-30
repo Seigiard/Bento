@@ -20,9 +20,13 @@ jobs:
 
     steps:
       - name: Checkout your repository using git
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
 
       - name: Use node.js
         uses: actions/setup-node@v3
@@ -37,6 +41,10 @@ jobs:
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: |
+            dist
   deploy:
     # Add a dependency to the build job
     needs: build
