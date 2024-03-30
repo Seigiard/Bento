@@ -1,8 +1,8 @@
 <template>
   <div class="oura">
-    <div class="chart">
-      <Line :data="chartData" :options="options" />
-    </div>
+    <div class="chart"></div>
+
+    {{ hoveredLabel && activeLabel }}
     <div class="ouraStats">
       <div class="ouraStat">
         <strong>{{ readiness }}</strong
@@ -17,7 +17,6 @@
         >HVR
       </div>
     </div>
-    <div class="stats"></div>
   </div>
 </template>
 
@@ -58,27 +57,14 @@
 </style>
 
 <script>
+import './Oura.css';
+import { LineChart as LineChart } from 'chartist';
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Line } from 'vue-chartjs';
-import { colors, chartOptions } from './Oura.chart.js';
+  getChartistCharts,
+  getChartistOptions,
+  throttle,
+} from './Oura.chart.js';
 import { LocalStorageConnector } from '../libs/localStorage.js';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend
-);
 
 const LOCAL_STORAGE_KEY = 'oura';
 
@@ -87,70 +73,69 @@ const lsData = new LocalStorageConnector(LOCAL_STORAGE_KEY);
 export default {
   data() {
     return {
-      options: chartOptions,
       rawData: lsData.get({}),
+      chart: null,
+      hoveredLabel: null,
     };
-  },
-  components: {
-    Line,
   },
   async mounted() {
     this.rawData = await fetch(
       'https://long-rose-salmon-sock.cyclic.app/oura'
     ).then((r) => r.json());
     lsData.set(this.rawData);
+
+    this.initChart(this.rawData);
+  },
+  updated() {
+    this.updateChart(this.rawData);
+  },
+  methods: {
+    onDraw(data) {
+      if (data.type === 'point') {
+        data.element._node.addEventListener(
+          'mouseenter',
+          throttle((e) => {
+            this.hoverPoint(data.meta.label);
+          }, 300)
+        );
+
+        // here we're listening for when the mouse leaves, and when it does
+        // we add the class hidden to hide the tooltip.
+        data.element._node.addEventListener('mouseleave', (e) => {
+          this.hoverPoint();
+        });
+      }
+    },
+    hoverPoint(label) {
+      this.hoveredLabel = label ?? null;
+    },
+    initChart(rawData) {
+      this.chart = new LineChart(
+        '.chart',
+        getChartistCharts(rawData),
+        getChartistOptions(rawData)
+      ).on('draw', this.onDraw);
+    },
+    updateChart(rawData) {
+      this.chart.update(
+        getChartistCharts(rawData),
+        getChartistOptions(rawData),
+        { reset: true }
+      );
+    },
   },
   computed: {
-    chartData() {
-      return {
-        labels: this.chartLabels,
-        datasets: [
-          {
-            label: 'Readiness',
-            data: this.chartReadinessData,
-            borderColor: colors.readiness,
-            cubicInterpolationMode: 'monotone',
-            tension: 0.4,
-          },
-          {
-            label: 'Sleep',
-            data: this.chartSleepData,
-            borderColor: colors.sleep,
-            cubicInterpolationMode: 'monotone',
-            tension: 0.4,
-          },
-          {
-            label: 'HRV Balance',
-            data: this.chartHrvBalanceData,
-            borderColor: colors.hrv,
-            cubicInterpolationMode: 'monotone',
-            tension: 0.4,
-            borderWidth: 2,
-            borderDash: [5, 5],
-          },
-        ],
-      };
-    },
-    chartLabels() {
-      return Object.keys(this.rawData);
-    },
-    chartReadinessData() {
-      return Object.values(this.rawData).map((d) => d.readiness);
-    },
-    chartHrvBalanceData() {
-      return Object.values(this.rawData).map((d) => d.hrv_balance);
-    },
-    chartSleepData() {
-      return Object.values(this.rawData).map((d) => d.sleep);
+    activeLabel() {
+      return this.hoveredLabel ?? Object.keys(this.rawData).slice(-1)[0];
     },
     readiness() {
-      return this.chartReadinessData?.slice(-1)?.[0] ?? '--';
+      return this.rawData[this.activeLabel]?.readiness ?? '--';
     },
     sleep() {
-      return this.chartSleepData?.slice(-1)?.[0] ?? '--';
+      return this.rawData[this.activeLabel]?.sleep ?? '--';
     },
     hrv() {
-      return this.chartHrvBalanceData?.slice(-1)?.[0] ?? '--';
+      return this.rawData[this.activeLabel]?.hrv_balance ?? '--';
     },
   },
 };

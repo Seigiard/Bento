@@ -1,4 +1,4 @@
-import { color } from 'chart.js/helpers';
+import { Interpolation } from 'chartist';
 
 const gridLineColors = {
   100: '#122F48',
@@ -20,68 +20,49 @@ export const colors = {
   hrv: '#6F3A3A',
 };
 
-export const chartOptions = {
-  plugins: {
-    legend: false,
-  },
-  layout: {
-    padding: 0,
-  },
-  scales: {
-    x: {
-      border: {
-        display: false,
-      },
-      ticks: {
-        display: false,
-      },
+export function getChartistCharts(data) {
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+  const valueKeys = Object.keys(values[0]);
+  return {
+    labels: labels,
+    series: valueKeys.map((key) =>
+      values.map((value, id) => ({
+        meta: {
+          key: id,
+          label: labels[id],
+          ...value,
+        },
+        value: value[key],
+      }))
+    ),
+  };
+}
+
+export function getChartistOptions(data) {
+  return {
+    // Remove this configuration to see that chart rendered with cardinal spline interpolation
+    // Sometimes, on large jumps in data values, it's better to use simple smoothing.
+    lineSmooth: Interpolation.simple({
+      divisor: 2,
+    }),
+    fullWidth: true,
+    showArea: false,
+    axisX: {
+      showGrid: false,
     },
-    y: {
-      max: 100,
-      suggestedMax: 100,
-      border: {
-        display: false,
-      },
-      grid: {
-        lineWidth(context) {
-          const valStr = context.tick.value.toString();
-          if (!gridLines.includes(valStr)) {
-            return 0;
-          }
-          return 1;
-        },
-        color: function (context) {
-          const valStr = context.tick.value.toString();
-          if (!gridLines.includes(valStr)) {
-            return '#000000';
-          }
-          return gridLineColors[valStr];
-        },
-      },
-      ticks: {
-        // For a category axis, the val is the index so the lookup via getLabelForValue is needed
-        callback: function (val) {
-          const valStr = val.toString();
-          if (!gridLines.includes(valStr)) {
-            return '';
-          }
-          // return valStr;
-          return gridLineTitles[valStr];
-        },
-        padding: 10,
-        font: {
-          family:
-            "Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, system-ui, sans-serif",
-          size: '14vmin',
-        },
-      },
-    },
-  },
-  animation: false,
-  interaction: {
-    mode: 'index',
-    intersect: false,
-  },
-  responsive: false,
-  maintainAspectRatio: false,
-};
+  };
+}
+
+export function throttle(func, delay) {
+  let lastExecutionTime = 0;
+
+  return function (...args) {
+    const currentTime = Date.now();
+
+    if (currentTime - lastExecutionTime >= delay) {
+      func.apply(this, args);
+      lastExecutionTime = currentTime;
+    }
+  };
+}
