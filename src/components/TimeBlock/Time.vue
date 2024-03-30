@@ -15,6 +15,7 @@
   font-size: var(--fg-primary);
   font-weight: bolder;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 </style>
 

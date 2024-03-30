@@ -1,6 +1,6 @@
 <template>
   <div class="oura">
-    <div class="chart"></div>
+    <div class="chart ct-chart ct-chart-proportion"></div>
 
     {{ hoveredLabel && activeLabel }}
     <div class="ouraStats">

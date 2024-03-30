@@ -1,23 +1,10 @@
 import { Interpolation } from 'chartist';
 
-const gridLineColors = {
-  100: '#122F48',
-  85: '#122F48',
-  70: '#122F48',
-  60: '#122F48',
-};
 const gridLineTitles = {
   100: 'Optimal',
   85: 'Good',
   70: 'Fair',
   60: 'Ouch',
-};
-const gridLines = Object.keys(gridLineColors);
-
-export const colors = {
-  readiness: '#6372DD',
-  sleep: '#3B416C',
-  hrv: '#6F3A3A',
 };
 
 export function getChartistCharts(data) {
@@ -46,10 +33,15 @@ export function getChartistOptions(data) {
     lineSmooth: Interpolation.simple({
       divisor: 2,
     }),
+    chartPadding: { top: 10, right: 20, left: 50, bottom: 0 },
     fullWidth: true,
     showArea: false,
     axisX: {
+      labelInterpolationFnc: (value) => value.split('-').slice(1).join('/'),
       showGrid: false,
+    },
+    axisY: {
+      labelInterpolationFnc: (value) => gridLineTitles[value] ?? value,
     },
   };
 }
