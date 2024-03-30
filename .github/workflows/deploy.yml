@@ -16,13 +16,6 @@ permissions:
 
 jobs:
     deploy:
-        needs: test
-
-        permissions:
-            contents: read
-            pages: write
-            id-token: write
-
         environment:
             name: production
             url: ${{ steps.deployment.outputs.page_url }}
