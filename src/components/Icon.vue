@@ -1,27 +1,11 @@
 <script setup>
 import { computed } from 'vue';
-import {
-  Mail,
-  Moon,
-  Sun,
-  SunMoon,
-  Calendar,
-  BookMarked,
-  Music,
-  Coffee,
-  PawPrint,
-} from 'lucide-vue-next';
+import { Moon, Sun, SunMoon } from 'lucide-vue-next';
 
 const icons = {
-  Mail,
   Moon,
   Sun,
   SunMoon,
-  Calendar,
-  BookMarked,
-  Music,
-  Coffee,
-  PawPrint,
 };
 
 const props = defineProps({
@@ -35,7 +19,7 @@ const props = defineProps({
   class: String,
 });
 
-const icon = computed(() => icons[props.name] || icons.PawPrint);
+const icon = computed(() => icons[props.name] || icons.SunMoon);
 </script>
 
 <template>
