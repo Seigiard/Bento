@@ -188,6 +188,10 @@ hgroup p {
   display: block;
   position: relative;
   padding-bottom: 50%;
+  & > svg {
+    position: absolute;
+    inset: 0;
+  }
 }
 .chart:empty {
   background: var(--bg-color--loading);
@@ -255,9 +259,12 @@ hgroup p {
   }
 }
 
-.links:empty {
+.links.loading {
   background: var(--bg-color--loading);
   border-radius: 5px;
+  nav {
+    display: none;
+  }
 }
 .links nav {
   background-color: var(--bg-color-panel);

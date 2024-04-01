@@ -9,7 +9,7 @@ import {
 import { updateSignal } from '../helpers/signal';
 
 // Create a signal
-let data = signal(defaultValue);
+let data = signal(defaultValue, 'datetime');
 
 // Create a template function
 export function date() {

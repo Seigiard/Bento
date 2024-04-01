@@ -7,11 +7,11 @@ type RawChartDataType = Record<
   {
     readiness: number;
     sleep: number;
-    hrv: number;
+    hrv_balance: number;
   }
 >;
 
-type ChartDataType = {
+export type ChartDataType = {
   chart: LineChartData;
   options: LineChartOptions;
   rawData: RawChartDataType;
@@ -39,7 +39,7 @@ const gridLineTitles = {
   60: 'Ouch',
 };
 
-function getChartistCharts(data) {
+function getChartistCharts(data: RawChartDataType) {
   const labels = Object.keys(data);
   const values = Object.values(data);
   const valueKeys = Object.keys(values[0]);
@@ -58,14 +58,14 @@ function getChartistCharts(data) {
   };
 }
 
-function getChartistOptions(data) {
+function getChartistOptions(data: RawChartDataType) {
   return {
     // Remove this configuration to see that chart rendered with cardinal spline interpolation
     // Sometimes, on large jumps in data values, it's better to use simple smoothing.
     lineSmooth: Interpolation.simple({
       divisor: 2,
     }),
-    chartPadding: { top: 10, right: 20, left: 50, bottom: 0 },
+    chartPadding: { top: 10, right: 20, left: 35, bottom: 0 },
     fullWidth: true,
     showArea: false,
     axisX: {
@@ -99,11 +99,11 @@ function fetchChartData() {
   return fetch(ENDPOINT).then((r) => r.json());
 }
 
-function parseChartData(data): ChartDataType {
+function parseChartData(data: RawChartDataType): ChartDataType {
   const chartData = getChartistCharts(data);
   const chartOptions = getChartistOptions(data);
 
-  const lastData = data[Object.keys(data)[0]];
+  const lastData = Object.values(data).slice(-1)[0];
   const readiness = lastData.readiness;
   const sleep = lastData.sleep;
   const hrv = lastData.hrv_balance;

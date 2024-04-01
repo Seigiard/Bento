@@ -3,7 +3,7 @@ import { getForecast, initialValue, defaultValue } from '../models/forecast';
 import { updateSignal } from '../helpers/signal';
 
 // Create a signal
-let data = signal(initialValue);
+let data = signal(initialValue, 'forecast');
 
 // Create a template function
 export function forecast() {

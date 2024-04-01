@@ -3,7 +3,7 @@ import { updateSignal } from '../helpers/signal';
 import { getLinks, initialValue } from '../models/links';
 
 // Create a signal
-let data = signal(initialValue);
+let data = signal(initialValue, 'links');
 
 // Create a template function
 export function links() {
