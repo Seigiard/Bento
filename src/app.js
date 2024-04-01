@@ -1,7 +1,12 @@
-import { createApp } from 'vue';
-import App from './components/App.vue';
-import Icon from './components/Icon.vue';
+import { component } from 'reefjs';
+import { date, time, greetings } from './reefjs/datetime';
+import { forecast } from './reefjs/forecast';
+import { readiness } from './reefjs/chart';
 
-const app = createApp(App);
-app.component('Icon', Icon);
-app.mount('#app');
+component('#date', date);
+component('#time', time);
+component('#greetings', greetings);
+
+component('#forecast', forecast);
+
+component('#readiness', readiness);

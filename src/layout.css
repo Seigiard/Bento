@@ -1,0 +1,289 @@
+@font-face {
+  font-family: 'Fixed Avenir';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Avenir');
+}
+@font-face {
+  font-family: 'Fixed Avenir';
+  unicode-range: U+370-FFFF;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Avenir Next Regular');
+}
+@font-face {
+  font-family: 'Fixed Avenir';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Avenir Medium');
+}
+@font-face {
+  font-family: 'Fixed Avenir';
+  unicode-range: U+370-FFFF;
+  font-style: normal;
+  font-weight: 500;
+  src: local('Avenir Next Medium');
+}
+@font-face {
+  font-family: 'Fixed Avenir';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Avenir Heavy');
+}
+@font-face {
+  font-family: 'Fixed Avenir';
+  unicode-range: U+370-FFFF;
+  font-style: normal;
+  font-weight: 700;
+  src: local('Avenir Next Demi-Bold');
+}
+
+:root {
+  --ff-default: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans',
+    source-sans-pro, sans-serif;
+  --ff-default: 'Fixed Avenir', Avenir, Montserrat, Corbel, 'URW Gothic',
+    source-sans-pro, system-ui, sans-serif;
+  --ff-condensed: Bahnschrift, 'DIN Alternate', 'Franklin Gothic Medium',
+    'Nimbus Sans Narrow', sans-serif-condensed, system-ui, sans-serif;
+  /* Font Size */
+  --fz-primary: 10vmin;
+  --fz-secondary: 8vmin;
+  --fz-tertiary: 3vmin;
+  --fz-base: 2vmin;
+  --fz-top-header-lineHeight: 10vmin;
+}
+
+html {
+  /* Fonts Color */
+  --fg-color: #3a3a3a; /* Foreground color */
+  --fg-color-accent: #494949; /* Secondary Foreground color */
+
+  /* Light Colors  */
+  --accent: #57a0d9; /* Hover color */
+  --bg-color: #c4c5cf; /* Background color */
+  --bg-color-panel: #e4e6e6; /* Cards color */
+  --bg-color--loading: #37425122; /* Loading color */
+
+  /* Image background  */
+  --imgbg: url(/assets/background.svg); /* Image URL */
+  --imgcol: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    /* Fonts Color */
+    --fg-color: #d8dee9; /* Foreground color */
+    --fg-color-accent: #2c292e; /* Secondary Foreground color */
+    --fg-color--loading: #374251; /* Loading color */
+
+    /* Dark Colors  */
+    --accent: #57a0d9; /* Hover color */
+    --bg-color: #19171a; /* Background color */
+    --bg-color-panel: #201e21; /* Cards color */
+
+    /* Image background  */
+    --imgcol: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+  }
+}
+
+body {
+  font-family: var(--ff-default);
+  font-size: var(--fz-base);
+  background-color: var(--bg-color);
+  background-image: var(--imgcol), var(--imgbg);
+  background-size: cover, 100% auto;
+  background-repeat: no-repeat;
+  background-position: top center;
+  color: var(--fg-color);
+}
+.loading {
+  color: var(--fg-color--loading);
+}
+
+h1 {
+  font-size: var(--fz-primary);
+}
+h2 {
+  font-size: var(--fz-secondary);
+}
+h3 {
+  font-size: var(--fz-tertiary);
+}
+hgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1vmin;
+}
+hgroup p {
+  font-size: var(--fz-tertiary);
+}
+
+.wrapper {
+  width: 90vmin;
+  height: 80vmin;
+  margin: 10vmin auto;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  grid-template-rows: 1fr 2fr;
+  gap: 8vmin 4vmin;
+  grid-template-areas:
+    'time weather'
+    'oura links';
+}
+
+.time {
+  grid-area: time;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  text-align: center;
+  h1 {
+    line-height: var(--fz-top-header-lineHeight);
+    height: var(--fz-top-header-lineHeight);
+  }
+  p {
+    margin-top: 1vmin;
+  }
+}
+
+.weather {
+  grid-area: weather;
+}
+.oura {
+  grid-area: oura;
+}
+.links {
+  grid-area: links;
+}
+
+.weather {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  text-align: center;
+  h2 {
+    line-height: var(--fz-top-header-lineHeight);
+    height: var(--fz-top-header-lineHeight);
+  }
+  .forecast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2vmin;
+    img {
+      margin: -1vmin;
+      width: 9vmin;
+      height: 9vmin;
+    }
+    span {
+      font-weight: bold;
+      text-wrap: nowrap;
+    }
+  }
+}
+
+.chart {
+  width: 100%;
+  height: 0;
+  display: block;
+  position: relative;
+  padding-bottom: 50%;
+}
+.chart:empty {
+  background: var(--bg-color--loading);
+  border-radius: 5px;
+}
+
+.stats {
+  dl {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    text-align: center;
+    dt {
+    }
+    dd {
+      font-size: var(--fz-secondary);
+      font-weight: 500;
+    }
+    dt:nth-of-type(1) {
+      order: 2;
+    }
+    dt:nth-of-type(2) {
+      order: 4;
+    }
+    dt:nth-of-type(3) {
+      order: 6;
+    }
+    dd:nth-of-type(1) {
+      order: 1;
+    }
+    dd:nth-of-type(2) {
+      order: 3;
+    }
+    dd:nth-of-type(3) {
+      order: 4;
+    }
+  }
+}
+
+.stats {
+  h3 {
+    visibility: hidden;
+    margin-bottom: 2vmin;
+    display: flex;
+    font-weight: normal;
+    &:after,
+    &:before {
+      content: '';
+      flex: 1;
+      border-bottom: 0.3vmin solid var(--bg-color-panel);
+      transform: translateY(-0.45em);
+    }
+    &:after {
+      margin-left: 1vmin;
+    }
+    &:before {
+      margin-right: 1vmin;
+    }
+  }
+  &.stats__hovered {
+    h3 {
+      visibility: visible;
+    }
+  }
+}
+
+.links:empty {
+  background: var(--bg-color--loading);
+  border-radius: 5px;
+}
+.links nav {
+  background-color: var(--bg-color-panel);
+  box-shadow: 0 5px 7px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  padding: 1vmin 1vmin;
+  menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-direction: column;
+  }
+  menu a {
+    display: block;
+    text-decoration: none;
+    color: var(--fg-color);
+    font-size: var(--fg-list);
+    padding: 1.5vmin;
+    border-radius: 5px;
+    text-align: left;
+  }
+  menu a:hover {
+    background-color: var(--accent);
+    color: var(--fg-color-accent);
+  }
+}
