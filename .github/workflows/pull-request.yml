@@ -1,6 +1,6 @@
-name: Github Pages CI
+name: Github Pages CI - Pull Request
 
-on: [push, pull_request]
+on: [pull_request]
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
