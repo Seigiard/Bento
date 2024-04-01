@@ -26,15 +26,3 @@ function saveLinks(links) {
   lsData.set(links);
   return links;
 }
-
-export default {
-  data() {
-    return {
-      links: lsData.get([]),
-    };
-  },
-  async mounted() {
-    this.links = await fetch('').then((r) => r.json());
-    lsData.set(this.links);
-  },
-};

@@ -2,8 +2,10 @@ import { signal } from 'reefjs';
 import { getForecast, initialValue, defaultValue } from '../models/forecast';
 import { updateSignal } from '../helpers/signal';
 
+export const signalName = 'forecast';
+
 // Create a signal
-let data = signal(initialValue, 'forecast');
+let data = signal(initialValue, signalName);
 
 // Create a template function
 export function forecast() {

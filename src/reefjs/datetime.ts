@@ -8,8 +8,10 @@ import {
 } from '../models/datetime';
 import { updateSignal } from '../helpers/signal';
 
+export const signalName = 'datetime';
+
 // Create a signal
-let data = signal(defaultValue, 'datetime');
+let data = signal(defaultValue, signalName);
 
 // Create a template function
 export function date() {

@@ -1,6 +1,8 @@
+import { JSONable, LocalStorageConnector } from '../helpers/localStorage';
 import { Interpolation, LineChartData, LineChartOptions } from 'chartist';
 
 const ENDPOINT = 'https://long-rose-salmon-sock.cyclic.app/oura';
+const LOCAL_STORAGE_KEY = 'links';
 
 type RawChartDataType = Record<
   string,
@@ -20,6 +22,8 @@ export type ChartDataType = {
   hrv: number | string;
 };
 
+const lsData = new LocalStorageConnector(LOCAL_STORAGE_KEY);
+
 export const defaultValue: ChartDataType = {
   chart: {
     labels: [],
@@ -31,6 +35,8 @@ export const defaultValue: ChartDataType = {
   sleep: '--',
   hrv: '--',
 };
+
+export const initialValue = lsData.get(defaultValue as unknown as JSONable);
 
 const gridLineTitles = {
   100: 'Optimal',
@@ -92,7 +98,7 @@ function throttle(func, delay) {
 }
 
 export function getChartData() {
-  return fetchChartData().then(parseChartData);
+  return fetchChartData().then(parseChartData).then(saveChartData);
 }
 
 function fetchChartData() {
@@ -116,4 +122,9 @@ function parseChartData(data: RawChartDataType): ChartDataType {
     sleep,
     hrv,
   };
+}
+
+function saveChartData(data: ChartDataType) {
+  lsData.set(data as unknown as JSONable);
+  return data;
 }

@@ -1,12 +1,17 @@
 import { signal } from 'reefjs';
 import { LineChart } from 'chartist';
-import { updateSignal, onSignalRerender } from '../helpers/signal';
-import { getChartData, defaultValue, ChartDataType } from '../models/oura';
+import { updateSignal } from '../helpers/signal';
+import {
+  getChartData,
+  defaultValue,
+  initialValue,
+  ChartDataType,
+} from '../models/oura';
 
 export const signalName = 'chart';
 
 // Create a signal
-let data = signal(defaultValue, signalName);
+let data = signal(initialValue, signalName);
 
 // Create a template function
 export function readiness() {
@@ -27,8 +32,6 @@ export function hrv() {
 
 function getData() {
   getChartData().then((chartData) => {
-    console.log('chartData', chartData);
-
     updateSignal(data, chartData, defaultValue);
   });
 }
@@ -37,7 +40,7 @@ getData();
 
 let chartChartist;
 
-function renderChart() {
+export function renderChart() {
   const { chart, options } = data;
 
   if (!chartChartist) {
@@ -51,6 +54,9 @@ function initChart(
   chart: ChartDataType['chart'],
   options: ChartDataType['options']
 ) {
+  if (chart.series.length === 0) {
+    return;
+  }
   chartChartist = new LineChart('#chart', chart, options); //.on('draw', this.onDraw);
 }
 
@@ -60,5 +66,3 @@ function updateChart(
 ) {
   chartChartist.update(chart, options, { reset: true });
 }
-
-onSignalRerender(signalName, renderChart);

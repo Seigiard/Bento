@@ -1,19 +1,35 @@
 import { component } from 'reefjs';
-import { date, time, greetings } from './reefjs/datetime';
-import { forecast } from './reefjs/forecast';
+import { onSignalRerender } from './helpers/signal';
+import { removeLoader } from './helpers/loader';
 import {
+  signalName as datetimeSignalName,
+  date,
+  time,
+  greetings,
+} from './reefjs/datetime';
+import { signalName as forecastSignalName, forecast } from './reefjs/forecast';
+import {
+  signalName as ouraSignalName,
   readiness,
   sleep,
   hrv,
-  signalName as ouraSignalName,
+  renderChart,
 } from './reefjs/oura';
-import { links } from './reefjs/links';
+import { signalName as linksSignalName, links } from './reefjs/links';
 
-component('#date', date);
-component('#time', time);
-component('#greetings', greetings);
+component('#date', date, {
+  signals: [datetimeSignalName],
+});
+component('#time', time, {
+  signals: [datetimeSignalName],
+});
+component('#greetings', greetings, {
+  signals: [datetimeSignalName],
+});
 
-component('#forecast', forecast);
+component('#forecast', forecast, {
+  signals: [forecastSignalName],
+});
 
 component('#readiness', readiness, {
   signals: [ouraSignalName],
@@ -24,5 +40,18 @@ component('#sleep', sleep, {
 component('#hrv', hrv, {
   signals: [ouraSignalName],
 });
+renderChart();
+onSignalRerender(ouraSignalName, renderChart);
 
-component('#links', links);
+component('#links', links, {
+  signals: [linksSignalName],
+});
+
+removeLoader('#date');
+removeLoader('#time');
+removeLoader('#greetings');
+removeLoader('#forecast');
+removeLoader('#readiness');
+removeLoader('#sleep');
+removeLoader('#hrv');
+removeLoader('#links');

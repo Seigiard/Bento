@@ -2,8 +2,10 @@ import { signal } from 'reefjs';
 import { updateSignal } from '../helpers/signal';
 import { getLinks, initialValue } from '../models/links';
 
+export const signalName = 'links';
+
 // Create a signal
-let data = signal(initialValue, 'links');
+let data = signal(initialValue, signalName);
 
 // Create a template function
 export function links() {
