@@ -123,9 +123,9 @@ hgroup p {
   height: 80vmin;
   margin: 10vmin auto;
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   grid-template-rows: 1fr 2fr;
-  gap: 8vmin 4vmin;
+  gap: 8vmin 6vmin;
   grid-template-areas:
     'time weather'
     'oura links';
@@ -297,15 +297,24 @@ hgroup p {
 
 .themeButton {
   position: absolute;
-  margin: 2em 2em 0 0;
-  right: 0;
-  top: 0;
+  padding: 1vmin;
+  right: 2vmin;
+  top: 2vmin;
   border: none;
   cursor: pointer;
-  background-color: #00000000;
+  background: transparent;
 }
 
-.themeButton_icon {
+.themeButton svg {
+  stroke: var(--fg-color);
+  stroke-width: 2;
   width: clamp(20px, 2vmin, 32px);
   height: clamp(20px, 2vmin, 32px);
+}
+
+html.is-light .themeButton svg.system,
+html.is-dark .themeButton svg.system,
+html:not(.is-light) .themeButton svg.light,
+html:not(.is-dark) .themeButton svg.dark {
+  display: none;
 }
