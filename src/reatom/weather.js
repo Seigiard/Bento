@@ -1,48 +1,36 @@
-<template>
-  <div class="weather">
-    <div class="weatherIcon">
-      <img :src="svgIcon" alt="" />
-    </div>
-    <div class="weatherValue">
-      <p>{{ weather.temperature.value }} °{{ weather.temperature.unit }}</p>
-    </div>
-    <div class="weatherDescription">
-      <p>{{ weather.description }}</p>
-    </div>
-  </div>
-</template>
+import CONFIG from '../config';
 
-<style>
-.weather {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+import { atom, onConnect } from '@reatom/framework';
+import { ctx } from './context';
 
-.weatherIcon {
-  height: 7vmin;
-}
-.weatherIcon img {
-  margin-top: -1vmin;
-  margin-bottom: -1vmin;
-  width: 9vmin;
-  height: 9vmin;
-}
+const weatherData = atom({}, 'weatherData');
+const weatherUnit = atom(CONFIG.weatherUnit, 'weatherUnit');
+const weatherValue = atom('--', 'weatherValue');
+const weatherDescription = atom('', 'weatherDescription');
+const weatherIconId = atom('unknown', 'weatherIconId');
 
-.weatherValue p {
-  font-size: var(--fg-secondary);
-  font-weight: bolder;
-  text-wrap: nowrap;
-}
+const weatherIcon = atom(
+  (ctx) =>
+    'assets/icons/' +
+    CONFIG.weatherIcons +
+    '/' +
+    SvgIconsMap[ctx.get(weatherIconId)] +
+    '.svg',
+  'weatherIcon'
+);
 
-.weatherDescription p {
-  font-size: var(--fg-secondary);
-  margin-left: 2vmin;
-}
-</style>
+onConnect(weatherData, (ctx) => {
+  getWeather().then((weather) => {
+    weatherData(ctx, weather);
+  });
+});
 
-<script>
-import CONFIG from '../../config';
+ctx.subscribe(weatherData, (data) => {
+  weatherUnit(ctx, data?.temperature?.unit);
+  weatherValue(ctx, data?.temperature?.value);
+  weatherDescription(ctx, data?.description);
+  weatherIconId(ctx, data?.iconId ?? 'unknown');
+});
 
 const SvgIconsMap = {
   unknown: 'not-available',
@@ -67,36 +55,6 @@ const SvgIconsMap = {
 };
 
 const KELVIN = 273.15;
-
-export default {
-  data() {
-    return {
-      weather: {
-        temperature: {
-          unit: 'c',
-          value: '-',
-        },
-        description: '',
-        iconId: 'unknown',
-      },
-      iconType: CONFIG.weatherIcons,
-    };
-  },
-  computed: {
-    svgIcon() {
-      return (
-        'assets/icons/' +
-        CONFIG.weatherIcons +
-        '/' +
-        SvgIconsMap[this.weather.iconId] +
-        '.svg'
-      );
-    },
-  },
-  created() {
-    getWeather().then((data) => (this.weather = data));
-  },
-};
 
 function getWeather() {
   if (!CONFIG.trackLocation || !navigator.geolocation) {
@@ -147,4 +105,5 @@ function fetchWeatherData(latitude, longitude) {
       return weather;
     });
 }
-</script>
+
+export { weatherUnit, weatherValue, weatherDescription, weatherIcon };
