@@ -1,5 +1,19 @@
 import CONFIG from '../config';
 
+export type DateTimeType = {
+  date: string;
+  time: string;
+  greetings: string;
+  name: string;
+};
+
+export const defaultValue: DateTimeType = {
+  date: '--- --',
+  time: '--:--',
+  greetings: '',
+  name: CONFIG.name,
+};
+
 export function getTime(): string {
   return Intl.DateTimeFormat(navigator.language || 'en-GB', {
     timeStyle: 'short',

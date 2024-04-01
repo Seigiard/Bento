@@ -20,7 +20,7 @@ type ChartDataType = {
   hrv: number | string;
 };
 
-export const defaultData: ChartDataType = {
+export const defaultValue: ChartDataType = {
   chart: {
     labels: [],
     series: [],

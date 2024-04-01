@@ -1,9 +1,9 @@
 import { signal } from 'reefjs';
 import { updateSignal } from '../helpers/signal';
-import { getChartData, defaultData } from '../helpers/chart';
+import { getChartData, defaultValue } from '../models/chart';
 
 // Create a signal
-let data = signal(defaultData);
+let data = signal(defaultValue);
 
 // Create a template function
 export function readiness() {
@@ -11,9 +11,19 @@ export function readiness() {
   return readiness;
 }
 
+export function sleep() {
+  let { sleep } = data;
+  return sleep;
+}
+
+export function hrv() {
+  let { hrv } = data;
+  return hrv;
+}
+
 function getData() {
   getChartData().then((chartData) => {
-    updateSignal(data, chartData, defaultData);
+    updateSignal(data, chartData, defaultValue);
   });
 }
 

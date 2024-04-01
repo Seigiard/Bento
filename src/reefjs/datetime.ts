@@ -1,14 +1,15 @@
-import CONFIG from '../config';
 import { signal } from 'reefjs';
-import { getGreetings, getDate, getTime } from '../helpers/datetime';
+import {
+  getGreetings,
+  getDate,
+  getTime,
+  defaultValue,
+  DateTimeType,
+} from '../models/datetime';
+import { updateSignal } from '../helpers/signal';
 
 // Create a signal
-let data = signal({
-  date: '--- --',
-  time: '--:--',
-  greetings: '',
-  name: CONFIG.name,
-});
+let data = signal(defaultValue);
 
 // Create a template function
 export function date() {
@@ -30,9 +31,13 @@ export function greetings() {
 }
 
 function updateData() {
-  data.time = getTime();
-  data.date = getDate();
-  data.greetings = getGreetings();
+  const newData: Partial<DateTimeType> = {
+    time: getTime(),
+    date: getDate(),
+    greetings: getGreetings(),
+  };
+
+  updateSignal(data, newData, defaultValue);
 }
 
 updateData();

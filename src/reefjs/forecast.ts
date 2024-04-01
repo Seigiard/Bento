@@ -1,5 +1,5 @@
 import { signal } from 'reefjs';
-import { getForecast, initialValue, defaultValue } from '../helpers/forecast';
+import { getForecast, initialValue, defaultValue } from '../models/forecast';
 import { updateSignal } from '../helpers/signal';
 
 // Create a signal

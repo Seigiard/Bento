@@ -1,5 +1,5 @@
 import CONFIG from '../config';
-import { LocalStorageConnector } from './localStorage';
+import { LocalStorageConnector } from '../helpers/localStorage';
 const LOCAL_STORAGE_KEY = 'forecastData';
 
 const SvgIconsMap = {
