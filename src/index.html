@@ -10,51 +10,50 @@
       href="/assets/icons/favicon.svg"
     />
     <script type="module" src="./app.js"></script>
+    <script type="module" src="./theme/index.js"></script>
     <link rel="stylesheet" href="./reset.css" />
     <link rel="stylesheet" href="./layout.css" />
     <link rel="stylesheet" href="./chart.css" />
-    <script src="./components/theme.prevent-fart.js"></script>
   </head>
   <body>
-    <div id="app">
-      <div class="wrapper">
-        <div class="time">
-          <hgroup>
-            <h1 id="time" class="loading">--:--</h1>
-            <p id="greetings" class="loading"></p>
-          </hgroup>
+    <button class="themeButton" id="themeButton">theme</button>
+    <div class="wrapper">
+      <div class="time">
+        <hgroup>
+          <h1 id="time" class="loading">--:--</h1>
+          <p id="greetings" class="loading"></p>
+        </hgroup>
+      </div>
+      <div class="weather">
+        <hgroup>
+          <h2 id="date" class="loading">--- --</h2>
+          <p id="forecast" class="forecast loading">
+            <img
+              src="/assets/icons/FillSvgColorStatic/not-available.svg"
+              alt=""
+            />
+            <span>-- °C</span>
+          </p>
+        </hgroup>
+      </div>
+      <div class="oura loading">
+        <div class="chart" id="chart"></div>
+        <div class="stats">
+          <h3>Today</h3>
+          <dl>
+            <dt>Readiness</dt>
+            <dd id="readiness">--</dd>
+            <dt>Sleep</dt>
+            <dd id="sleep">--</dd>
+            <dt>HRV</dt>
+            <dd id="hrv">--</dd>
+          </dl>
         </div>
-        <div class="weather">
-          <hgroup>
-            <h2 id="date" class="loading">--- --</h2>
-            <p id="forecast" class="forecast loading">
-              <img
-                src="/assets/icons/FillSvgColorStatic/not-available.svg"
-                alt=""
-              />
-              <span>-- °C</span>
-            </p>
-          </hgroup>
-        </div>
-        <div class="oura loading">
-          <div class="chart" id="chart"></div>
-          <div class="stats">
-            <h3>Today</h3>
-            <dl>
-              <dt>Readiness</dt>
-              <dd id="readiness">--</dd>
-              <dt>Sleep</dt>
-              <dd id="sleep">--</dd>
-              <dt>HRV</dt>
-              <dd id="hrv">--</dd>
-            </dl>
-          </div>
-        </div>
-        <div class="links loading">
-          <nav>
-            <menu id="links"></menu>
-          </nav>
-        </div>
+      </div>
+      <div class="links loading">
+        <nav>
+          <menu id="links"></menu>
+        </nav>
       </div>
     </div>
   </body>

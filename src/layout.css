@@ -294,3 +294,18 @@ hgroup p {
     color: var(--fg-color-accent);
   }
 }
+
+.themeButton {
+  position: absolute;
+  margin: 2em 2em 0 0;
+  right: 0;
+  top: 0;
+  border: none;
+  cursor: pointer;
+  background-color: #00000000;
+}
+
+.themeButton_icon {
+  width: clamp(20px, 2vmin, 32px);
+  height: clamp(20px, 2vmin, 32px);
+}
