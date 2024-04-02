@@ -2,12 +2,6 @@ import CONFIG from '../config';
 import { LocalStorageConnector } from '../helpers/localStorage';
 const LOCAL_STORAGE_KEY = 'forecastData';
 
-const SvgIconsMap = {
-  unknown: 'not-available',
-  '50d': 'fog-day',
-  '50n': 'fog-night', // mist
-};
-
 const KELVIN = 273.15;
 
 type ForecastDataType = {
