@@ -312,10 +312,14 @@ hgroup p {
 }
 
 .themeButton svg {
-  stroke: var(--fg-color);
-  stroke-width: 2;
+  fill: var(--fg-color);
   width: clamp(20px, 2vmin, 32px);
   height: clamp(20px, 2vmin, 32px);
+}
+.themeButton svg.system {
+  fill: none;
+  stroke: var(--fg-color);
+  stroke-width: 2;
 }
 
 html.is-light .themeButton svg.system,

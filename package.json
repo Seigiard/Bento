@@ -9,10 +9,9 @@
     "clean:dist": "exec rm -rf ./dist/*",
     "clean:cache": "exec rm -rf ./.parcel-cache/*",
     "dev": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html --public-url ./",
+    "build": "parcel build ./src/index.html --public-url ./ --no-source-maps",
     "build-dev": "parcel build ./src/index.html --no-optimize --public-url ./",
-    "size": "npm run build && size-limit",
-    "sl": "size-limit",
+    "size": "npm run clean && npm run build && size-limit",
     "postinstall": "npm run clean",
     "postuninstall": "npm run clean"
   },
