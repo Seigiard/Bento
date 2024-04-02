@@ -2,7 +2,7 @@ import type { SizeLimitConfig } from 'size-limit';
 
 module.exports = [
   {
-    limit: '3 MB',
+    limit: '120 kB',
     path: ['dist/**/*.*'],
     brotli: true,
   },
