@@ -11,10 +11,9 @@ let data = signal(initialValue, signalName);
 export function forecast() {
   let { temperature, unit, description, icon } = data;
   return `
-    <img
-      src="${icon}"
-      alt=""
-    />
+    <svg version="2.0">
+      <use href="#${icon}" />
+    </svg>
     <span>${temperature} °${unit}</span>
     ${description}
   `;

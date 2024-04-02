@@ -4,22 +4,6 @@ const LOCAL_STORAGE_KEY = 'forecastData';
 
 const SvgIconsMap = {
   unknown: 'not-available',
-  '01d': 'clear-day',
-  '01n': 'clear-night', // clear sky
-  '02d': 'partly-cloudy-day',
-  '02n': 'partly-cloudy-day', // few clouds
-  '03d': 'cloudy',
-  '03n': 'cloudy', // scattered clouds
-  '04d': 'overcast',
-  '04n': 'overcast', // broken clouds
-  '09d': 'rain',
-  '09n': 'rain', // shower rain
-  '10d': 'partly-cloudy-day-drizzle',
-  '10n': 'partly-cloudy-night-drizzle', // rain
-  '11d': 'thunderstorms-day',
-  '11n': 'thunderstorms-night', // thunderstorm
-  '13d': 'partly-cloudy-day-snow',
-  '13n': 'partly-cloudy-night-snow', // snow
   '50d': 'fog-day',
   '50n': 'fog-night', // mist
 };
@@ -39,7 +23,7 @@ export const defaultValue: ForecastDataType = {
   unit: CONFIG.weatherUnit,
   temperature: '--',
   description: null,
-  icon: getForecastIconSrc('unknown'),
+  icon: 'unknown',
 };
 
 export const initialValue: ForecastDataType = lsData.get(defaultValue);
@@ -100,7 +84,7 @@ function parseForecastData(data): ForecastDataType {
   weather.temperature =
     CONFIG.weatherUnit == 'C' ? celsius : (celsius * 9) / 5 + 32;
   weather.description = data.weather[0].description;
-  weather.icon = getForecastIconSrc(data.weather[0].icon);
+  weather.icon = data.weather[0].icon ?? 'unknown';
 
   return weather;
 }
@@ -108,9 +92,4 @@ function parseForecastData(data): ForecastDataType {
 function saveForecastData(data) {
   lsData.set(data);
   return data;
-}
-
-function getForecastIconSrc(iconId) {
-  const icon = SvgIconsMap[iconId] ?? 'unknown';
-  return 'assets/icons/' + CONFIG.weatherIcons + '/' + icon + '.svg';
 }

@@ -96,6 +96,11 @@ body {
   background-position: top center;
   color: var(--fg-color);
 }
+
+[hidden] {
+  display: none;
+}
+
 .loading {
   color: var(--fg-color--loading);
 }
@@ -170,10 +175,11 @@ hgroup p {
     align-items: center;
     justify-content: center;
     gap: 2vmin;
-    img {
-      margin: -1vmin;
-      width: 9vmin;
-      height: 9vmin;
+    svg {
+      width: 5.5vmin;
+      height: 5.5vmin;
+      fill: var(--fg-color);
+      stroke: none;
     }
     span {
       font-weight: bold;
