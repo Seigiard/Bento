@@ -11,6 +11,8 @@
     "dev": "parcel ./src/index.html",
     "build": "parcel build ./src/index.html --public-url ./",
     "build-dev": "parcel build ./src/index.html --no-optimize --public-url ./",
+    "size": "npm run build && size-limit",
+    "sl": "size-limit",
     "postinstall": "npm run clean",
     "postuninstall": "npm run clean"
   },
@@ -26,9 +28,12 @@
   },
   "devDependencies": {
     "@parcel/transformer-vue": "^2.10.3",
+    "@size-limit/file": "^11.1.2",
+    "file-loader": "^6.2.0",
     "parcel": "^2.10.3",
     "parcel-reporter-static-files-copy": "^1.5.3",
-    "postcss-dark-theme-class": "^1.1.0"
+    "postcss-dark-theme-class": "^1.1.0",
+    "size-limit": "^11.1.2"
   },
   "optionalDependencies": {
     "@parcel/watcher-darwin-x64": "^2.3.0"
