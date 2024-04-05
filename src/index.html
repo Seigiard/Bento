@@ -7,13 +7,12 @@
     <link rel=" shortcut icon" type="image/png" href="/assets/favicon.svg" />
     <script type="module" src="./app.js"></script>
     <script type="module" src="./theme/index.js"></script>
-    <script type="module" src="./theme/index.js"></script>
     <link rel="stylesheet" href="./reset.css" />
     <link rel="stylesheet" href="./layout.css" />
     <link rel="stylesheet" href="./chart.css" />
   </head>
   <body>
-    <button class="themeButton" id="themeButton">
+    <button class="themeButton" id="themeButton" aria-label="Toggle theme">
       <svg class="light" version="2.0">
         <use href="#01d" />
       </svg>
@@ -70,6 +69,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
       hidden="true"
+      aria-hidden="true"
     >
       <defs>
         <symbol id="system" viewBox="0 0 24 24">
@@ -93,6 +93,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
       hidden="true"
+      aria-hidden="true"
     >
       <defs>
         <symbol viewBox="0 0 16 16" id="unknown">

@@ -56,13 +56,14 @@
 html {
   /* Fonts Color */
   --fg-color: #3a3a3a; /* Foreground color */
+  --fg-color--loading: #aeaeae; /* Loading color */
   --fg-color-accent: #494949; /* Secondary Foreground color */
 
   /* Light Colors  */
-  --accent: #57a0d9; /* Hover color */
+  --accent: #57a0d959; /* Hover color */
   --bg-color: #c4c5cf; /* Background color */
   --bg-color-panel: #e4e6e6; /* Cards color */
-  --bg-color--loading: #37425122; /* Loading color */
+  --bg-color--loading: #3742510d; /* Loading color */
 
   /* Image background  */
   --imgbg: url(/assets/background.svg); /* Image URL */
@@ -73,13 +74,13 @@ html {
   html {
     /* Fonts Color */
     --fg-color: #d8dee9; /* Foreground color */
-    --fg-color-accent: #2c292e; /* Secondary Foreground color */
     --fg-color--loading: #374251; /* Loading color */
 
     /* Dark Colors  */
-    --accent: #57a0d9; /* Hover color */
+    --accent: #1c9cff26; /* Hover color */
     --bg-color: #19171a; /* Background color */
     --bg-color-panel: #201e21; /* Cards color */
+    --bg-color--loading: #37425122; /* Loading color */
 
     /* Image background  */
     --imgcol: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
@@ -97,7 +98,8 @@ body {
   color: var(--fg-color);
 }
 
-[hidden]:not([hidden='false']) {
+[hidden]:not([hidden='false']),
+[aria-hidden]:not([aria-hidden='false']) {
   display: none;
 }
 
@@ -178,7 +180,7 @@ hgroup p {
     svg {
       width: 5.5vmin;
       height: 5.5vmin;
-      fill: var(--fg-color);
+      fill: currentColor;
       stroke: none;
     }
     span {
@@ -295,9 +297,9 @@ hgroup p {
     border-radius: 5px;
     text-align: left;
   }
-  menu a:hover {
+  menu a:hover,
+  menu a:focus-visible {
     background-color: var(--accent);
-    color: var(--fg-color-accent);
   }
 }
 
@@ -307,8 +309,16 @@ hgroup p {
   right: 2vmin;
   top: 2vmin;
   border: none;
+  border-radius: 999px;
   cursor: pointer;
   background: transparent;
+  transition: transform 0.2s ease-in-out;
+}
+.themeButton:hover {
+  transform: scale(1.1);
+}
+.themeButton:focus-visible {
+  background: var(--accent);
 }
 
 .themeButton svg {
