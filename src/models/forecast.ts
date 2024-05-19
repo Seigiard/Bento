@@ -1,17 +1,13 @@
 import CONFIG from '../config';
-import { LocalStorageConnector } from '../helpers/localStorage';
-const LOCAL_STORAGE_KEY = 'forecastData';
 
 const KELVIN = 273.15;
 
-type ForecastDataType = {
+export type ForecastDataType = {
   unit: string;
   temperature: number | string;
   description?: string | null;
   icon: string;
 };
-
-const lsData = new LocalStorageConnector(LOCAL_STORAGE_KEY);
 
 export const defaultValue: ForecastDataType = {
   unit: CONFIG.weatherUnit,
@@ -19,8 +15,6 @@ export const defaultValue: ForecastDataType = {
   description: null,
   icon: 'unknown',
 };
-
-export const initialValue: ForecastDataType = lsData.get(defaultValue);
 
 export function getForecast(): Promise<ForecastDataType> {
   if (!CONFIG.trackLocation || !navigator.geolocation) {
@@ -56,13 +50,12 @@ export function getForecast(): Promise<ForecastDataType> {
   });
 }
 
-function fetchAndParseForecastData(latitude, longitude) {
+async function fetchAndParseForecastData(latitude: string, longitude: string) {
   return fetchWeatherData(latitude, longitude)
     .then(parseForecastData)
-    .then(saveForecastData);
 }
 
-function fetchWeatherData(latitude, longitude) {
+async function fetchWeatherData(latitude: string, longitude: string) {
   let api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&lang=${CONFIG.language}&appid=${CONFIG.weatherKey}`;
   return fetch(api).then(function (response) {
     let data = response.json();
@@ -81,9 +74,4 @@ function parseForecastData(data): ForecastDataType {
   weather.icon = data.weather[0].icon ?? 'unknown';
 
   return weather;
-}
-
-function saveForecastData(data) {
-  lsData.set(data);
-  return data;
 }
