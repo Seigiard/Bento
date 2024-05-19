@@ -1,8 +1,6 @@
-import { JSONable, LocalStorageConnector } from '../helpers/localStorage';
 import { Interpolation, LineChartData, LineChartOptions } from 'chartist';
 
 const ENDPOINT = 'https://long-rose-salmon-sock.cyclic.app/oura';
-const LOCAL_STORAGE_KEY = 'links';
 
 type RawChartDataType = Record<
   string,
@@ -22,8 +20,6 @@ export type ChartDataType = {
   hrv: number | string;
 };
 
-const lsData = new LocalStorageConnector(LOCAL_STORAGE_KEY);
-
 export const defaultValue: ChartDataType = {
   chart: {
     labels: [],
@@ -35,8 +31,6 @@ export const defaultValue: ChartDataType = {
   sleep: '--',
   hrv: '--',
 };
-
-export const initialValue = lsData.get(defaultValue as unknown as JSONable);
 
 const gridLineTitles = {
   100: 'Optimal',
@@ -64,7 +58,7 @@ function getChartistCharts(data: RawChartDataType) {
   };
 }
 
-function getChartistOptions(data: RawChartDataType) {
+function getChartistOptions() {
   return {
     // Remove this configuration to see that chart rendered with cardinal spline interpolation
     // Sometimes, on large jumps in data values, it's better to use simple smoothing.
@@ -75,39 +69,26 @@ function getChartistOptions(data: RawChartDataType) {
     fullWidth: true,
     showArea: false,
     axisX: {
-      labelInterpolationFnc: (value) => value.split('-').slice(1).join('/'),
+      labelInterpolationFnc: (value: string) => value.split('-').slice(1).join('/'),
       showGrid: false,
     },
     axisY: {
-      labelInterpolationFnc: (value) => gridLineTitles[value] ?? value,
+      labelInterpolationFnc: (value: string) => gridLineTitles[value] ?? value,
     },
   };
 }
 
-function throttle(func, delay) {
-  let lastExecutionTime = 0;
-
-  return function (...args) {
-    const currentTime = Date.now();
-
-    if (currentTime - lastExecutionTime >= delay) {
-      func.apply(this, args);
-      lastExecutionTime = currentTime;
-    }
-  };
+export async function getChartData() {
+  return fetchChartData().then(parseChartData);
 }
 
-export function getChartData() {
-  return fetchChartData().then(parseChartData).then(saveChartData);
-}
-
-function fetchChartData() {
+async function fetchChartData() {
   return fetch(ENDPOINT).then((r) => r.json());
 }
 
 function parseChartData(data: RawChartDataType): ChartDataType {
   const chartData = getChartistCharts(data);
-  const chartOptions = getChartistOptions(data);
+  const chartOptions = getChartistOptions();
 
   const lastData = Object.values(data).slice(-1)[0];
   const readiness = lastData.readiness;
@@ -122,9 +103,4 @@ function parseChartData(data: RawChartDataType): ChartDataType {
     sleep,
     hrv,
   };
-}
-
-function saveChartData(data: ChartDataType) {
-  lsData.set(data as unknown as JSONable);
-  return data;
 }

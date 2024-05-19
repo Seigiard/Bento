@@ -186,6 +186,8 @@ hgroup p {
     span {
       font-weight: bold;
       text-wrap: nowrap;
+      flex-shrink: 0;
+      flex-wrap: 0;
     }
   }
 }
