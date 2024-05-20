@@ -2,6 +2,8 @@ import CONFIG from '../config';
 
 const KELVIN = 273.15;
 
+export const TTL_TIME = 1000 * 60 * 60; // 1 hour
+
 export type ForecastDataType = {
   unit: string;
   temperature: number | string;
