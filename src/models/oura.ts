@@ -1,6 +1,5 @@
 import { Interpolation, LineChartData, LineChartOptions } from 'chartist';
-
-const ENDPOINT = 'https://long-rose-salmon-sock.cyclic.app/oura';
+import { OuraClient } from '../helpers/oura';
 
 type RawChartDataType = Record<
   string,
@@ -78,12 +77,8 @@ function getChartistOptions() {
   };
 }
 
-export async function getChartData() {
-  return fetchChartData().then(parseChartData);
-}
-
-async function fetchChartData() {
-  return fetch(ENDPOINT).then((r) => r.json());
+export async function getChartData(accessToken: string) {
+  return getOuraData(accessToken).then(parseChartData);
 }
 
 function parseChartData(data: RawChartDataType): ChartDataType {
@@ -103,4 +98,72 @@ function parseChartData(data: RawChartDataType): ChartDataType {
     sleep,
     hrv,
   };
+}
+
+
+
+async function getOuraData(accessToken: string) {
+  const client = new OuraClient(accessToken);
+
+  const dailyReadinessRawData = await client.getDailyReadiness({
+    start_date: getWeekAgoDate(),
+    end_date: getTodayDate(),
+  });
+
+  const dailySleepRawData = await client.getDailySleep({
+    start_date: getWeekAgoDate(),
+    end_date: getTodayDate(),
+  });
+
+  const dataDailyReadiness = getScoreByData(dailyReadinessRawData, 'readiness');
+
+  const dataDailyHrvBalance = getScoreByData(
+    dailyReadinessRawData,
+    'hrv_balance',
+    (item) => item.contributors.hrv_balance
+  );
+
+  const dataDailySleep = getScoreByData(dailySleepRawData, 'sleep');
+
+  return mergeObjects(dataDailyReadiness, dataDailyHrvBalance, dataDailySleep);
+}
+
+function getTodayDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getWeekAgoDate() {
+  var date = new Date();
+  date.setDate(date.getDate() - 7);
+  return date.toISOString().slice(0, 10);
+}
+
+function getScoreByData(data, key, field = 'score') {
+  function getValueByField(item) {
+    if (typeof field === 'function') {
+      return field(item);
+    }
+    return item[field];
+  }
+
+  return data.data
+    .map((item) => ({
+      day: item.day,
+      value: getValueByField(item),
+    }))
+    .reduce((acc, item) => {
+      acc[item.day] = { [key]: item.value };
+      return acc;
+    }, {});
+}
+
+function mergeObjects(...objs) {
+  const keys = Object.keys(objs[0]);
+
+  return keys.reduce((acc, key) => {
+    acc[key] = objs.reduce((obj, item) => {
+      return { ...obj, ...item[key] };
+    }, {});
+    return acc;
+  }, {});
 }
