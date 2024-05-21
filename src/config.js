@@ -11,11 +11,9 @@ const CONFIG = {
   // Weather
   weatherKey: '9e2df1fb216a5477f862b69f1732af0c', // Write here your API Key
   weatherUnit: 'C', // 'F', 'C'
-  language: 'en', // More languages in https://openweathermap.org/current#multi
-
-  trackLocation: true, // If false or an error occurs, the app will use the lat/lon below
-  defaultLatitude: '48.160570069000705',
-  defaultLongitude: '17.149771267456032',
+  weatherDefaultLatitude: '48.160570069000705',
+  weatherDefaultLongitude: '17.149771267456032',
+  weatherLanguage: 'en', // More languages in https://openweathermap.org/current#multi
 };
 
 export default CONFIG;

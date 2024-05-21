@@ -1,4 +1,4 @@
-export function getElement(selector: string) {
+export function getElement<T extends Element>(selector: string) {
   const document = globalThis?.document;
 
   if (!document) {
@@ -11,5 +11,5 @@ export function getElement(selector: string) {
     return;
   }
 
-  return el;
+  return el as T;
 }

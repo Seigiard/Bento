@@ -10,14 +10,6 @@ export const $links = lsAtom<LinkType[]>('links', defaultValue)
 
 onMount($links, () => {
   task(async () => {
-    const lagTimeMs = new Date().getTime() - $lastFetchTimestamp.get()
-    getLinksWithLag(TTL_TIME < lagTimeMs ? TTL_TIME : lagTimeMs)
-  })
-})
-
-function getLinksWithLag(lagTimeMs: number = 0) {
-  setTimeout(async () => {
-    $lastFetchTimestamp.set(new Date().getTime())
     const accessToken = $accessToken.get()
     const collectionId = $raindropCollectionId.get()
 
@@ -25,9 +17,12 @@ function getLinksWithLag(lagTimeMs: number = 0) {
       return
     }
 
-    const data = await getLinks(accessToken, collectionId)
-    $links.set(data)
+    const lastFetchDiffMs = new Date().getTime() - $lastFetchTimestamp.get()
 
-    getLinksWithLag(0)
-  }, TTL_TIME - lagTimeMs)
-}
+    if (TTL_TIME < lastFetchDiffMs) {
+      const data = await getLinks(accessToken, collectionId)
+      $links.set(data)
+      $lastFetchTimestamp.set(new Date().getTime())
+    }
+  })
+})

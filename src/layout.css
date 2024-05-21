@@ -305,33 +305,44 @@ hgroup p {
   }
 }
 
-.themeButton {
+.iconButton {
   position: absolute;
   padding: 1vmin;
-  right: 2vmin;
-  top: 2vmin;
   border: none;
   border-radius: 999px;
   cursor: pointer;
   background: transparent;
   transition: transform 0.2s ease-in-out;
 }
-.themeButton:hover {
+.iconButton:hover {
   transform: scale(1.1);
 }
-.themeButton:focus-visible {
+.iconButton:focus-visible {
   background: var(--accent);
 }
 
-.themeButton svg {
-  fill: var(--fg-color);
+.iconButton svg {
   width: clamp(20px, 2vmin, 32px);
   height: clamp(20px, 2vmin, 32px);
+}
+
+.themeButton {
+  fill: var(--fg-color);
+  right: 2vmin;
+  top: 2vmin;
 }
 .themeButton svg.system {
   fill: none;
   stroke: var(--fg-color);
-  stroke-width: 2;
+  stroke-width: 1.5;
+}
+
+.settingsButton {
+  stroke-width: 1.5;
+  fill: none;
+  stroke: var(--fg-color);
+  right: 2vmin;
+  bottom: 2vmin;
 }
 
 html.is-light .themeButton svg.system,
@@ -339,4 +350,79 @@ html.is-dark .themeButton svg.system,
 html:not(.is-light) .themeButton svg.light,
 html:not(.is-dark) .themeButton svg.dark {
   display: none;
+}
+
+.settingsDialog {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  border: none;
+  width: 100%;
+  height: 100%;
+  padding: 5vmin;
+  overflow: auto;
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  font-size: 1.2rem;
+}
+.settingsDialog_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.closeDialogButton {
+  position: static;
+  stroke: currentColor;
+}
+.closeDialogButton svg {
+  width: 2rem;
+  height: 2rem;
+}
+.closeDialogButton:hover {
+  background-color: var(--accent);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.form-item {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 2rem;
+  max-width: 40rem;
+}
+.form-label {
+  flex: 1 1 30%;
+  text-align: right;
+  max-width: 15rem;
+}
+.form-value {
+  flex: 1 1 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.form-value p {
+  font-size: 0.825em;
+  opacity: 0.5;
+}
+
+.form-item input,
+.form-item select {
+  background-color: var(--bg-color-panel);
+  color: var(--fg-color);
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  flex: 1;
+}
+.form-item input:focus-within,
+.form-item input:focus,
+.form-item select:focus-within,
+.form-item select:focus {
+  background-color: var(--accent);
 }

@@ -19,14 +19,16 @@ export const defaultValue: ForecastDataType = {
 };
 
 export function getForecast(): Promise<ForecastDataType> {
-  if (!CONFIG.trackLocation || !navigator.geolocation) {
-    if (CONFIG.trackLocation) {
-      console.error('Geolocation not available');
+  if (!navigator.geolocation) {
+    if (CONFIG.defaultLatitude, CONFIG.defaultLongitude) {
+      console.error('Geolocation not available. Fetching default location.');
+      return fetchAndParseForecastData(
+        CONFIG.defaultLatitude,
+        CONFIG.defaultLongitude
+      );
+    } else {
+      console.error('Geolocation not available. No default location set.');
     }
-    return fetchAndParseForecastData(
-      CONFIG.defaultLatitude,
-      CONFIG.defaultLongitude
-    );
   }
 
   return new Promise((resolve) => {
@@ -43,8 +45,8 @@ export function getForecast(): Promise<ForecastDataType> {
         console.error(err);
         resolve(
           fetchAndParseForecastData(
-            CONFIG.defaultLatitude,
-            CONFIG.defaultLongitude
+            CONFIG.weatherDefaultLatitude,
+            CONFIG.weatherDefaultLongitude
           )
         );
       }
@@ -58,7 +60,7 @@ async function fetchAndParseForecastData(latitude: string, longitude: string) {
 }
 
 async function fetchWeatherData(latitude: string, longitude: string) {
-  let api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&lang=${CONFIG.language}&appid=${CONFIG.weatherKey}`;
+  let api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&lang=${CONFIG.weatherLanguage}&appid=${CONFIG.weatherKey}`;
   return fetch(api).then(function (response) {
     let data = response.json();
     return data;

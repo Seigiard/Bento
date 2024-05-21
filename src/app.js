@@ -5,10 +5,12 @@ import { $forecast } from './nanostores/forecast';
 import { $greetings } from './nanostores/greetings';
 import { $links } from './nanostores/links';
 import { $oura } from './nanostores/oura';
+import { $settings } from './nanostores/settings';
 import { $time } from './nanostores/time';
 import { renderChart } from './views/chart';
 import { getForecastView } from './views/forecast';
 import { getLinksView } from './views/links';
+import { getSettingsForm } from './views/settings';
 
 $oura.subscribe(({ chart, options }) => {
   renderChart(chart, options);
@@ -52,3 +54,9 @@ $links.subscribe((links) => {
   renderText('#links', view);
   view && removeLoader('#links');
 })
+
+$settings.subscribe((settings) => {
+  const view = getSettingsForm(settings)
+  renderText('#settingsForm', view);
+})
+
