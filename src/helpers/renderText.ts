@@ -1,6 +1,6 @@
 import { getElement } from "./getElement";
 
-export function renderText(selector: string, text: string | number) {
+export function renderText(selector: string, text?: string | number) {
   if (text === undefined) {
     return;
   }

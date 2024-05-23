@@ -1,5 +1,7 @@
+import { batched } from 'nanostores';
 import { removeLoader } from './helpers/loader';
 import { renderText } from './helpers/renderText';
+import { switchTheme } from './models/theme';
 import { $date } from './nanostores/date';
 import { $forecast } from './nanostores/forecast';
 import { $greetings } from './nanostores/greetings';
@@ -11,6 +13,8 @@ import { renderChart } from './views/chart';
 import { getForecastView } from './views/forecast';
 import { getLinksView } from './views/links';
 import { getSettingsForm } from './views/settings';
+
+import './controller/settings';
 
 $oura.subscribe(({ chart, options }) => {
   renderChart(chart, options);
@@ -60,3 +64,7 @@ $settings.subscribe((settings) => {
   renderText('#settingsForm', view);
 })
 
+const $theme = batched($settings, ({ theme }) => theme);
+$theme.subscribe((theme) => {
+  switchTheme(theme);
+})
