@@ -1,6 +1,6 @@
 import { LinkType } from "../models/links";
 
-export function getLinksView(data: LinkType[]) {
+export function getLinksView(data: readonly LinkType[]) {
   if (!data.length) {
     return;
   }
