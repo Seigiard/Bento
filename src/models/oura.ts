@@ -19,6 +19,8 @@ export type ChartDataType = {
   hrv: number | string;
 };
 
+export const TTL_TIME = 1000 * 60 * 60 * 4; // 4 hour
+
 export const defaultValue: ChartDataType = {
   chart: {
     labels: [],

@@ -1,17 +1,31 @@
-import { atom, onMount } from 'nanostores';
-import { getGreetings } from '../models/greetings';
-import { $name } from './name';
+import { atom, batched } from 'nanostores';
+import { TTL_TIME, getGreetings } from '../models/greetings';
+import { $settings } from './settings';
 
-export const $greetings = atom<string>(getGreetingsMessage())
+export const $greetings = atom<string>('')
 
-onMount($greetings, () => {
-  const intervalId = setInterval(() => $greetings.set(getGreetingsMessage()), 60 * 1000);
+const $greetingsValues = batched($settings, ({
+  greetingNight, greetingMorning, greetingAfternoon, greetingEvening, name
+}) => JSON.stringify({
+  greetingNight, greetingMorning, greetingAfternoon, greetingEvening, name
+}))
+
+$greetingsValues.subscribe((value) => {
+  const { name, ...greetings } = JSON.parse(value)
+
+  updateGreetings(name, greetings)
+
+  const intervalId = setInterval(() => updateGreetings(name, greetings), TTL_TIME);
   return () => clearInterval(intervalId)
 })
 
-function getGreetingsMessage() {
-  const message = getGreetings()
-  const name = $name.get()
+
+function updateGreetings(name: string, greetings) {
+  $greetings.set(getGreetingsMessage(name, greetings))
+}
+
+function getGreetingsMessage(name: string, greetings) {
+  const message = getGreetings(greetings)
   if (!!name) {
     return `${message}, ${name}`
   }

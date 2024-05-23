@@ -1,6 +1,5 @@
-import CONFIG from '../config';
-
 const KELVIN = 273.15;
+const DEFAULT_UNIT = 'C';
 
 export const TTL_TIME = 1000 * 60 * 60; // 1 hour
 
@@ -12,68 +11,103 @@ export type ForecastDataType = {
 };
 
 export const defaultValue: ForecastDataType = {
-  unit: CONFIG.weatherUnit,
+  unit: DEFAULT_UNIT,
   temperature: '--',
   description: null,
   icon: 'unknown',
 };
 
-export function getForecast(): Promise<ForecastDataType> {
-  if (!navigator.geolocation) {
-    if (CONFIG.defaultLatitude, CONFIG.defaultLongitude) {
+export async function getForecast({
+  fallbackLatitude,
+  fallbackLongitude,
+  apiKey,
+  language,
+  unit = DEFAULT_UNIT
+}: {
+  fallbackLatitude?: string;
+  fallbackLongitude?: string;
+  apiKey?: string;
+  language?: string;
+  unit?: string;
+} = {}): Promise<ForecastDataType | undefined> {
+  async function getDefaultLocationForesast() {
+    if (fallbackLatitude && fallbackLongitude) {
       console.error('Geolocation not available. Fetching default location.');
-      return fetchAndParseForecastData(
-        CONFIG.defaultLatitude,
-        CONFIG.defaultLongitude
-      );
+      return fetchAndParseForecastData({
+        latitude: fallbackLatitude,
+        longitude: fallbackLongitude,
+        apiKey,
+        language,
+        unit
+      });
     } else {
       console.error('Geolocation not available. No default location set.');
     }
   }
 
-  return new Promise((resolve) => {
+  try {
+    const { latitude, longitude } = await getCurrentPosition();
+
+    if (latitude && longitude) {
+      return fetchAndParseForecastData({
+        latitude,
+        longitude,
+        apiKey,
+        language, unit
+      });
+    }
+
+    return getDefaultLocationForesast();
+  } catch (_e) {
+    return getDefaultLocationForesast();
+  }
+}
+
+export async function getCurrentPosition(): Promise<{ latitude: string; longitude: string }> {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject('Geolocation not available');
+    }
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        resolve(
-          fetchAndParseForecastData(
-            pos.coords.latitude.toFixed(3),
-            pos.coords.longitude.toFixed(3)
-          )
-        );
+        resolve({
+          latitude: pos.coords.latitude.toFixed(3),
+          longitude: pos.coords.longitude.toFixed(3),
+        });
       },
       (err) => {
-        console.error(err);
-        resolve(
-          fetchAndParseForecastData(
-            CONFIG.weatherDefaultLatitude,
-            CONFIG.weatherDefaultLongitude
-          )
-        );
+        reject(err);
       }
     );
   });
 }
 
-async function fetchAndParseForecastData(latitude: string, longitude: string) {
-  return fetchWeatherData(latitude, longitude)
-    .then(parseForecastData)
+async function fetchAndParseForecastData({
+  latitude,
+  longitude,
+  apiKey,
+  language,
+  unit
+}: {
+  latitude: string;
+  longitude: string;
+  apiKey?: string;
+  language?: string;
+  unit?: string;
+}): Promise<ForecastDataType | undefined> {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&lang=${language}&appid=${apiKey}`;
+  return fetch(url)
+    .then(r => r.json())
+    .then(data => parseForecastData(data, unit))
 }
 
-async function fetchWeatherData(latitude: string, longitude: string) {
-  let api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&lang=${CONFIG.weatherLanguage}&appid=${CONFIG.weatherKey}`;
-  return fetch(api).then(function (response) {
-    let data = response.json();
-    return data;
-  });
-}
-
-function parseForecastData(data): ForecastDataType {
+function parseForecastData(data, unit = DEFAULT_UNIT): ForecastDataType {
   const weather = {} as ForecastDataType;
   let celsius = Math.floor(data.main.temp - KELVIN);
 
-  weather.unit = CONFIG.weatherUnit;
-  weather.temperature =
-    CONFIG.weatherUnit == 'C' ? celsius : (celsius * 9) / 5 + 32;
+  weather.unit = unit;
+  weather.temperature = unit == 'C' ? celsius : (celsius * 9) / 5 + 32;
   weather.description = data.weather[0].description;
   weather.icon = data.weather[0].icon ?? 'unknown';
 

@@ -326,30 +326,12 @@ hgroup p {
   height: clamp(20px, 2vmin, 32px);
 }
 
-.themeButton {
-  fill: var(--fg-color);
+.settingsButton {
   right: 2vmin;
   top: 2vmin;
-}
-.themeButton svg.system {
-  fill: none;
-  stroke: var(--fg-color);
-  stroke-width: 1.5;
-}
-
-.settingsButton {
   stroke-width: 1.5;
   fill: none;
   stroke: var(--fg-color);
-  right: 2vmin;
-  bottom: 2vmin;
-}
-
-html.is-light .themeButton svg.system,
-html.is-dark .themeButton svg.system,
-html:not(.is-light) .themeButton svg.light,
-html:not(.is-dark) .themeButton svg.dark {
-  display: none;
 }
 
 .settingsDialog {
@@ -357,19 +339,33 @@ html:not(.is-dark) .themeButton svg.dark {
   inset: 0;
   z-index: 100;
   border: none;
+  padding: 0;
   width: 100%;
   height: 100%;
-  padding: 5vmin;
   overflow: auto;
   background-color: var(--bg-color);
   color: var(--fg-color);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
 }
+.settingsDialog[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 5vmin;
+}
+
 .settingsDialog_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex: 0 0 auto;
+  padding: 5vmin 5vmin 0;
 }
+.settingsDialog_form {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 0 5vmin 5vmin;
+}
+
 .closeDialogButton {
   position: static;
   stroke: currentColor;
@@ -377,6 +373,7 @@ html:not(.is-dark) .themeButton svg.dark {
 .closeDialogButton svg {
   width: 2rem;
   height: 2rem;
+  stroke: var(--fg-color);
 }
 .closeDialogButton:hover {
   background-color: var(--accent);
@@ -386,7 +383,6 @@ html:not(.is-dark) .themeButton svg.dark {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 2rem;
 }
 .form-item {
   display: flex;

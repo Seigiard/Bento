@@ -1,5 +1,6 @@
 import { getElement } from "../helpers/getElement";
-import { $settings, SettingsValue } from "../nanostores/settings";
+import { SettingsValue } from "../models/settings";
+import { $settings } from "../nanostores/settings";
 
 const dialog = getElement<HTMLDialogElement>('#settings');
 

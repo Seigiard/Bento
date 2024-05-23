@@ -1,27 +1,23 @@
-import { persistentAtom } from '@nanostores/persistent';
 
+import { batched } from 'nanostores';
 import { getElement } from '../helpers/getElement';
+import { SettingsValue, themeList } from '../models/settings';
+import { $settings } from '../nanostores/settings';
 
-type ThemeType = 'light' | 'dark' | 'system'
-const themeList: ThemeType[] = ['light', 'dark', 'system'];
-
-export const $theme = persistentAtom<ThemeType>('systemTheme', 'system', {
-  encode: JSON.stringify,
-  decode: JSON.parse,
-})
+export const $theme = batched($settings, ({ theme }) => theme);
 
 function switchNextTheme() {
   const theme = $theme.get();
   const currentThemeId = themeList.indexOf(theme) || 0;
   const nextTheme = themeList[(currentThemeId + 1) % themeList.length];
-  $theme.set(nextTheme);
+  $settings.setKey('theme', nextTheme);
 }
 
 getElement('#themeButton')?.addEventListener('click', () => {
   switchNextTheme();
 });
 
-function switchTheme(theme: ThemeType) {
+function switchTheme(theme: SettingsValue['theme']) {
   const html = document.documentElement;
 
   if (theme === 'system') {
