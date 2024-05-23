@@ -15,17 +15,6 @@
 </head>
 
 <body>
-  <button class="iconButton themeButton" id="themeButton" aria-label="Toggle theme">
-    <svg class="light" version="2.0">
-      <use href="#01d" />
-    </svg>
-    <svg class="dark" version="2.0">
-      <use href="#01n" />
-    </svg>
-    <svg class="system" version="2.0">
-      <use href="#system" />
-    </svg>
-  </button>
   <button class="iconButton settingsButton" id="settingsButton" aria-label="Open settings">
     <svg version="2.0">
       <use href="#settingsIcon" />
@@ -36,12 +25,14 @@
     <form class="settingsDialog_header">
       <h2>Settings</h2>
       <button type="submit" aria-label="Close settings" formmethod="dialog" formnovalidate
-        class="iconButton closeDialogButton"><svg version="2.0">
+        class="iconButton closeDialogButton">
+        <svg version="2.0">
           <use href="#closeIcon" />
-        </svg></button>
+        </svg>
+      </button>
     </form>
 
-    <form autocomplete="off" id="settingsForm" class="form">
+    <form autocomplete="off" id="settingsForm" class="settingsDialog_form form">
     </form>
   </dialog>
 
@@ -86,17 +77,6 @@
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round"
     stroke-linejoin="round" hidden="true" aria-hidden="true">
     <defs>
-      <symbol viewBox="0 0 24 24" id="system">
-        <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4" />
-        <path d="M12 2v2" />
-        <path d="M12 20v2" />
-        <path d="m4.9 4.9 1.4 1.4" />
-        <path d="m17.7 17.7 1.4 1.4" />
-        <path d="M2 12h2" />
-        <path d="M20 12h2" />
-        <path d="m6.3 17.7-1.4 1.4" />
-        <path d="m19.1 4.9-1.4 1.4" />
-      </symbol>
       <symbol viewBox="0 0 24 24" id="settingsIcon">
         <path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" />
         <path stroke-linecap="round"
