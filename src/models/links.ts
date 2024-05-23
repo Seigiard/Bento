@@ -17,7 +17,7 @@ export async function getLinks(accessToken: string, collectionId: string) {
     }
   );
   const data = await response.json();
-  return data.items.sort(sortItems).map(getSimpleData);
+  return (data?.items ?? []).sort(sortItems).map(getSimpleData);
 }
 
 function sortItems(a, b) {

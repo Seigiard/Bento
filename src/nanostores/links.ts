@@ -1,28 +1,47 @@
-import { onMount, task } from 'nanostores'
+import { batched, task } from 'nanostores'
 import { lsAtom } from '../helpers/lsAtom'
 import { LinkType, TTL_TIME, defaultValue, getLinks } from '../models/links'
-
-export const $lastFetchTimestamp = lsAtom<number>('linksLastFetchTimestamp', 0)
-export const $accessToken = lsAtom<string>('linksAccessToken', '')
-export const $raindropCollectionId = lsAtom<string>('linksCollectionId', '')
+import { $settings } from './settings'
 
 export const $links = lsAtom<LinkType[]>('links', defaultValue)
 
-onMount($links, () => {
-  task(async () => {
-    const accessToken = $accessToken.get()
-    const collectionId = $raindropCollectionId.get()
+export const $lastFetchTimestamp = lsAtom<number>('linksLastFetchTimestamp', 0)
 
-    if (!accessToken || !collectionId) {
+// Stringify the raindropApiKey and raindropCollection to avoid unnecessary fetches
+const $raindropKeys = batched([$settings, $lastFetchTimestamp], ({ raindropApiKey, raindropCollection }, lastFetchTimestamp) => JSON.stringify({
+  raindropApiKey,
+  raindropCollection,
+  lastFetchTimestamp
+}))
+
+$raindropKeys.subscribe((value) => {
+  task(async () => {
+    const {
+      raindropApiKey,
+      raindropCollection,
+      lastFetchTimestamp
+    } = JSON.parse(value)
+
+    if (!raindropApiKey || !raindropCollection) {
       return
     }
 
-    const lastFetchDiffMs = new Date().getTime() - $lastFetchTimestamp.get()
+    const lastFetchDiffMs = new Date().getTime() - lastFetchTimestamp
+    const timeout = TTL_TIME - lastFetchDiffMs < 0 ? 0 : TTL_TIME - lastFetchDiffMs
 
-    if (TTL_TIME < lastFetchDiffMs) {
-      const data = await getLinks(accessToken, collectionId)
-      $links.set(data)
-      $lastFetchTimestamp.set(new Date().getTime())
-    }
+    const timeoutId = setTimeout(async () => {
+      await updateLinksData(raindropApiKey, raindropCollection)
+    }, timeout)
+    return () => clearInterval(timeoutId)
   })
 })
+
+async function updateLinksData(raindropApiKey, raindropCollection) {
+  try {
+    const data = await getLinks(raindropApiKey, raindropCollection)
+    data && $links.set(data)
+  } catch (e) {
+    console.error(e)
+  }
+  $lastFetchTimestamp.set(new Date().getTime())
+}
