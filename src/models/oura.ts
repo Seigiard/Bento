@@ -1,5 +1,4 @@
 import { Interpolation, LineChartData, LineChartOptions } from 'chartist';
-import { OuraClient } from '../helpers/oura';
 
 type RawChartDataType = Record<
   string,
@@ -20,6 +19,7 @@ export type ChartDataType = {
 };
 
 export const TTL_TIME = 1000 * 60 * 60 * 4; // 4 hour
+const baseUrl = "https://cors-oura-handler.vercel.app/api/oura/";
 
 export const defaultValue: ChartDataType = {
   chart: {
@@ -102,70 +102,13 @@ function parseChartData(data: RawChartDataType): ChartDataType {
   };
 }
 
-
-
 async function getOuraData(accessToken: string) {
-  const client = new OuraClient(accessToken);
-
-  const dailyReadinessRawData = await client.getDailyReadiness({
-    start_date: getWeekAgoDate(),
-    end_date: getTodayDate(),
-  });
-
-  const dailySleepRawData = await client.getDailySleep({
-    start_date: getWeekAgoDate(),
-    end_date: getTodayDate(),
-  });
-
-  const dataDailyReadiness = getScoreByData(dailyReadinessRawData, 'readiness');
-
-  const dataDailyHrvBalance = getScoreByData(
-    dailyReadinessRawData,
-    'hrv_balance',
-    (item) => item.contributors.hrv_balance
-  );
-
-  const dataDailySleep = getScoreByData(dailySleepRawData, 'sleep');
-
-  return mergeObjects(dataDailyReadiness, dataDailyHrvBalance, dataDailySleep);
-}
-
-function getTodayDate() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function getWeekAgoDate() {
-  var date = new Date();
-  date.setDate(date.getDate() - 7);
-  return date.toISOString().slice(0, 10);
-}
-
-function getScoreByData(data, key, field = 'score') {
-  function getValueByField(item) {
-    if (typeof field === 'function') {
-      return field(item);
+  console.log(accessToken, baseUrl)
+  const response = await fetch(baseUrl, {
+    headers: {
+      "Authorization": "Bearer " + accessToken
     }
-    return item[field];
-  }
+  });
 
-  return data.data
-    .map((item) => ({
-      day: item.day,
-      value: getValueByField(item),
-    }))
-    .reduce((acc, item) => {
-      acc[item.day] = { [key]: item.value };
-      return acc;
-    }, {});
-}
-
-function mergeObjects(...objs) {
-  const keys = Object.keys(objs[0]);
-
-  return keys.reduce((acc, key) => {
-    acc[key] = objs.reduce((obj, item) => {
-      return { ...obj, ...item[key] };
-    }, {});
-    return acc;
-  }, {});
+  return response.json();
 }
