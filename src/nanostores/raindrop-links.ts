@@ -1,11 +1,11 @@
 import { batched, task } from 'nanostores'
 import { lsAtom } from '../helpers/lsAtom'
-import { LinkType, TTL_TIME, defaultValue, getLinks } from '../models/links'
+import { RaindropLinkType, TTL_TIME, defaultValue, getLinks } from '../models/raindrop-links'
 import { $settings } from './settings'
 
-export const $links = lsAtom<LinkType[]>('links', defaultValue)
+export const $raindropLinks = lsAtom<RaindropLinkType[]>('raindropLinks', defaultValue)
 
-export const $lastFetchTimestamp = lsAtom<number>('linksLastFetchTimestamp', 0)
+export const $lastFetchTimestamp = lsAtom<number>('raindropLinksLastFetchTimestamp', 0)
 
 // Stringify the raindropApiKey and raindropCollection to avoid unnecessary fetches
 const $raindropKeys = batched([$settings, $lastFetchTimestamp], ({ raindropApiKey, raindropCollection }, lastFetchTimestamp) => JSON.stringify({
@@ -39,7 +39,7 @@ $raindropKeys.subscribe((value) => {
 async function updateLinksData(raindropApiKey, raindropCollection) {
   try {
     const data = await getLinks(raindropApiKey, raindropCollection)
-    data && $links.set(data)
+    data && $raindropLinks.set(data)
   } catch (e) {
     console.error(e)
   }

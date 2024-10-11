@@ -1,6 +1,6 @@
-import { LinkType } from "../models/links";
+import { RaindropLinkType } from "../models/raindrop-links";
 
-export function getLinksView(data: readonly LinkType[]) {
+export function getRaindropLinksView(data: readonly RaindropLinkType[]) {
   if (!data.length) {
     return;
   }

@@ -12,7 +12,6 @@ export type SettingsValue = {
   weatherLanguage: string
   raindropApiKey: string
   raindropCollection: string
-  ouraApiKey: string
 }
 
 export const themeList: SettingsValue['theme'][] = ['light', 'dark', 'system'];
@@ -38,9 +37,6 @@ export const defaultSettings: SettingsValue = {
   // Raindrop.io
   raindropApiKey: '',
   raindropCollection: '',
-
-  // Oura
-  ouraApiKey: '',
 }
 
 export const SettingsFormFields: Partial<Record<keyof SettingsValue, {
@@ -98,8 +94,5 @@ export const SettingsFormFields: Partial<Record<keyof SettingsValue, {
   },
   raindropCollection: {
     title: 'Raindrop.io Collection ID',
-  },
-  ouraApiKey: {
-    title: 'Oura API Key',
   }
 }

@@ -4,6 +4,7 @@
   font-weight: 400;
   src: local('Avenir');
 }
+
 @font-face {
   font-family: 'Fixed Avenir';
   unicode-range: U+370-FFFF;
@@ -11,12 +12,14 @@
   font-weight: 400;
   src: local('Avenir Next Regular');
 }
+
 @font-face {
   font-family: 'Fixed Avenir';
   font-style: normal;
   font-weight: 500;
   src: local('Avenir Medium');
 }
+
 @font-face {
   font-family: 'Fixed Avenir';
   unicode-range: U+370-FFFF;
@@ -24,12 +27,14 @@
   font-weight: 500;
   src: local('Avenir Next Medium');
 }
+
 @font-face {
   font-family: 'Fixed Avenir';
   font-style: normal;
   font-weight: 700;
   src: local('Avenir Heavy');
 }
+
 @font-face {
   font-family: 'Fixed Avenir';
   unicode-range: U+370-FFFF;
@@ -55,32 +60,46 @@
 
 html {
   /* Fonts Color */
-  --fg-color: #3a3a3a; /* Foreground color */
-  --fg-color--loading: #aeaeae; /* Loading color */
-  --fg-color-accent: #494949; /* Secondary Foreground color */
+  --fg-color: #3a3a3a;
+  /* Foreground color */
+  --fg-color--loading: #aeaeae;
+  /* Loading color */
+  --fg-color-accent: #494949;
+  /* Secondary Foreground color */
 
   /* Light Colors  */
-  --accent: #57a0d959; /* Hover color */
-  --bg-color: #c4c5cf; /* Background color */
-  --bg-color-panel: #e4e6e6; /* Cards color */
-  --bg-color--loading: #3742510d; /* Loading color */
+  --accent: #57a0d959;
+  /* Hover color */
+  --bg-color: #c4c5cf;
+  /* Background color */
+  --bg-color-panel: #e4e6e6;
+  /* Cards color */
+  --bg-color--loading: #3742510d;
+  /* Loading color */
 
   /* Image background  */
-  --imgbg: url(/assets/background.svg); /* Image URL */
+  --imgbg: url(/assets/background.svg);
+  /* Image URL */
   --imgcol: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
 }
 
 @media (prefers-color-scheme: dark) {
   html {
     /* Fonts Color */
-    --fg-color: #d8dee9; /* Foreground color */
-    --fg-color--loading: #374251; /* Loading color */
+    --fg-color: #d8dee9;
+    /* Foreground color */
+    --fg-color--loading: #374251;
+    /* Loading color */
 
     /* Dark Colors  */
-    --accent: #1c9cff26; /* Hover color */
-    --bg-color: #19171a; /* Background color */
-    --bg-color-panel: #201e21; /* Cards color */
-    --bg-color--loading: #37425122; /* Loading color */
+    --accent: #1c9cff26;
+    /* Hover color */
+    --bg-color: #19171a;
+    /* Background color */
+    --bg-color-panel: #201e21;
+    /* Cards color */
+    --bg-color--loading: #37425122;
+    /* Loading color */
 
     /* Image background  */
     --imgcol: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
@@ -110,17 +129,21 @@ body {
 h1 {
   font-size: var(--fz-primary);
 }
+
 h2 {
   font-size: var(--fz-secondary);
 }
+
 h3 {
   font-size: var(--fz-tertiary);
 }
+
 hgroup {
   display: flex;
   flex-direction: column;
   gap: 1vmin;
 }
+
 hgroup p {
   font-size: var(--fz-tertiary);
 }
@@ -130,12 +153,12 @@ hgroup p {
   height: 80vmin;
   margin: 10vmin auto;
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr 2fr;
   gap: 8vmin 6vmin;
   grid-template-areas:
     'time weather'
-    'oura links';
+    'left-panel right-panel';
 }
 
 .time {
@@ -144,10 +167,12 @@ hgroup p {
   align-items: start;
   justify-content: center;
   text-align: center;
+
   h1 {
     line-height: var(--fz-top-header-lineHeight);
     height: var(--fz-top-header-lineHeight);
   }
+
   p {
     margin-top: 1vmin;
   }
@@ -156,11 +181,13 @@ hgroup p {
 .weather {
   grid-area: weather;
 }
-.oura {
-  grid-area: oura;
+
+.left-panel {
+  grid-area: left-panel;
 }
-.links {
-  grid-area: links;
+
+.right-panel {
+  grid-area: right-panel;
 }
 
 .weather {
@@ -168,21 +195,25 @@ hgroup p {
   align-items: start;
   justify-content: center;
   text-align: center;
+
   h2 {
     line-height: var(--fz-top-header-lineHeight);
     height: var(--fz-top-header-lineHeight);
   }
+
   .forecast {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 2vmin;
+
     svg {
       width: 5.5vmin;
       height: 5.5vmin;
       fill: currentColor;
       stroke: none;
     }
+
     span {
       font-weight: bold;
       text-wrap: nowrap;
@@ -198,11 +229,13 @@ hgroup p {
   display: block;
   position: relative;
   padding-bottom: 50%;
-  & > svg {
+
+  &>svg {
     position: absolute;
     inset: 0;
   }
 }
+
 .chart:empty {
   background: var(--bg-color--loading);
   border-radius: 5px;
@@ -215,27 +248,34 @@ hgroup p {
     grid-template-rows: repeat(2, auto);
     grid-auto-flow: column;
     text-align: center;
-    dt {
-    }
+
+    dt {}
+
     dd {
       font-size: var(--fz-secondary);
       font-weight: 500;
     }
+
     dt:nth-of-type(1) {
       order: 2;
     }
+
     dt:nth-of-type(2) {
       order: 4;
     }
+
     dt:nth-of-type(3) {
       order: 6;
     }
+
     dd:nth-of-type(1) {
       order: 1;
     }
+
     dd:nth-of-type(2) {
       order: 3;
     }
+
     dd:nth-of-type(3) {
       order: 4;
     }
@@ -248,6 +288,7 @@ hgroup p {
     margin-bottom: 2vmin;
     display: flex;
     font-weight: normal;
+
     &:after,
     &:before {
       content: '';
@@ -255,13 +296,16 @@ hgroup p {
       border-bottom: 0.3vmin solid var(--bg-color-panel);
       transform: translateY(-0.45em);
     }
+
     &:after {
       margin-left: 1vmin;
     }
+
     &:before {
       margin-right: 1vmin;
     }
   }
+
   &.stats__hovered {
     h3 {
       visibility: visible;
@@ -269,18 +313,22 @@ hgroup p {
   }
 }
 
-.links.loading {
+.loading {
   background: var(--bg-color--loading);
   border-radius: 5px;
+
   nav {
     display: none;
   }
 }
-.links nav {
+
+
+nav {
   background-color: var(--bg-color-panel);
   box-shadow: 0 5px 7px rgba(0, 0, 0, 0.35);
   border-radius: 5px;
   padding: 1vmin 1vmin;
+
   menu {
     list-style: none;
     margin: 0;
@@ -290,6 +338,7 @@ hgroup p {
     justify-content: center;
     flex-direction: column;
   }
+
   menu a {
     display: block;
     text-decoration: none;
@@ -299,6 +348,7 @@ hgroup p {
     border-radius: 5px;
     text-align: left;
   }
+
   menu a:hover,
   menu a:focus-visible {
     background-color: var(--accent);
@@ -314,9 +364,11 @@ hgroup p {
   background: transparent;
   transition: transform 0.2s ease-in-out;
 }
+
 .iconButton:hover {
   transform: scale(1.1);
 }
+
 .iconButton:focus-visible {
   background: var(--accent);
 }
@@ -347,6 +399,7 @@ hgroup p {
   color: var(--fg-color);
   font-size: 1.15rem;
 }
+
 .settingsDialog[open] {
   display: flex;
   flex-direction: column;
@@ -360,6 +413,7 @@ hgroup p {
   flex: 0 0 auto;
   padding: 5vmin 5vmin 0;
 }
+
 .settingsDialog_form {
   flex: 1 1 auto;
   overflow: auto;
@@ -370,11 +424,13 @@ hgroup p {
   position: static;
   stroke: currentColor;
 }
+
 .closeDialogButton svg {
   width: 2rem;
   height: 2rem;
   stroke: var(--fg-color);
 }
+
 .closeDialogButton:hover {
   background-color: var(--accent);
 }
@@ -384,6 +440,7 @@ hgroup p {
   flex-direction: column;
   gap: 2rem;
 }
+
 .form-item {
   display: flex;
   flex-direction: row;
@@ -391,17 +448,20 @@ hgroup p {
   gap: 2rem;
   max-width: 40rem;
 }
+
 .form-label {
   flex: 1 1 30%;
   text-align: right;
   max-width: 15rem;
 }
+
 .form-value {
   flex: 1 1 70%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
+
 .form-value p {
   font-size: 0.825em;
   opacity: 0.5;
@@ -416,6 +476,7 @@ hgroup p {
   border-radius: 0.2rem;
   flex: 1;
 }
+
 .form-item input:focus-within,
 .form-item input:focus,
 .form-item select:focus-within,

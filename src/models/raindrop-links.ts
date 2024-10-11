@@ -1,11 +1,11 @@
-export type LinkType = {
+export type RaindropLinkType = {
   title: string;
   link: string;
 };
 
 export const TTL_TIME = 1000 * 60 * 60 * 6 // 6 hours
 
-export const defaultValue: LinkType[] = [];
+export const defaultValue: RaindropLinkType[] = []];
 
 export async function getLinks(accessToken: string, collectionId: string) {
   const response = await fetch(
