@@ -4,13 +4,13 @@
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 /*
   2. Remove default margin
 */
 * {
-	margin: 0;
+  margin: 0;
 }
 
 /*
@@ -20,8 +20,8 @@
 */
 
 body {
-	line-height: 1.1;
-	-webkit-font-smoothing: antialiased;
+  line-height: 1.1;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Set shorter line heights on headings and interactive elements */
@@ -31,14 +31,14 @@ h3,
 button,
 input,
 label {
-	line-height: 1.1;
+  line-height: 1.1;
 }
 
 /* Balance text wrapping on headings */
 h1,
 h2,
 h3 {
-	text-wrap: balance;
+  text-wrap: balance;
 }
 /*
   Avoid text overflows
@@ -50,7 +50,7 @@ h3,
 h4,
 h5,
 h6 {
-	overflow-wrap: break-word;
+  overflow-wrap: break-word;
 }
 /*
   5. Improve media defaults
@@ -60,8 +60,8 @@ picture,
 video,
 canvas,
 svg {
-	display: block;
-	max-width: 100%;
+  display: block;
+  max-width: 100%;
 }
 /*
   6. Remove built-in form typography styles
@@ -70,15 +70,15 @@ input,
 button,
 textarea,
 select {
-	font: inherit;
+  font: inherit;
 }
 
 /* Make sure textareas without a rows attribute are not tiny */
 textarea:not([rows]) {
-	min-height: 10em;
+  min-height: 10em;
 }
 
 /* Anything that has been anchored to should have extra scroll margin */
 :target {
-	scroll-margin-block: 5ex;
+  scroll-margin-block: 5ex;
 }
