@@ -7,57 +7,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel=" shortcut icon" type="image/png" href="/assets/favicon.svg" />
   <script type="module" src="./app.ts"></script>
-  <link rel="stylesheet" href="./reset.css" />
   <link rel="stylesheet" href="./layout.css" />
-  <link rel="stylesheet" href="./chart.css" />
+  <link rel="stylesheet" href="./pico.indigo.css" />
 </head>
 
 <body>
-  <button class="iconButton settingsButton" id="settingsButton" aria-label="Open settings">
+  <button class="secondary iconButton settingsButton" id="settingsButton" aria-label="Open settings">
     <svg version="2.0">
       <use href="#settingsIcon" />
     </svg>
   </button>
 
   <dialog class="settingsDialog" id="settings">
-    <form class="settingsDialog_header">
-      <h2>Settings</h2>
-      <button type="submit" aria-label="Close settings" formmethod="dialog" formnovalidate
-        class="iconButton closeDialogButton">
-        <svg version="2.0">
-          <use href="#closeIcon" />
-        </svg>
-      </button>
-    </form>
-
-    <form autocomplete="off" id="settingsForm" class="settingsDialog_form form">
-    </form>
+    <article>
+        <header>
+          <form class="settingsDialog_header">
+            <button type="submit" formmethod="dialog" formnovalidate aria-label="Close settings" rel="prev"></button>
+            <strong>Settings</strong>
+          </form>
+        </header>
+      <form autocomplete="off" id="settingsForm" class="settingsDialog_form form">
+      </form>
+    </article>
   </dialog>
 
-  <div class="wrapper">
-    <div class="time">
-      <hgroup>
-        <h1 id="time" class="loading">--:--</h1>
-        <p id="greetings" class="loading"></p>
-      </hgroup>
-    </div>
-    <div class="weather">
-      <hgroup>
-        <h2 id="date" class="loading">--- --</h2>
-        <p id="forecast" class="forecast loading">
-          <svg version="2.0">
-            <use href="#unknown" />
-          </svg>
-          <span>-- °C</span>
-        </p>
-      </hgroup>
+  <main class="container">
+    <div class="grid">
+      <div class="time">
+        <hgroup>
+          <h1 id="time" class="loading">--:--</h1>
+          <p id="greetings" class="loading"></p>
+        </hgroup>
+      </div>
+      <div class="weather">
+        <hgroup>
+          <h2 id="date" class="loading">--- --</h2>
+          <p id="forecast" class="forecast loading">
+            <svg version="2.0">
+              <use href="#unknown" />
+            </svg>
+            <span>-- °C</span>
+          </p>
+        </hgroup>
+      </div>
     </div>
     <div class="links-panel loading">
       <nav class="raindrop-links">
         <menu id="links"></menu>
       </nav>
     </div>
-  </div>
+  </>
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round"
     stroke-linejoin="round" hidden="true" aria-hidden="true">
     <defs>

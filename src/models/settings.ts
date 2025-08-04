@@ -11,7 +11,6 @@ export type SettingsValue = {
   weatherDefaultLongitude: string;
   weatherLanguage: string;
   raindropApiKey: string;
-  raindropCollection: string;
 };
 
 export const themeList: SettingsValue['theme'][] = ['light', 'dark', 'system'];
@@ -36,7 +35,6 @@ export const defaultSettings: SettingsValue = {
 
   // Raindrop.io
   raindropApiKey: '',
-  raindropCollection: '',
 };
 
 export const SettingsFormFields: Partial<
@@ -97,8 +95,6 @@ export const SettingsFormFields: Partial<
   },
   raindropApiKey: {
     title: 'Raindrop.io API Key',
-  },
-  raindropCollection: {
-    title: 'Raindrop.io Collection ID',
+    description: 'Get your API key from Raindrop.io settings. All collections will be loaded automatically.',
   },
 };

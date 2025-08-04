@@ -2,15 +2,24 @@ import { batched, task } from 'nanostores';
 import { lsAtom } from '../helpers/lsAtom';
 import {
   RaindropLinkType,
+  RaindropCollectionTree,
   TTL_TIME,
   defaultValue,
-  getLinks,
+  getCollectionTree,
+  flattenTreeToLinks,
 } from '../models/raindrop-links';
 import { $settings } from './settings';
 
+// Хранилище для древовидной структуры коллекций
+export const $raindropCollectionTree = lsAtom<RaindropCollectionTree[]>(
+  'raindropCollectionTree',
+  defaultValue,
+);
+
+// Хранилище для плоского списка ссылок (для обратной совместимости)
 export const $raindropLinks = lsAtom<RaindropLinkType[]>(
   'raindropLinks',
-  defaultValue,
+  [],
 );
 
 export const $lastFetchTimestamp = lsAtom<number>(
@@ -18,23 +27,21 @@ export const $lastFetchTimestamp = lsAtom<number>(
   0,
 );
 
-// Stringify the raindropApiKey and raindropCollection to avoid unnecessary fetches
+// Stringify the raindropApiKey to avoid unnecessary fetches (убираем raindropCollection, так как теперь получаем все коллекции)
 const $raindropKeys = batched(
   [$settings, $lastFetchTimestamp],
-  ({ raindropApiKey, raindropCollection }, lastFetchTimestamp) =>
+  ({ raindropApiKey }, lastFetchTimestamp) =>
     JSON.stringify({
       raindropApiKey,
-      raindropCollection,
       lastFetchTimestamp,
     }),
 );
 
 $raindropKeys.subscribe((value) => {
   task(async () => {
-    const { raindropApiKey, raindropCollection, lastFetchTimestamp } =
-      JSON.parse(value);
+    const { raindropApiKey, lastFetchTimestamp } = JSON.parse(value);
 
-    if (!raindropApiKey || !raindropCollection) {
+    if (!raindropApiKey) {
       return;
     }
 
@@ -43,18 +50,29 @@ $raindropKeys.subscribe((value) => {
       TTL_TIME - lastFetchDiffMs < 0 ? 0 : TTL_TIME - lastFetchDiffMs;
 
     const timeoutId = setTimeout(async () => {
-      await updateLinksData(raindropApiKey, raindropCollection);
+      await updateCollectionTreeData(raindropApiKey);
     }, timeout);
     return () => clearInterval(timeoutId);
   });
 });
 
-async function updateLinksData(raindropApiKey, raindropCollection) {
+async function updateCollectionTreeData(raindropApiKey: string) {
   try {
-    const data = await getLinks(raindropApiKey, raindropCollection);
-    data && $raindropLinks.set(data);
+    console.log('🔄 Обновляем данные Raindrop.io...');
+    const collectionTree = await getCollectionTree(raindropApiKey);
+    
+    if (collectionTree && collectionTree.length > 0) {
+      // Сохраняем древовидную структуру
+      $raindropCollectionTree.set(collectionTree);
+      
+      // Создаем плоский список для обратной совместимости
+      const flatLinks = flattenTreeToLinks(collectionTree);
+      $raindropLinks.set(flatLinks);
+      
+      console.log(`✅ Загружено ${collectionTree.length} коллекций с ${flatLinks.length} ссылками`);
+    }
   } catch (e) {
-    console.error(e);
+    console.error('❌ Ошибка при загрузке данных Raindrop.io:', e);
   }
   $lastFetchTimestamp.set(new Date().getTime());
 }
