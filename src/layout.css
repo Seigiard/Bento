@@ -163,7 +163,7 @@ hgroup p {
   gap: 8vmin 6vmin;
   grid-template-areas:
     "time weather"
-    "left-panel right-panel";
+    "links-panel links-panel";
 }
 
 .time {
@@ -187,12 +187,8 @@ hgroup p {
   grid-area: weather;
 }
 
-.left-panel {
-  grid-area: left-panel;
-}
-
-.right-panel {
-  grid-area: right-panel;
+.links-panel {
+  grid-area: links-panel;
 }
 
 .weather {

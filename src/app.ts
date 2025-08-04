@@ -13,9 +13,6 @@ import { getRaindropLinksView } from './views/raindrop-links';
 import { getSettingsForm } from './views/settings';
 
 import './controller/settings';
-import { initWidget as initLocalLinksWidget } from './widgets/local-links';
-
-initLocalLinksWidget('#local-links');
 
 $date.subscribe((date) => {
   renderText('#date', date);
@@ -48,7 +45,7 @@ $forecast.subscribe((forecast) => {
 $raindropLinks.subscribe((links) => {
   const view = getRaindropLinksView(links);
   renderText('#links', view);
-  view && removeLoader('#links');
+  view && removeLoader('.links-panel');
 });
 
 $settings.subscribe((settings) => {
