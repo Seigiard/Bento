@@ -3,15 +3,12 @@ import { removeLoader } from './helpers/loader';
 import { renderText } from './helpers/renderText';
 import { switchTheme } from './models/theme';
 import {
-  $raindropLinks,
   $raindropCollectionTree,
+  $raindropLinks,
 } from './nanostores/raindrop-links';
 import { $settings } from './nanostores/settings';
 import { $time } from './nanostores/time';
-import {
-  getRaindropLinksView,
-  getRaindropCollectionTreeView,
-} from './views/raindrop-links';
+import { getRaindropCollectionTreeView } from './views/raindrop-links';
 import { getSettingsForm } from './views/settings';
 
 import './controller/settings';
@@ -27,13 +24,6 @@ $raindropCollectionTree.subscribe((collections) => {
   renderText('#links', view);
   view && removeLoader('.links-panel');
 });
-
-// Оставляем старую подписку для обратной совместимости (можно удалить в будущем)
-// $raindropLinks.subscribe((links) => {
-//   const view = getRaindropLinksView(links);
-//   renderText('#links', view);
-//   view && removeLoader('.links-panel');
-// });
 
 $settings.subscribe((settings) => {
   const view = getSettingsForm(settings);

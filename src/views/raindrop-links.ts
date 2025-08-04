@@ -1,21 +1,7 @@
 import {
+  type RaindropCollectionTree,
   RaindropLinkType,
-  RaindropCollectionTree,
 } from '../models/raindrop-links';
-
-/**
- * Старая функция для обратной совместимости - выводит плоский список
- */
-export function getRaindropLinksView(data: readonly RaindropLinkType[]) {
-  if (!data.length) {
-    return;
-  }
-  return data
-    .map(({ title, link }) => {
-      return `<li><a href="${link}">${title}</a></li>`;
-    })
-    .join('');
-}
 
 /**
  * Новая функция для вывода вложенного списка коллекций
