@@ -2,7 +2,6 @@ import { batched } from 'nanostores';
 import { removeLoader } from './helpers/loader';
 import { renderText } from './helpers/renderText';
 import { switchTheme } from './models/theme';
-import { $greetings } from './nanostores/greetings';
 import { $raindropLinks, $raindropCollectionTree } from './nanostores/raindrop-links';
 import { $settings } from './nanostores/settings';
 import { $time } from './nanostores/time';
@@ -14,10 +13,6 @@ import './controller/settings';
 $time.subscribe((time) => {
   renderText('#time', time);
   removeLoader('#time');
-});
-$greetings.subscribe((greetings) => {
-  renderText('#greetings', greetings);
-  removeLoader('#greetings');
 });
 
 

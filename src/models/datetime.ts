@@ -1,6 +1,9 @@
-export function getTime(): string {
+export function getDateTime(): string {
   return Intl.DateTimeFormat(navigator.language || 'en-GB', {
-    timeStyle: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   }).format();
 }
 
