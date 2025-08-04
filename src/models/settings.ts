@@ -8,8 +8,6 @@ export const themeList: SettingsValue['theme'][] = ['light', 'dark', 'system'];
 export const defaultSettings: SettingsValue = {
   theme: 'system',
 
-
-
   // Raindrop.io
   raindropApiKey: '',
 };
@@ -30,6 +28,7 @@ export const SettingsFormFields: Partial<
   },
   raindropApiKey: {
     title: 'Raindrop.io API Key',
-    description: 'Get your API key from Raindrop.io settings. All collections will be loaded automatically.',
+    description:
+      'Get your API key from Raindrop.io settings. All collections will be loaded automatically.',
   },
 };

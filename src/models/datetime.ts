@@ -6,4 +6,3 @@ export function getDateTime(): string {
     minute: '2-digit',
   }).format();
 }
-

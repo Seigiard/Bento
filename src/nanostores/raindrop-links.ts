@@ -17,10 +17,7 @@ export const $raindropCollectionTree = lsAtom<RaindropCollectionTree[]>(
 );
 
 // Хранилище для плоского списка ссылок (для обратной совместимости)
-export const $raindropLinks = lsAtom<RaindropLinkType[]>(
-  'raindropLinks',
-  [],
-);
+export const $raindropLinks = lsAtom<RaindropLinkType[]>('raindropLinks', []);
 
 export const $lastFetchTimestamp = lsAtom<number>(
   'raindropLinksLastFetchTimestamp',
@@ -60,16 +57,18 @@ async function updateCollectionTreeData(raindropApiKey: string) {
   try {
     console.log('🔄 Обновляем данные Raindrop.io...');
     const collectionTree = await getCollectionTree(raindropApiKey);
-    
+
     if (collectionTree && collectionTree.length > 0) {
       // Сохраняем древовидную структуру
       $raindropCollectionTree.set(collectionTree);
-      
+
       // Создаем плоский список для обратной совместимости
       const flatLinks = flattenTreeToLinks(collectionTree);
       $raindropLinks.set(flatLinks);
-      
-      console.log(`✅ Загружено ${collectionTree.length} коллекций с ${flatLinks.length} ссылками`);
+
+      console.log(
+        `✅ Загружено ${collectionTree.length} коллекций с ${flatLinks.length} ссылками`,
+      );
     }
   } catch (e) {
     console.error('❌ Ошибка при загрузке данных Raindrop.io:', e);
