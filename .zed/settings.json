@@ -3,10 +3,9 @@
 // For a full list of overridable settings, and general information on folder-specific settings,
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
-  "formatter": {
-    "code_actions": {
-      "source.fixAll.biome": true
-    }
+  "code_actions_on_format": {
+    "source.organizeImports.biome": true,
+    "source.fixAll.biome": true
   },
   "languages": {
     "TypeScript": {
