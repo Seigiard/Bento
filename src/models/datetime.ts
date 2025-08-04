@@ -4,9 +4,3 @@ export function getTime(): string {
   }).format();
 }
 
-export function getDate(): string {
-  return Intl.DateTimeFormat(navigator?.language || 'en-GB', {
-    month: 'short',
-    day: 'numeric',
-  }).format();
-}

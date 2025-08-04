@@ -5,11 +5,6 @@ export type SettingsValue = {
   greetingAfternoon: string;
   greetingEvening: string;
   greetingNight: string;
-  weatherKey: string;
-  weatherUnit: 'F' | 'C';
-  weatherDefaultLatitude: string;
-  weatherDefaultLongitude: string;
-  weatherLanguage: string;
   raindropApiKey: string;
 };
 
@@ -26,12 +21,6 @@ export const defaultSettings: SettingsValue = {
   greetingEvening: 'Good evening',
   greetingNight: 'Go to Sleep',
 
-  // Weather
-  weatherKey: '9e2df1fb216a5477f862b69f1732af0c', // Write here your API Key
-  weatherUnit: 'C', // 'F', 'C'
-  weatherDefaultLatitude: '48.160570069000705',
-  weatherDefaultLongitude: '17.149771267456032',
-  weatherLanguage: 'en', // More languages in https://openweathermap.org/current#multi
 
   // Raindrop.io
   raindropApiKey: '',
@@ -70,28 +59,6 @@ export const SettingsFormFields: Partial<
   greetingNight: {
     title: 'Night Greeting',
     description: 'Greeting for the night hours',
-  },
-  weatherKey: {
-    title: 'OpenWeatherMap API Key',
-    description: 'Get your API key at https://home.openweathermap.org',
-  },
-  weatherUnit: {
-    title: 'Weather Unit',
-    description: 'Temperature unit',
-    values: ['C', 'F'],
-  },
-  weatherLanguage: {
-    title: 'Weather Language',
-    description:
-      'Language for weather data. More languages in https://openweathermap.org/current#multi',
-  },
-  weatherDefaultLatitude: {
-    title: 'Default Latitude',
-    description: 'Default location latitude',
-  },
-  weatherDefaultLongitude: {
-    title: 'Default Longitude',
-    description: 'Default location longitude',
   },
   raindropApiKey: {
     title: 'Raindrop.io API Key',
