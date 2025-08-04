@@ -5,11 +5,11 @@ import { switchTheme } from './models/theme';
 import { $date } from './nanostores/date';
 import { $forecast } from './nanostores/forecast';
 import { $greetings } from './nanostores/greetings';
-import { $raindropLinks } from './nanostores/raindrop-links';
+import { $raindropLinks, $raindropCollectionTree } from './nanostores/raindrop-links';
 import { $settings } from './nanostores/settings';
 import { $time } from './nanostores/time';
 import { getForecastView } from './views/forecast';
-import { getRaindropLinksView } from './views/raindrop-links';
+import { getRaindropLinksView, getRaindropCollectionTreeView } from './views/raindrop-links';
 import { getSettingsForm } from './views/settings';
 
 import './controller/settings';
@@ -42,11 +42,19 @@ $forecast.subscribe((forecast) => {
   }
 });
 
-$raindropLinks.subscribe((links) => {
-  const view = getRaindropLinksView(links);
+// Подписка на изменения древовидной структуры коллекций
+$raindropCollectionTree.subscribe((collections) => {
+  const view = getRaindropCollectionTreeView(collections);
   renderText('#links', view);
   view && removeLoader('.links-panel');
 });
+
+// Оставляем старую подписку для обратной совместимости (можно удалить в будущем)
+// $raindropLinks.subscribe((links) => {
+//   const view = getRaindropLinksView(links);
+//   renderText('#links', view);
+//   view && removeLoader('.links-panel');
+// });
 
 $settings.subscribe((settings) => {
   const view = getSettingsForm(settings);
