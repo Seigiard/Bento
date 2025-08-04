@@ -1,7 +1,12 @@
 import { ForecastDataType } from "../models/forecast";
 
-export function getForecastView({ temperature, unit, description, icon }: ForecastDataType) {
-  return `
+export function getForecastView({
+	temperature,
+	unit,
+	description,
+	icon,
+}: ForecastDataType) {
+	return `
     <svg version="2.0">
       <use href="#${icon}" />
     </svg>

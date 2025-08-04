@@ -1,32 +1,32 @@
 export type RaindropLinkType = {
-  title: string;
-  link: string;
+	title: string;
+	link: string;
 };
 
-export const TTL_TIME = 1000 * 60 * 60 * 6 // 6 hours
+export const TTL_TIME = 1000 * 60 * 60 * 6; // 6 hours
 
-export const defaultValue: RaindropLinkType[] = []];
+export const defaultValue: RaindropLinkType[] = [];
 
 export async function getLinks(accessToken: string, collectionId: string) {
-  const response = await fetch(
-    `https://api.raindrop.io/rest/v1/raindrops/${collectionId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-  const data = await response.json();
-  return (data?.items ?? []).sort(sortItems).map(getSimpleData);
+	const response = await fetch(
+		`https://api.raindrop.io/rest/v1/raindrops/${collectionId}`,
+		{
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		},
+	);
+	const data = await response.json();
+	return (data?.items ?? []).sort(sortItems).map(getSimpleData);
 }
 
 function sortItems(a, b) {
-  return b.sort - a.sort;
+	return b.sort - a.sort;
 }
 
 function getSimpleData(item) {
-  return {
-    title: item.title,
-    link: item.link,
-  };
+	return {
+		title: item.title,
+		link: item.link,
+	};
 }
