@@ -2,10 +2,7 @@ import { batched } from 'nanostores';
 import { removeLoader } from './helpers/loader';
 import { renderText } from './helpers/renderText';
 import { switchTheme } from './models/theme';
-import {
-  $raindropCollectionTree,
-  $raindropLinks,
-} from './nanostores/raindrop-links';
+import { $raindropCollectionTree } from './nanostores/raindrop-links';
 import { $settings } from './nanostores/settings';
 import { $time } from './nanostores/time';
 import { getRaindropCollectionTreeView } from './views/raindrop-links';

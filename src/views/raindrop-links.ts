@@ -1,7 +1,4 @@
-import {
-  type RaindropCollectionTree,
-  RaindropLinkType,
-} from '../models/raindrop-links';
+import type { RaindropCollectionTree } from '../models/raindrop-links';
 
 /**
  * Новая функция для вывода вложенного списка коллекций
