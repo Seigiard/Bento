@@ -2,6 +2,7 @@ import type { RaindropCollection } from '../services/raindrop/raindrop-schemas'
 import { useStore } from '@nanostores/preact'
 import { $openCategories, toggleCategory } from '../nanostores/category-state'
 import { NestedCategories } from './NestedCategories'
+import { CategoryLinks } from './CategoryLinks'
 
 interface CategoryProps {
   collection: RaindropCollection
@@ -22,22 +23,11 @@ export function Category({ collection }: CategoryProps) {
           checked={isOpen}
           onChange={() => toggleCategory(categoryId)}
         />
-        <span class="text-xl flex-shrink-0 w-6 h-6 flex place-content-center">
-          {collection.cover && collection.cover.length > 0 ? (
-       			<img
-        				src={collection.cover[0]}
-        				alt={collection.title}
-        				class="w-full h-full object-cover rounded flex-shrink-0"
-       			/>
-          ) : (
-      		  <>📁</>
-         	)}
-        </span>
         {collection.title}
       </h2>
       {isOpen && (
         <>
-          <span class="pl-6 text-sm opacity-60">{collection.count} items</span>
+          <CategoryLinks categoryId={collection._id} />
           <NestedCategories parentId={collection._id} />
         </>
       )}

@@ -68,15 +68,9 @@ export function NestedCategories({ parentId }: NestedCategoriesProps) {
     )
   }
 
-  if (childCollections.value.length === 0) {
-    return null
-  }
-
   return (
-    <div class="pl-6">
-      <For each={childCollections}>
-        {(collection) => <Category key={collection._id} collection={collection} />}
-      </For>
-    </div>
+    <For each={childCollections}>
+      {(collection) => <Category key={collection._id} collection={collection} />}
+    </For>
   )
 }
