@@ -56,10 +56,6 @@ export function App() {
   return (
     <div class="app">
       <Settings />
-      <div class="flex justify-between items-center mb-4">
-        <h1>Bento - Raindrop Collections</h1>
-      </div>
-
       {!apiKey && (
         <div class="warning">
           Please set your Raindrop API key in settings
