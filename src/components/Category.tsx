@@ -1,6 +1,7 @@
 import type { RaindropCollection } from '../services/raindrop/raindrop-schemas'
 import { useStore } from '@nanostores/preact'
 import { $openCategories, toggleCategory } from '../nanostores/category-state'
+import { NestedCategories } from './NestedCategories'
 
 interface CategoryProps {
   collection: RaindropCollection
@@ -35,7 +36,10 @@ export function Category({ collection }: CategoryProps) {
         {collection.title}
       </h2>
       {isOpen && (
-        <span>{collection.count}</span>
+        <>
+          <span class="pl-6 text-sm opacity-60">{collection.count} items</span>
+          <NestedCategories parentId={collection._id} />
+        </>
       )}
     </>
   )

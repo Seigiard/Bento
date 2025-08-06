@@ -115,12 +115,20 @@ export class RaindropAPI {
   }
 
   /**
-   * Получить дочерние коллекции
+   * Получить дочерние коллекции для указанной родительской коллекции
    */
-  async getChildCollections(): Promise<RaindropCollection[]> {
+  async getChildCollections(parentId?: number): Promise<RaindropCollection[]> {
     try {
       const response = await this.makeRequest('/collections/childrens', CollectionsApiResponseSchema)
-      return response.items.map(transformCollectionToSimple)
+      const allChildren = response.items.map(transformCollectionToSimple)
+      
+      // Если указан parentId, фильтруем только его дочерние коллекции
+      if (parentId !== undefined) {
+        return allChildren.filter(col => col.parent?.$id === parentId)
+      }
+      
+      // Иначе возвращаем все дочерние коллекции
+      return allChildren
     }
     catch (error) {
       console.error('Error fetching child collections:', error)
