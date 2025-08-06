@@ -28,7 +28,7 @@ export function Settings() {
   return (
     <>
       <button
-        class="btn btn-circle"
+        class="btn btn-circle absolute bottom-4 right-4"
         onClick={openModal}
         aria-label="Open settings"
       >
