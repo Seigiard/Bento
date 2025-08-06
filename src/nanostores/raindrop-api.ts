@@ -1,9 +1,9 @@
-import { signal } from '@preact/signals'
+import { atom } from 'nanostores'
 import { CachedRaindropAPI } from '../services/raindrop/cached-raindrop-api'
 import { RaindropAPI } from '../services/raindrop/raindrop-api'
-import { $settings } from '../nanostores/settings'
+import { $settings } from './settings'
 
-export const raindropApi = signal<CachedRaindropAPI | null>(null)
+export const $raindropApi = atom<CachedRaindropAPI | null>(null)
 
 // Initialize API when settings change
 $settings.subscribe((settings) => {
@@ -11,8 +11,8 @@ $settings.subscribe((settings) => {
   
   if (key) {
     const api = new RaindropAPI(key)
-    raindropApi.value = new CachedRaindropAPI(api)
+    $raindropApi.set(new CachedRaindropAPI(api))
   } else {
-    raindropApi.value = null
+    $raindropApi.set(null)
   }
 })

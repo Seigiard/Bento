@@ -1,19 +1,19 @@
 import type { RaindropCollection } from './services/raindrop/raindrop-schemas'
-import { signal, effect } from '@preact/signals'
+import { signal } from '@preact/signals'
 import { For } from "@preact/signals/utils";
 import { $settings } from './nanostores/settings'
 import { Settings } from './components/Settings'
 import { Category } from './components/Category'
 import { useStore } from '@nanostores/preact'
-import { raindropApi } from './signals/raindrop-api'
+import { $raindropApi } from './nanostores/raindrop-api'
 
 const rootCollections = signal<RaindropCollection[]>([])
 const isLoading = signal(false)
 const error = signal<string | null>(null)
 
 // Load root collections when API is initialized
-effect(() => {
-  if (raindropApi.value) {
+$raindropApi.subscribe((api) => {
+  if (api) {
     loadRootCollections()
   } else {
     rootCollections.value = []
@@ -21,14 +21,15 @@ effect(() => {
 })
 
 async function loadRootCollections() {
-  if (!raindropApi.value)
+  const api = $raindropApi.get()
+  if (!api)
     return
 
   isLoading.value = true
   error.value = null
 
   try {
-    const collections = await raindropApi.value.getRootCollections()
+    const collections = await api.getRootCollections()
     rootCollections.value = collections
   }
   catch (err) {
