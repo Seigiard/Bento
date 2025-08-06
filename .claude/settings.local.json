@@ -4,5 +4,28 @@
       "WebFetch(domain:developer.raindrop.io)"
     ],
     "deny": []
+  },
+  "mcpServers": {
+    "Context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
+    }
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/post-tool-use.js"
+          }
+        ]
+      }
+    ]
   }
 }
