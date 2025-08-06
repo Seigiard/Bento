@@ -1,4 +1,4 @@
-export interface SettingsValue {
+export interface SettingsValue extends Record<string, string | undefined> {
   theme: 'dark' | 'light' | 'system'
   raindropApiKey: string
 }
