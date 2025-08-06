@@ -1,16 +1,16 @@
-import { SettingsFormFields } from '../models/settings';
+import { SettingsFormFields } from '../models/settings'
 
 export function getSettingsForm(settings) {
   return Object.keys(SettingsFormFields)
     .map((key) => {
-      const field = SettingsFormFields[key];
+      const field = SettingsFormFields[key]
 
       const input = field.values
         ? `
       <select id="${key}" name="${key}">
         ${field.values
           .map(
-            (value) => `
+            value => `
           <option value="${value}" ${settings[key] === value ? 'selected' : ''}>
             ${value}
           </option>
@@ -18,7 +18,7 @@ export function getSettingsForm(settings) {
           )
           .join('')}
       </select>`
-        : `<input type="text" id = "${key}" name = "${key}" value = "${settings[key]}" />`;
+        : `<input type="text" id = "${key}" name = "${key}" value = "${settings[key]}" />`
 
       return `
       <div class="form-item">
@@ -30,7 +30,7 @@ export function getSettingsForm(settings) {
           ${field.description ? `<p>${field.description}</p>` : ''}
         </div>
       </div>
-      `;
+      `
     })
-    .join('');
+    .join('')
 }

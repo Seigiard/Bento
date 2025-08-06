@@ -1,4 +1,4 @@
-import type { SizeLimitConfig } from 'size-limit';
+import type { SizeLimitConfig } from 'size-limit'
 
 module.exports = [
   {
@@ -6,4 +6,4 @@ module.exports = [
     path: ['dist/**/*.*'],
     brotli: true,
   },
-] as SizeLimitConfig;
+] as SizeLimitConfig

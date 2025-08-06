@@ -1,15 +1,15 @@
 export function getElement<T extends Element>(selector: string) {
-  const document = globalThis?.document;
+  const document = globalThis?.document
 
   if (!document) {
-    return;
+    return
   }
 
-  const el = document.querySelector(selector);
+  const el = document.querySelector(selector)
 
   if (!el) {
-    return;
+    return
   }
 
-  return el as T;
+  return el as T
 }

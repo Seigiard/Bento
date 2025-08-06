@@ -1,6 +1,6 @@
-export type LinkType = {
-  title: string;
-  link: string;
-};
+export interface LinkType {
+  title: string
+  link: string
+}
 
-export const defaultValue: LinkType[] = [];
+export const defaultValue: LinkType[] = []

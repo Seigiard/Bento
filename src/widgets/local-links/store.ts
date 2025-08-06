@@ -1,4 +1,5 @@
-import { lsAtom } from '../../helpers/lsAtom';
-import { defaultValue, type LinkType } from './models';
+import type { LinkType } from './models'
+import { lsAtom } from '../../helpers/lsAtom'
+import { defaultValue } from './models'
 
-export const $localLinks = lsAtom<LinkType[]>('localLinks', defaultValue);
+export const $localLinks = lsAtom<LinkType[]>('localLinks', defaultValue)
