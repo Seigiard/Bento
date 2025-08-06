@@ -1,4 +1,3 @@
-import { browser } from '$app/environment'
 import { CachedRaindropAPI } from './cached-raindrop-api.js'
 import { RaindropAPI } from './raindrop-api.js'
 
@@ -22,9 +21,4 @@ export function getCachedRaindropAPI(): CachedRaindropAPI {
     cachedRaindropInstance = new CachedRaindropAPI(api)
   }
   return cachedRaindropInstance
-}
-
-// Проверка доступности API (только в браузере)
-export function isRaindropAvailable(): boolean {
-  return browser && !!API_KEY && API_KEY !== 'your_raindrop_api_key_here'
 }

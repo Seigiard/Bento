@@ -22,7 +22,7 @@ export async function getCollectionTree(
     console.warn('No Raindrop.io access token provided')
     return []
   }
-  console.log(123)
+
   try {
     const api = new RaindropAPI(accessToken)
     const tree = await api.fetchAndPrintFullStructure()
