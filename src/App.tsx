@@ -1,10 +1,10 @@
 import type { RaindropCollection } from './services/raindrop/raindrop-schemas'
 import { signal } from '@preact/signals'
-import { For } from "@preact/signals/utils";
 import { $settings } from './nanostores/settings'
 import { CachedRaindropAPI } from './services/raindrop/cached-raindrop-api'
 import { RaindropAPI } from './services/raindrop/raindrop-api'
 import { Settings } from './components/Settings'
+import { Category } from './components/Category'
 import { useStore } from '@nanostores/preact'
 
 const raindropApi = signal<CachedRaindropAPI | null>(null)
@@ -52,41 +52,34 @@ export function App() {
   return (
     <div class="app">
       <Settings />
-      {!raindropApiKey && (
-        <div class="warning">
-          Please set your Raindrop API key in settings
-        </div>
-      )}
+      <main class='p-6 w-dvw h-dvh gap-8 overflow-x-scroll [column-count:auto] [column-width:clamp(20rem,25vw,23rem)] [column-fill:auto]'>
+        {!raindropApiKey && (
+          <div class="warning">
+            Please set your Raindrop API key in settings
+          </div>
+        )}
 
-      {isLoading.value && (
-        <div class="loading">Loading collections...</div>
-      )}
+        {isLoading.value && (
+          <div class="loading">Loading collections...</div>
+        )}
 
-      {error.value && (
-        <div class="error">
-          Error:
-          {' '}
-          {error.value}
-          <button onClick={loadRootCollections}>Retry</button>
-        </div>
-      )}
+        {error.value && (
+          <div class="error">
+            Error:
+            {' '}
+            {error.value}
+            <button onClick={loadRootCollections}>Retry</button>
+          </div>
+        )}
 
-      {rootCollections.value.length > 0 && (
-        <div class="collections-grid">
-          <For each={rootCollections} fallback={<p>No items</p>}>
-            {(collection) => (
-              <div key={collection._id} class="collection-block">
-                <h3>{collection.title}</h3>
-                <p>
-                  {collection.count}
-                  {' '}
-                  items
-                </p>
-              </div>
-            )}
-          </For>
-        </div>
-      )}
+        {rootCollections.value.length > 0 && (
+          <div class="collections-grid">
+            {rootCollections.value.map((collection) => (
+              <Category key={collection._id} collection={collection} />
+            ))}
+          </div>
+        )}
+      </main>
     </div>
   )
 }
