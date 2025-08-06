@@ -82,7 +82,7 @@ export function Settings() {
             <label class="label" for="raindrop-api-key">{SettingsFormFields.raindropApiKey?.title}</label>
             <input
               id="raindrop-api-key"
-              type="password"
+              type="text"
               placeholder="Enter your Raindrop.io API key"
               class="input input-bordered w-full"
               value={settings.raindropApiKey}
