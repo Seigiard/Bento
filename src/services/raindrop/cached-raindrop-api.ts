@@ -1,6 +1,5 @@
 import type { RaindropAPI } from './raindrop-api.js'
 import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas.js'
-import { browser } from '$app/environment'
 import { db } from './raindrop-db.js'
 
 export class CachedRaindropAPI {
@@ -15,10 +14,6 @@ export class CachedRaindropAPI {
    * Получить корневые коллекции с кэшированием
    */
   async getRootCollections(force = false, ttl?: number): Promise<RaindropCollection[]> {
-    if (!browser) {
-      return this.api.getRootCollections()
-    }
-
     const effectiveTTL = ttl || this.defaultTTL
 
     // Если force=false, пробуем получить из кэша
@@ -59,10 +54,6 @@ export class CachedRaindropAPI {
    * Получить дочерние коллекции с кэшированием
    */
   async getChildCollections(force = false, ttl?: number): Promise<RaindropCollection[]> {
-    if (!browser) {
-      return this.api.getChildCollections()
-    }
-
     const effectiveTTL = ttl || this.defaultTTL
 
     if (!force) {
@@ -94,10 +85,6 @@ export class CachedRaindropAPI {
    * Получить данные пользователя с кэшированием
    */
   async getUser(force = false, ttl?: number): Promise<User | null> {
-    if (!browser) {
-      return this.api.getUser()
-    }
-
     const effectiveTTL = ttl || this.defaultTTL
 
     if (!force) {
@@ -138,10 +125,6 @@ export class CachedRaindropAPI {
     force = false,
     ttl?: number,
   ): Promise<RaindropItem[]> {
-    if (!browser) {
-      return this.api.getRaindrops(collectionId, perpage)
-    }
-
     const effectiveTTL = ttl || this.defaultTTL
 
     if (!force) {
@@ -173,8 +156,6 @@ export class CachedRaindropAPI {
    * Очистить весь кэш
    */
   async clearCache(): Promise<void> {
-    if (!browser)
-      return
     await db.clearAllCache()
   }
 
@@ -182,8 +163,6 @@ export class CachedRaindropAPI {
    * Получить статистику кэша
    */
   async getCacheStats() {
-    if (!browser)
-      return null
     return db.getCacheStats()
   }
 
@@ -191,8 +170,6 @@ export class CachedRaindropAPI {
    * Получить информацию о последней синхронизации
    */
   async getLastSync() {
-    if (!browser)
-      return null
     return db.getLastSuccessfulSync()
   }
 }
