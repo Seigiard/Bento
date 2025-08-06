@@ -1,5 +1,6 @@
 {
   "plugins": {
+    "@tailwindcss/postcss": {},
     "postcss-dark-theme-class": {
       "rootSelector": ["html", "svg", ":root"]
     }
