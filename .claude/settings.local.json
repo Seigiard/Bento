@@ -1,19 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:developer.raindrop.io)"
+      "WebFetch(domain:developer.raindrop.io)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs"
     ],
     "deny": []
-  },
-  "mcpServers": {
-    "Context7": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@upstash/context7-mcp@latest"
-      ]
-    }
   },
   "hooks": {
     "PostToolUse": [
