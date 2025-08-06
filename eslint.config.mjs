@@ -1,8 +1,6 @@
-import fs from 'node:fs'
-import path from 'node:path'
-import process from 'node:process'
 import antfu from '@antfu/eslint-config'
 import tailwind from 'eslint-plugin-tailwindcss'
+
 export default antfu(
   {
     typescript: true,

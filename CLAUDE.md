@@ -80,3 +80,27 @@ npm run clean
 - `src/helpers/*`: Utility functions (DOM manipulation, loading states)
 - `src/controller/settings.ts`: Handles settings dialog interactions
 - `src/service-worker.js`: PWA offline support
+
+### Raindrop Integration Services
+- `src/services/raindrop/raindrop-api.ts`: Base API client for Raindrop.io
+- `src/services/raindrop/cached-raindrop-api.ts`: Caching layer with IndexedDB
+- `src/services/raindrop/raindrop-db.ts`: IndexedDB database schema and operations
+- `src/services/raindrop/raindrop-schemas.ts`: TypeScript types and validation schemas
+- `src/services/raindrop/raindrop-instance.ts`: Singleton API instance management
+
+### IndexedDB Schema
+The project uses Dexie.js for IndexedDB management with the following tables:
+- `collections`: Root collections with caching metadata
+- `childCollections`: Nested collections under root collections
+- `raindrops`: Individual bookmarks with collection association
+- `collectionStates`: Expansion/collapse states for UI persistence
+- `user`: Cached user information
+- `syncMetadata`: Synchronization history and status
+
+### Available Raindrop API Methods
+- `getRootCollections()`: Fetches and caches root-level collections
+- `getChildCollections()`: Fetches and caches child collections
+- `getRaindrops(collectionId)`: Fetches bookmarks for a specific collection
+- `getUser()`: Fetches user information
+- `getCollectionState(collectionId)`: Gets UI expand/collapse state
+- `setCollectionState(collectionId, isExpanded)`: Persists UI state

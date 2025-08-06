@@ -25,8 +25,10 @@
   "dependencies": {
     "@nanostores/persistent": "^1.1.0",
     "@parcel/service-worker": "^2.15.4",
+    "@preact/signals": "^2.2.1",
     "@tailwindcss/postcss": "^4.1.11",
-    "nanostores": "^0.10.3"
+    "nanostores": "^0.10.3",
+    "preact": "^10.27.0"
   },
   "optionalDependencies": {
     "@parcel/watcher-darwin-x64": "^2.5.1"
