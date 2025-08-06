@@ -27,12 +27,6 @@ export interface SyncMetadata {
   error?: string
 }
 
-export interface CollectionState {
-  collectionId: number
-  isExpanded: boolean
-  updatedAt: number
-}
-
 export class RaindropDatabase extends Dexie {
   // Таблицы
   collections!: Table<CachedCollection, number>
@@ -40,7 +34,6 @@ export class RaindropDatabase extends Dexie {
   raindrops!: Table<CachedRaindropItem, number>
   user!: Table<CachedUser, number>
   syncMetadata!: Table<SyncMetadata, string>
-  collectionStates!: Table<CollectionState, number>
 
   constructor() {
     super('RaindropDB')
@@ -61,7 +54,6 @@ export class RaindropDatabase extends Dexie {
       syncMetadata: 'id, lastSync, syncType, status',
 
       // Состояние коллекций (свернуто/развернуто)
-      collectionStates: 'collectionId, isExpanded, updatedAt',
     })
   }
 
@@ -243,27 +235,6 @@ export class RaindropDatabase extends Dexie {
       await this.raindrops.clear()
       await this.user.clear()
     })
-  }
-
-  /**
-   * Получить состояние коллекции (свернуто/развернуто)
-   */
-  async getCollectionState(collectionId: number): Promise<boolean> {
-    const state = await this.collectionStates.get(collectionId)
-    return state?.isExpanded ?? false // По умолчанию свернуто
-  }
-
-  /**
-   * Сохранить состояние коллекции
-   */
-  async setCollectionState(collectionId: number, isExpanded: boolean): Promise<void> {
-    const state: CollectionState = {
-      collectionId,
-      isExpanded,
-      updatedAt: Date.now(),
-    }
-
-    await this.collectionStates.put(state)
   }
 
   /**

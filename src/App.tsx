@@ -1,5 +1,6 @@
 import type { RaindropCollection } from './services/raindrop/raindrop-schemas'
 import { signal } from '@preact/signals'
+import { For } from "@preact/signals/utils";
 import { $settings } from './nanostores/settings'
 import { CachedRaindropAPI } from './services/raindrop/cached-raindrop-api'
 import { RaindropAPI } from './services/raindrop/raindrop-api'
@@ -72,13 +73,9 @@ export function App() {
           </div>
         )}
 
-        {rootCollections.value.length > 0 && (
-          <div class="collections-grid">
-            {rootCollections.value.map((collection) => (
-              <Category key={collection._id} collection={collection} />
-            ))}
-          </div>
-        )}
+        <For each={rootCollections}>
+          {(collection, index) =>  <Category key={collection._id} collection={collection} />}
+        </For>
       </main>
     </div>
   )
