@@ -22,7 +22,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node .claude/hooks/post-tool-use.js"
+            "command": "node .claude/hooks/post-tool-use.mjs"
           }
         ]
       }

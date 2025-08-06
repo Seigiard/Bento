@@ -18,6 +18,9 @@
     "postuninstall": "npm run clean"
   },
   "source": "src/index.html",
+  "alias": {
+    "preact/jsx-dev-runtime": "preact/jsx-runtime"
+  },
   "staticFiles": {
     "staticPath": "assets",
     "staticOutPath": "assets"

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'preact/hooks'
 import { $settings } from './nanostores/settings'
 import { CachedRaindropAPI } from './services/raindrop/cached-raindrop-api'
 import { RaindropAPI } from './services/raindrop/raindrop-api'
+import { Settings } from './components/Settings'
 
 const raindropApi = signal<CachedRaindropAPI | null>(null)
 const rootCollections = signal<RaindropCollection[]>([])
@@ -54,7 +55,10 @@ export function App() {
 
   return (
     <div class="app">
-      <h1>Bento - Raindrop Collections</h1>
+      <Settings />
+      <div class="flex justify-between items-center mb-4">
+        <h1>Bento - Raindrop Collections</h1>
+      </div>
 
       {!apiKey && (
         <div class="warning">
