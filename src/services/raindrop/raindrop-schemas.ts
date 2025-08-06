@@ -95,25 +95,16 @@ export const RaindropItemSchema = v.object({
   _id: v.number(),
   title: v.string(),
   link: v.string(),
-  excerpt: v.optional(v.string()),
   domain: v.optional(v.string()),
-  created: v.optional(v.string()),
-  lastUpdate: v.optional(v.string()),
-  tags: v.optional(v.array(v.string())),
-  important: v.optional(v.boolean()),
-  note: v.optional(v.string()),
+  sort: v.number(),
 })
 
 // Схема для упрощенной коллекции (для UI)
 export const RaindropCollectionSchema = v.object({
   _id: v.number(),
   title: v.string(),
-  color: v.optional(v.string()),
-  count: v.optional(v.number()),
-  cover: v.optional(v.array(v.string())),
   parent: v.optional(ParentSchema),
   children: v.optional(v.array(v.lazy(() => RaindropCollectionSchema))),
-  raindrops: v.optional(v.array(RaindropItemSchema)),
   sort: v.optional(v.number()),
   created: v.optional(v.string()),
 })
@@ -144,10 +135,7 @@ export const UserGroupSchema = v.object({
 // Схема для пользователя
 export const UserSchema = v.object({
   _id: v.number(),
-  email: v.string(),
-  fullName: v.string(),
   groups: v.array(UserGroupSchema),
-  // Добавим другие поля по мере необходимости
 })
 
 // Схема для ответа API пользователя
@@ -171,34 +159,12 @@ export type UserApiResponse = v.InferOutput<typeof UserApiResponseSchema>
 export function transformCollectionToSimple(
   fullCollection: RaindropCollectionFull,
 ): RaindropCollection {
-  return {
-    _id: fullCollection._id,
-    title: fullCollection.title,
-    color: fullCollection.color,
-    count: fullCollection.count,
-    cover: fullCollection.cover.length > 0 ? fullCollection.cover : undefined,
-    parent: fullCollection.parent || undefined,
-    children: [],
-    raindrops: [],
-    sort: fullCollection.sort,
-    created: fullCollection.created,
-  }
+  return v.safeParse(RaindropCollectionSchema, fullCollection).output
 }
 
 // Функция для преобразования полного raindrop в упрощенный
 export function transformRaindropToSimple(
   fullRaindrop: RaindropItemFull,
 ): RaindropItem {
-  return {
-    _id: fullRaindrop._id,
-    title: fullRaindrop.title,
-    link: fullRaindrop.link,
-    excerpt: fullRaindrop.excerpt || undefined,
-    domain: fullRaindrop.domain || undefined,
-    created: fullRaindrop.created || undefined,
-    lastUpdate: fullRaindrop.lastUpdate || undefined,
-    tags: fullRaindrop.tags.length > 0 ? fullRaindrop.tags : undefined,
-    important: fullRaindrop.important || undefined,
-    note: fullRaindrop.note || undefined,
-  }
+  return v.safeParse(RaindropItemSchema, fullRaindrop).output
 }
