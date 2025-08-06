@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@nanostores/persistent": "^1.1.0",
+    "@nanostores/preact": "^1.0.0",
     "@parcel/service-worker": "^2.15.4",
     "@preact/signals": "^2.2.1",
     "@tailwindcss/postcss": "^4.1.11",
@@ -38,7 +39,6 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.1.0",
-    "@parcel/transformer-vue": "^2.15.4",
     "@size-limit/file": "^11.2.0",
     "daisyui": "^5.0.50",
     "dexie": "^4.0.11",
