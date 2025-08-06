@@ -1,48 +1,23 @@
 import type { RaindropCollection } from './services/raindrop/raindrop-schemas'
-import { signal } from '@preact/signals'
 import { For } from "@preact/signals/utils";
 import { $settings } from './nanostores/settings'
 import { Settings } from './components/Settings'
 import { Category } from './components/Category'
 import { useStore } from '@nanostores/preact'
 import { $raindropApi } from './nanostores/raindrop-api'
-
-const rootCollections = signal<RaindropCollection[]>([])
-const isLoading = signal(false)
-const error = signal<string | null>(null)
-
-// Load root collections when API is initialized
-$raindropApi.subscribe((api) => {
-  if (api) {
-    loadRootCollections()
-  } else {
-    rootCollections.value = []
-  }
-})
-
-async function loadRootCollections() {
-  const api = $raindropApi.get()
-  if (!api)
-    return
-
-  isLoading.value = true
-  error.value = null
-
-  try {
-    const collections = await api.getRootCollections()
-    rootCollections.value = collections
-  }
-  catch (err) {
-    error.value = err instanceof Error ? err.message : 'Failed to load collections'
-    console.error('Failed to load collections:', err)
-  }
-  finally {
-    isLoading.value = false
-  }
-}
+import { useAsyncDataFetch } from './hooks/useAsyncDataFetch'
 
 export function App() {
   const { raindropApiKey } = useStore($settings)
+  const raindropApi = useStore($raindropApi)
+
+  const { data: collections, isLoading, error, refetch } = useAsyncDataFetch<RaindropCollection[]>(
+    async () => {
+      if (!raindropApi) throw new Error('API not available')
+      return await raindropApi.getRootCollections()
+    },
+    { enabled: !!raindropApi }
+  )
 
   return (
     <div class="app">
@@ -54,22 +29,22 @@ export function App() {
           </div>
         )}
 
-        {isLoading.value && (
+        {isLoading && (
           <div class="loading">Loading collections...</div>
         )}
 
-        {error.value && (
+        {error && (
           <div class="error">
             Error:
             {' '}
-            {error.value}
-            <button onClick={loadRootCollections}>Retry</button>
+            {error}
+            <button onClick={refetch}>Retry</button>
           </div>
         )}
 
-        <For each={rootCollections}>
-          {(collection, index) =>  <Category key={collection._id} collection={collection} />}
-        </For>
+        {collections && collections.map((collection) => (
+          <Category key={collection._id} collection={collection} />
+        ))}
       </main>
     </div>
   )

@@ -1,9 +1,8 @@
 import type { RaindropCollection } from '../services/raindrop/raindrop-schemas'
-import { useSignal, useSignalEffect } from '@preact/signals'
-import { For } from "@preact/signals/utils"
 import { Category } from './Category'
 import { useStore } from '@nanostores/preact'
 import { $raindropApi } from '../nanostores/raindrop-api'
+import { useAsyncDataFetch } from '../hooks/useAsyncDataFetch'
 
 interface NestedCategoriesProps {
   parentId: number
@@ -11,39 +10,16 @@ interface NestedCategoriesProps {
 
 export function NestedCategories({ parentId }: NestedCategoriesProps) {
   const raindropApi = useStore($raindropApi)
-  const childCollections = useSignal<RaindropCollection[]>([])
-  const isLoading = useSignal(false)
-  const error = useSignal<string | null>(null)
-  const hasLoaded = useSignal(false)
 
-  useSignalEffect(() => {
-    if (!hasLoaded.value && raindropApi) {
-      loadChildCollections()
-    }
-  })
+  const { data: childCollections, isLoading, error, refetch } = useAsyncDataFetch<RaindropCollection[]>(
+    async () => {
+      if (!raindropApi) throw new Error('API not available')
+      return await raindropApi.getChildCollections(parentId)
+    },
+    { enabled: !!raindropApi }
+  )
 
-  async function loadChildCollections() {
-    if (!raindropApi) return
-
-    isLoading.value = true
-    error.value = null
-
-    try {
-      // Получаем дочерние коллекции для указанного parentId
-      const collections = await raindropApi.getChildCollections(parentId)
-      childCollections.value = collections
-      hasLoaded.value = true
-    }
-    catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to load child collections'
-      console.error('Failed to load child collections:', err)
-    }
-    finally {
-      isLoading.value = false
-    }
-  }
-
-  if (isLoading.value) {
+  if (isLoading) {
     return (
       <div class="pl-6 py-2">
         <span class="loading loading-spinner loading-sm"></span>
@@ -52,14 +28,14 @@ export function NestedCategories({ parentId }: NestedCategoriesProps) {
     )
   }
 
-  if (error.value) {
+  if (error) {
     return (
       <div class="pl-6 py-2">
         <div class="alert alert-error alert-sm">
-          <span>{error.value}</span>
+          <span>{error}</span>
           <button
             class="btn btn-ghost btn-xs"
-            onClick={loadChildCollections}
+            onClick={refetch}
           >
             Retry
           </button>
@@ -68,9 +44,15 @@ export function NestedCategories({ parentId }: NestedCategoriesProps) {
     )
   }
 
+  if (!childCollections || childCollections.length === 0) {
+    return null
+  }
+
   return (
-    <For each={childCollections}>
-      {(collection) => <Category key={collection._id} collection={collection} />}
-    </For>
+    <div class="pl-6">
+      {childCollections.map((collection) => (
+        <Category key={collection._id} collection={collection} />
+      ))}
+    </div>
   )
 }
