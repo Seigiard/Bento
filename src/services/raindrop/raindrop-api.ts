@@ -1,4 +1,4 @@
-import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas.js'
+import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas'
 import * as v from 'valibot'
 import {
   CollectionsApiResponseSchema,
@@ -121,12 +121,12 @@ export class RaindropAPI {
     try {
       const response = await this.makeRequest('/collections/childrens', CollectionsApiResponseSchema)
       const allChildren = response.items.map(transformCollectionToSimple)
-      
+
       // Если указан parentId, фильтруем только его дочерние коллекции
       if (parentId !== undefined) {
         return allChildren.filter(col => col.parent?.$id === parentId)
       }
-      
+
       // Иначе возвращаем все дочерние коллекции
       return allChildren
     }

@@ -1,6 +1,6 @@
-import type { RaindropAPI } from './raindrop-api.js'
-import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas.js'
-import { db } from './raindrop-db.js'
+import type { RaindropAPI } from './raindrop-api'
+import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas'
+import { db } from './raindrop-db'
 
 export class CachedRaindropAPI {
   private api: RaindropAPI
@@ -51,49 +51,61 @@ export class CachedRaindropAPI {
   }
 
   /**
+   * Загрузить и закэшировать дочерние коллекции
+   */
+  private async fetchAndCacheChildCollections(ttl: number): Promise<RaindropCollection[]> {
+    const collections = await this.api.getChildCollections()
+    await db.cacheChildCollections(collections, ttl)
+    await db.recordSync('partial', 'success')
+    return collections
+  }
+
+  /**
    * Получить дочерние коллекции с кэшированием
    * @param parentId - ID родительской коллекции (если не указан, возвращает все дочерние)
    */
   async getChildCollections(parentId?: number, force = false, ttl?: number): Promise<RaindropCollection[]> {
     const effectiveTTL = ttl || this.defaultTTL
+    let nestedCollections: RaindropCollection[] = []
 
+    // Шаг 1: Получаем данные (из кэша или API)
     if (!force) {
       const cached = await db.getCachedChildCollections()
       if (cached) {
-        // Если указан parentId, фильтруем кэшированные данные
-        if (parentId !== undefined) {
-          return cached.filter(col => col.parent?.$id === parentId)
-        }
-        return cached
-      }
-    }
-
-    try {
-      const collections = await this.api.getChildCollections(parentId)
-      // Всегда кэшируем все дочерние коллекции для эффективности
-      if (parentId !== undefined) {
-        const allCollections = await this.api.getChildCollections()
-        await db.cacheChildCollections(allCollections, effectiveTTL)
+        nestedCollections = cached
       } else {
-        await db.cacheChildCollections(collections, effectiveTTL)
-      }
-      await db.recordSync('partial', 'success')
-      return collections
-    }
-    catch (error) {
-      await db.recordSync('partial', 'failed', error instanceof Error ? error.message : 'Unknown error')
-
-      const cached = await db.getCachedChildCollections()
-      if (cached) {
-        console.warn('API request failed, returning cached data:', error)
-        // Фильтруем кэш если нужно
-        if (parentId !== undefined) {
-          return cached.filter(col => col.parent?.$id === parentId)
+        // Кэша нет, нужно загрузить с API
+        try {
+          nestedCollections = await this.fetchAndCacheChildCollections(effectiveTTL)
+        } catch (error) {
+          await db.recordSync('partial', 'failed', error instanceof Error ? error.message : 'Unknown error')
+          throw error
         }
-        return cached
       }
-      throw error
+    } else {
+      // force = true, всегда загружаем с API
+      try {
+        nestedCollections = await this.fetchAndCacheChildCollections(effectiveTTL)
+      } catch (error) {
+        await db.recordSync('partial', 'failed', error instanceof Error ? error.message : 'Unknown error')
+
+        // При ошибке пытаемся вернуть кэш
+        const cached = await db.getCachedChildCollections()
+        if (cached) {
+          console.warn('API request failed, returning cached data:', error)
+          nestedCollections = cached
+        } else {
+          throw error
+        }
+      }
     }
+
+    // Шаг 2: Фильтруем по parentId если нужно
+    if (parentId !== undefined) {
+      return nestedCollections.filter(col => col.parent?.$id === parentId)
+    }
+
+    return nestedCollections
   }
 
   /**

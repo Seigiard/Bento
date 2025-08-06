@@ -1,5 +1,5 @@
 import type { Table } from 'dexie'
-import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas.js'
+import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas'
 import Dexie from 'dexie'
 
 export interface CachedCollection extends RaindropCollection {
