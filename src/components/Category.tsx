@@ -22,7 +22,7 @@ export function Category({ collection }: CategoryProps) {
         onChange={() => toggleCategory(categoryId)}
       />
       <div className="collapse-title font-semibold">{collection.title}</div>
-      <div className="collapse-content min-w-0 min-h-0 grid text-sm overflow-y-scroll">
+      <div className="collapse-content -my-2 px-2 min-w-0 min-h-0 grid text-sm overflow-y-scroll">
         {isOpen && (
           <>
             <NestedCategories parentCollection={collection} />

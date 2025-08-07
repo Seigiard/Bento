@@ -4,6 +4,7 @@ import { Category } from './components/Category'
 import { useStore } from '@nanostores/preact'
 import { $collections } from './nanostores/collections';
 import { $fetcherReady } from './nanoquery/raindrop-fetcher';
+import { CategoryCardSkeleton } from './components/Skeleton';
 
 export function App() {
   return (
@@ -19,7 +20,7 @@ function AppLoader() {
   const { raindropApiKey } = useStore($settings)
 
   if(!fetcherReady) {
-    return <div>Loading...</div>
+    return <CategoryCardSkeleton />
   }
 
   if(!raindropApiKey) {
@@ -36,27 +37,19 @@ function AppLoader() {
 function TheApp() {
   const { loading, data: collections, error } = useStore($collections)
 
-  return (
-    <>
-      {loading && (
-        <div class="loading loading-spinner loading-lg"></div>
-      )}
+  if (!collections?.length && loading) {
+    return <CategoryCardSkeleton />
+  }
 
-      {error && (
-        <div class="alert alert-error">
-          <span>Error loading categories: {error.message}</span>
-          <button
-            class="btn btn-ghost btn-sm"
-            onClick={() => window.location.reload()}
-          >
-            Retry
-          </button>
-        </div>
-      )}
+  if (error) {
+    return (
+      <div class="alert alert-error">
+        Error loading categories: {error.message}
+      </div>
+    )
+  }
 
-      {!loading && !error && collections?.map((collection) => (
-        <Category key={collection._id} collection={collection} />
-      ))}
-    </>
-  )
+  return collections?.map((collection) => (
+    <Category key={collection._id} collection={collection} />
+  ))
 }
