@@ -7,7 +7,7 @@ import { $fetcherReady } from './nanoquery/raindrop-fetcher';
 
 export function App() {
   return (
-    <main class='p-6 w-dvw h-dvh gap-8 overflow-x-scroll [column-count:auto] [column-width:clamp(20rem,25vw,23rem)] [column-fill:auto]'>
+    <main class='p-6 w-dvw bg-base-200 h-dvh gap-8 overflow-x-scroll [column-count:auto] [column-width:clamp(20rem,25vw,23rem)] [column-fill:auto]'>
       <AppLoader />
       <Settings />
     </main>

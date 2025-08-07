@@ -34,7 +34,7 @@ export function CategoryLinks({ categoryId }: CategoryLinksProps) {
   }
 
   return (
-    <ul>
+    <ul className='max-h-full overflow-y-scroll'>
       {raindrops.map((raindrop) => (
         <Link key={raindrop._id} raindrop={raindrop} />
       ))}

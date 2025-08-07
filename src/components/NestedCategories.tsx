@@ -12,10 +12,10 @@ export function NestedCategories({ parentCollection }: NestedCategoriesProps) {
   }
 
   return (
-    <div class="pl-2">
+    <>
       {parentCollection.children.map((collection) => (
         <Category key={collection._id} collection={collection} />
       ))}
-    </div>
+    </>
   )
 }
