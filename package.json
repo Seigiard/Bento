@@ -42,7 +42,6 @@
     "@antfu/eslint-config": "^5.1.0",
     "@size-limit/file": "^11.2.0",
     "daisyui": "^5.0.50",
-    "dexie": "^4.0.11",
     "eslint": "^9.32.0",
     "eslint-plugin-tailwindcss": "^4.0.0-beta.0",
     "file-loader": "^6.2.0",
