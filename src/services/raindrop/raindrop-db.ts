@@ -29,8 +29,6 @@ export interface SyncMetadata {
 
 export class RaindropDatabase extends Dexie {
   // Таблицы
-  collections!: Table<CachedCollection, number>
-  childCollections!: Table<CachedCollection, number>
   raindrops!: Table<CachedRaindropItem, number>
   user!: Table<CachedUser, number>
   syncMetadata!: Table<SyncMetadata, string>
@@ -40,10 +38,6 @@ export class RaindropDatabase extends Dexie {
 
     // Определяем схему базы данных
     this.version(1).stores({
-      // Коллекции (корневые и дочерние в разных таблицах для упрощения)
-      collections: '_id, title, sort, cachedAt, sortOrder',
-      childCollections: '_id, parent.$id, title, sort, cachedAt',
-
       // Raindrops с индексами для поиска по коллекции
       raindrops: '_id, collectionId, title, domain, created, cachedAt, [collectionId+cachedAt]',
 
@@ -52,8 +46,6 @@ export class RaindropDatabase extends Dexie {
 
       // Метаданные синхронизации
       syncMetadata: 'id, lastSync, syncType, status',
-
-      // Состояние коллекций (свернуто/развернуто)
     })
   }
 
@@ -64,70 +56,6 @@ export class RaindropDatabase extends Dexie {
     return Date.now() - cachedAt < ttl
   }
 
-  /**
-   * Получить корневые коллекции
-   */
-  async getCachedRootCollections(): Promise<CachedCollection[] | null> {
-    const collections = await this.collections.orderBy('sortOrder').toArray()
-
-    if (collections.length === 0)
-      return null
-
-    // Проверяем, что все коллекции еще валидны
-    const allValid = collections.every(col => this.isCacheValid(col.cachedAt, col.ttl))
-
-    return allValid ? collections : null
-  }
-
-  /**
-   * Сохранить корневые коллекции
-   */
-  async cacheRootCollections(collections: RaindropCollection[], ttl: number): Promise<void> {
-    const cachedCollections: CachedCollection[] = collections.map((col, index) => ({
-      ...col,
-      cachedAt: Date.now(),
-      ttl,
-      sortOrder: index, // Сохраняем порядок
-    }))
-
-    await this.transaction('rw', this.collections, async () => {
-      // Очищаем старые данные
-      await this.collections.clear()
-      // Добавляем новые
-      await this.collections.bulkAdd(cachedCollections)
-    })
-  }
-
-  /**
-   * Получить дочерние коллекции
-   */
-  async getCachedChildCollections(): Promise<CachedCollection[] | null> {
-    const collections = await this.childCollections.toArray()
-
-    if (collections.length === 0)
-      return null
-
-    const allValid = collections.every(col => this.isCacheValid(col.cachedAt, col.ttl))
-
-    return allValid ? collections : null
-  }
-
-  /**
-   * Сохранить дочерние коллекции
-   */
-  async cacheChildCollections(collections: RaindropCollection[], ttl: number): Promise<void> {
-    const cachedCollections: CachedCollection[] = collections.map((col, index) => ({
-      ...col,
-      cachedAt: Date.now(),
-      ttl,
-      sortOrder: index,
-    }))
-
-    await this.transaction('rw', this.childCollections, async () => {
-      await this.childCollections.clear()
-      await this.childCollections.bulkAdd(cachedCollections)
-    })
-  }
 
   /**
    * Получить raindrops для коллекции
@@ -230,9 +158,7 @@ export class RaindropDatabase extends Dexie {
    * Очистить все кэшированные данные
    */
   async clearAllCache(): Promise<void> {
-    await this.transaction('rw', this.collections, this.childCollections, this.raindrops, this.user, async () => {
-      await this.collections.clear()
-      await this.childCollections.clear()
+    await this.transaction('rw', this.raindrops, this.user, async () => {
       await this.raindrops.clear()
       await this.user.clear()
     })
@@ -242,36 +168,25 @@ export class RaindropDatabase extends Dexie {
    * Получить статистику кэша
    */
   async getCacheStats(): Promise<{
-    collections: number
-    childCollections: number
     raindrops: number
     totalSize: number
     oldestCache: number | null
   }> {
-    const [collectionsCount, childCollectionsCount, raindropsCount] = await Promise.all([
-      this.collections.count(),
-      this.childCollections.count(),
-      this.raindrops.count(),
-    ])
+    const raindropsCount = await this.raindrops.count()
 
     // Находим самую старую запись
-    const oldestDates = await Promise.all([
-      this.collections.orderBy('cachedAt').first(),
-      this.childCollections.orderBy('cachedAt').first(),
-      this.raindrops.orderBy('cachedAt').first(),
-    ])
+    const oldestRaindrop = await this.raindrops.orderBy('cachedAt').first()
+    const oldestUser = await this.user.orderBy('cachedAt').first()
 
     const oldestCache = Math.min(
-      ...oldestDates
+      ...[oldestRaindrop, oldestUser]
         .filter(item => item)
         .map(item => item!.cachedAt),
     )
 
     return {
-      collections: collectionsCount,
-      childCollections: childCollectionsCount,
       raindrops: raindropsCount,
-      totalSize: collectionsCount + childCollectionsCount + raindropsCount,
+      totalSize: raindropsCount,
       oldestCache: isFinite(oldestCache) ? oldestCache : null,
     }
   }
