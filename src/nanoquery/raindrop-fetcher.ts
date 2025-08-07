@@ -1,6 +1,6 @@
 import { Fetcher, nanoquery } from '@nanostores/query';
 import { $settings } from '../nanostores/settings';
-import { RaindropCollection, RaindropCollectionFull, safeParseCollection, User } from '../services/raindrop/raindrop-schemas';
+import { RaindropCollection, safeParseCollection, User } from '../services/raindrop/raindrop-schemas';
 import { batched, ReadableAtom } from 'nanostores';
 
 export const [createRaindropApiFetcherStore, createRaindropApiMutatorStore] = nanoquery({
@@ -15,8 +15,8 @@ export const [createRaindropApiFetcherStore, createRaindropApiMutatorStore] = na
 });
 
 const $fetchedUserData = createRaindropApiFetcherStore<{ user: User }>('/user');
-const $fetchedRootCategories = createRaindropApiFetcherStore<{ items: RaindropCollectionFull[] }>('/collections');
-const $fetchedChildCategories = createRaindropApiFetcherStore<{ items: RaindropCollectionFull[] }>('/collections/childrens');
+const $fetchedRootCategories = createRaindropApiFetcherStore<{ items: RaindropCollection[] }>('/collections');
+const $fetchedChildCategories = createRaindropApiFetcherStore<{ items: RaindropCollection[] }>('/collections/childrens');
 
 export const $userData: ReadableAtom<{ loading: boolean; data?: User }> = batched($fetchedUserData, ({ loading, data }) => ({
   loading,

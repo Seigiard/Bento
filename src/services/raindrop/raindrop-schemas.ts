@@ -12,38 +12,8 @@ const CreatorRefSchema = v.object({
   email: v.string(),
 })
 
-const AccessSchema = v.object({
-  for: v.number(),
-  level: v.number(),
-  root: v.boolean(),
-  draggable: v.boolean(),
-})
-
 const ParentSchema = v.object({
   $id: v.number(),
-})
-
-// Схема для коллекции (полная версия с сервера)
-export const RaindropCollectionFullSchema = v.object({
-  _id: v.number(),
-  title: v.string(),
-  description: v.optional(v.string()),
-  user: UserRefSchema,
-  public: v.boolean(),
-  view: v.string(),
-  count: v.number(),
-  cover: v.array(v.string()),
-  expanded: v.boolean(),
-  creatorRef: v.optional(CreatorRefSchema),
-  lastAction: v.string(),
-  created: v.string(),
-  lastUpdate: v.string(),
-  parent: v.optional(v.nullable(ParentSchema)),
-  sort: v.number(),
-  slug: v.string(),
-  access: AccessSchema,
-  author: v.boolean(),
-  color: v.optional(v.string()),
 })
 
 // Схема для медиа элемента
@@ -99,17 +69,6 @@ export const RaindropItemSchema = v.object({
   sort: v.number(),
 })
 
-
-// Интерфейс для коллекции с детьми
-export interface RaindropCollection {
-  _id: number
-  title: string
-  parent?: { $id: number }
-  sort?: number
-  created?: string
-  children?: RaindropCollection[]
-}
-
 // Базовая схема для упрощенной коллекции (без children)
 const RaindropCollectionBaseSchema = v.object({
   _id: v.number(),
@@ -121,19 +80,9 @@ const RaindropCollectionBaseSchema = v.object({
 
 // Полная схема с children (используется только для валидации)
 export const RaindropCollectionSchema = v.object({
-  _id: v.number(),
-  title: v.string(),
-  parent: v.optional(ParentSchema),
-  sort: v.optional(v.number()),
-  created: v.optional(v.string()),
+  ...RaindropCollectionBaseSchema.entries,
+  parent: v.optional(ParentSchema), // переопределяем parent без nullable
   children: v.optional(v.array(v.any())), // Используем any для children чтобы избежать циклической ссылки
-})
-
-// Схема для ответа API коллекций
-export const CollectionsApiResponseSchema = v.object({
-  result: v.boolean(),
-  items: v.array(RaindropCollectionFullSchema),
-  count: v.optional(v.number()),
 })
 
 // Схема для ответа API raindrops
@@ -165,18 +114,18 @@ export const UserApiResponseSchema = v.object({
 })
 
 // Типы, выведенные из схем
-export type RaindropCollectionFull = v.InferOutput<typeof RaindropCollectionFullSchema>
 export type RaindropItemFull = v.InferOutput<typeof RaindropItemFullSchema>
 export type RaindropItem = v.InferOutput<typeof RaindropItemSchema>
-export type CollectionsApiResponse = v.InferOutput<typeof CollectionsApiResponseSchema>
 export type RaindropsApiResponse = v.InferOutput<typeof RaindropsApiResponseSchema>
 export type UserGroup = v.InferOutput<typeof UserGroupSchema>
+export type RaindropCollection = Omit<v.InferOutput<typeof RaindropCollectionSchema>, 'children'> & {
+  children?: RaindropCollection[]
+}
 export type User = v.InferOutput<typeof UserSchema>
-export type UserApiResponse = v.InferOutput<typeof UserApiResponseSchema>
 
 // Функция для преобразования полной коллекции в упрощенную
 export function safeParseCollection(
-  fullCollection: RaindropCollectionFull,
+  fullCollection: unknown,
 ): RaindropCollection {
   // Валидируем базовые поля (без children чтобы избежать циклических ссылок)
   const result = v.safeParse(RaindropCollectionBaseSchema, fullCollection)

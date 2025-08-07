@@ -1,12 +1,8 @@
 import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas'
 import * as v from 'valibot'
 import {
-  CollectionsApiResponseSchema,
-
   RaindropsApiResponseSchema,
-  safeParseCollection,
   safeParseRaindrop,
-
   UserApiResponseSchema,
 } from './raindrop-schemas.js'
 
