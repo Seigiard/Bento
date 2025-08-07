@@ -1,4 +1,4 @@
-import type { RaindropItemType } from '../services/raindrop/raindrop-schemas'
+import type { RaindropItemType } from '../schemas/raindrop-schemas'
 
 interface LinkProps {
   raindrop: RaindropItemType
@@ -10,10 +10,10 @@ export function Link({ raindrop }: LinkProps) {
       <a
 				href={raindrop.link}
 				rel="noopener noreferrer"
-				class="block p-2 rounded hover:bg-base-200 transition-colors"
+				class="block p-2 group rounded hover:bg-base-200 transition-colors"
 			>
 				<div class="flex-1 min-w-0">
-					<h3 class=" text-gray-900 group-hover:text-blue-600 truncate">
+					<h3 class="text-base group-hover:text-primary truncate">
 						{raindrop.title}
 					</h3>
 					{raindrop.domain && (

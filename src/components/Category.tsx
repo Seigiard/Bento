@@ -1,4 +1,4 @@
-import type { CollectionType } from '../services/raindrop/raindrop-schemas'
+import type { CollectionType } from '../schemas/raindrop-schemas'
 import { useStore } from '@nanostores/preact'
 import { $openCategories, toggleCategory } from '../nanostores/category-state'
 import { NestedCategories } from './NestedCategories'

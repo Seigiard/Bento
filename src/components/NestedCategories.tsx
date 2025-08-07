@@ -1,4 +1,4 @@
-import type { CollectionType } from '../services/raindrop/raindrop-schemas'
+import type { CollectionType } from '../schemas/raindrop-schemas'
 import { Category } from './Category'
 
 interface NestedCategoriesProps {

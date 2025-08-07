@@ -1,6 +1,6 @@
 import { batched } from "nanostores";
 import { $userData, $rootCategories, $childCategories } from "../nanoquery/raindrop-fetcher";
-import { CollectionType, UserType } from "../services/raindrop/raindrop-schemas";
+import { CollectionType, UserType } from '../schemas/raindrop-schemas'
 
 type FetcherResponse<T> = {
   loading: boolean;
