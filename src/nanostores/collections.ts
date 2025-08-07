@@ -1,6 +1,6 @@
 import { batched } from "nanostores";
 import { $userData, $rootCategories, $childCategories } from "../nanoquery/raindrop-fetcher";
-import { RaindropCollection, User } from "../services/raindrop/raindrop-schemas";
+import { CollectionType, UserType } from "../services/raindrop/raindrop-schemas";
 
 type FetcherResponse<T> = {
   loading: boolean;
@@ -9,7 +9,7 @@ type FetcherResponse<T> = {
 };
 
 export const $collections = batched([$userData, $rootCategories, $childCategories],
-  (user, rootCategories, childCategories): FetcherResponse<RaindropCollection[]> => {
+  (user, rootCategories, childCategories): FetcherResponse<CollectionType[]> => {
     const loading = user.loading || rootCategories.loading || childCategories.loading;
 
     // Проверяем ошибки в любой из зависимостей
@@ -62,7 +62,7 @@ export const $collections = batched([$userData, $rootCategories, $childCategorie
  * @param allCategories - все категории (root + child)
  * @returns массив root категорий с вложенными детьми
  */
-function buildHierarchy(allCategories: RaindropCollection[]): RaindropCollection[] {
+function buildHierarchy(allCategories: CollectionType[]): CollectionType[] {
   // Разделяем на root и child категории
   const rootCategories = allCategories.filter(cat => !cat.parent)
   const childCategories = allCategories.filter(cat => cat.parent)
@@ -86,9 +86,9 @@ function buildHierarchy(allCategories: RaindropCollection[]): RaindropCollection
  */
 function buildChildHierarchy(
   parentId: number,
-  allChildCategories: RaindropCollection[],
+  allChildCategories: CollectionType[],
   processedIds: Set<number> = new Set()
-): RaindropCollection[] {
+): CollectionType[] {
   if (processedIds.has(parentId)) {
     return [] // Предотвращаем бесконечную рекурсию
   }
@@ -120,9 +120,9 @@ function buildChildHierarchy(
  * @param user - данные пользователя с группами
  * @returns отсортированный массив коллекций
  */
-function sortCollectionsByUserGroups(collections: RaindropCollection[], user: User): RaindropCollection[] {
+function sortCollectionsByUserGroups(collections: CollectionType[], user: UserType): CollectionType[] {
   const collectionMap = new Map(collections.map(col => [col._id, col]))
-  const sortedCollections: RaindropCollection[] = []
+  const sortedCollections: CollectionType[] = []
 
   // Добавляем коллекции в порядке, определенном пользовательскими группами
   user.groups.forEach((group) => {
@@ -150,7 +150,7 @@ function sortCollectionsByUserGroups(collections: RaindropCollection[], user: Us
  * @param categories - категории с детьми
  * @returns категории с отсортированными детьми на всех уровнях
  */
-function sortAllNestedLevels(categories: RaindropCollection[]): RaindropCollection[] {
+function sortAllNestedLevels(categories: CollectionType[]): CollectionType[] {
   return categories.map(category => {
     if (!category.children) {
       return category
@@ -158,8 +158,8 @@ function sortAllNestedLevels(categories: RaindropCollection[]): RaindropCollecti
 
     // Сортируем детей по полю sort и рекурсивно сортируем их детей
     const sortedChildren = category.children
-      .sort((a: RaindropCollection, b: RaindropCollection) => (a.sort || 0) - (b.sort || 0))
-      .map((child: RaindropCollection) => sortAllNestedLevels([child])[0])
+      .sort((a: CollectionType, b: CollectionType) => (a.sort || 0) - (b.sort || 0))
+      .map((child: CollectionType) => sortAllNestedLevels([child])[0])
 
     return {
       ...category,

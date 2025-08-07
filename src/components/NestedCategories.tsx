@@ -1,8 +1,8 @@
-import type { RaindropCollection } from '../services/raindrop/raindrop-schemas'
+import type { CollectionType } from '../services/raindrop/raindrop-schemas'
 import { Category } from './Category'
 
 interface NestedCategoriesProps {
-  parentCollection: RaindropCollection
+  parentCollection: CollectionType
 }
 
 export function NestedCategories({ parentCollection }: NestedCategoriesProps) {

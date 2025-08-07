@@ -1,6 +1,6 @@
 import { Fetcher, nanoquery } from '@nanostores/query';
 import { $settings } from '../nanostores/settings';
-import { RaindropCollection, RaindropItem, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, User } from '../services/raindrop/raindrop-schemas';
+import { CollectionType, RaindropItemType, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, UserType } from '../services/raindrop/raindrop-schemas';
 
 const [createRaindropApiFetcherStore] = nanoquery({
   fetcher: async (...keys) => {
@@ -25,11 +25,11 @@ const [createRaindropApiFetcherStore] = nanoquery({
   },
 });
 
-export const $userData = createRaindropApiFetcherStore<User>('/user');
-export const $rootCategories = createRaindropApiFetcherStore<RaindropCollection[]>('/collections');
-export const $childCategories = createRaindropApiFetcherStore<RaindropCollection[]>(['/collections/childrens']);
+export const $userData = createRaindropApiFetcherStore<UserType>('/user');
+export const $rootCategories = createRaindropApiFetcherStore<CollectionType[]>('/collections');
+export const $childCategories = createRaindropApiFetcherStore<CollectionType[]>(['/collections/childrens']);
 
-export const createRaindropsStore = (collectionId: RaindropCollection['_id']) => createRaindropApiFetcherStore<RaindropItem[]>(['/raindrops/', collectionId]);
+export const createRaindropsStore = (collectionId: CollectionType['_id']) => createRaindropApiFetcherStore<RaindropItemType[]>(['/raindrops/', collectionId]);
 
 function safeParseData(key: string, data: unknown) {
   switch (true) {

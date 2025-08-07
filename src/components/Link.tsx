@@ -1,7 +1,7 @@
-import type { RaindropItem } from '../services/raindrop/raindrop-schemas'
+import type { RaindropItemType } from '../services/raindrop/raindrop-schemas'
 
 interface LinkProps {
-  raindrop: RaindropItem
+  raindrop: RaindropItemType
 }
 
 export function Link({ raindrop }: LinkProps) {

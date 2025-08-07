@@ -1,11 +1,11 @@
-import type { RaindropCollection } from '../services/raindrop/raindrop-schemas'
+import type { CollectionType } from '../services/raindrop/raindrop-schemas'
 import { useStore } from '@nanostores/preact'
 import { $openCategories, toggleCategory } from '../nanostores/category-state'
 import { NestedCategories } from './NestedCategories'
 import { CategoryLinks } from './CategoryLinks'
 
 interface CategoryProps {
-  collection: RaindropCollection
+  collection: CollectionType
 }
 
 export function Category({ collection }: CategoryProps) {
