@@ -1,10 +1,20 @@
 import { batched } from "nanostores";
-import { $userData, $rootCategories, $childCategories } from "../nanoquery/raindrop-fetcher";
+import { $userData, $rootCategories, $childCategories, FetcherResponse } from "../nanoquery/raindrop-fetcher";
 import { RaindropCollection, safeParseCollection, User } from "../services/raindrop/raindrop-schemas";
 
 export const $collections = batched([$userData, $rootCategories, $childCategories],
-  (user, rootCategories, childCategories): { loading: boolean, data: RaindropCollection[] } => {
+  (user, rootCategories, childCategories): FetcherResponse<RaindropCollection[]> => {
     const loading = user.loading || rootCategories.loading || childCategories.loading;
+
+    // Проверяем ошибки в любой из зависимостей
+    const error = user.error || rootCategories.error || childCategories.error;
+    if (error) {
+      return {
+        loading,
+        data: [],
+        error
+      }
+    }
 
     if (loading || !user.data || !rootCategories.data || !childCategories.data) {
       return {
@@ -13,21 +23,30 @@ export const $collections = batched([$userData, $rootCategories, $childCategorie
       }
     }
 
-    // Этап 1: Собираем общий массив всех категорий
-    const allCategories = [...rootCategories.data, ...childCategories.data]
+    try {
+      // Этап 1: Собираем общий массив всех категорий
+      const allCategories = [...rootCategories.data, ...childCategories.data]
 
-    // Этап 2: Строим иерархическую структуру
-    const hierarchicalCategories = buildHierarchy(allCategories)
+      // Этап 2: Строим иерархическую структуру
+      const hierarchicalCategories = buildHierarchy(allCategories)
 
-    // Этап 3: Сортируем первый уровень по пользовательским группам
-    const sortedByUserGroups = sortCollectionsByUserGroups(hierarchicalCategories, user.data)
+      // Этап 3: Сортируем первый уровень по пользовательским группам
+      const sortedByUserGroups = sortCollectionsByUserGroups(hierarchicalCategories, user.data)
 
-    // Этап 4: Сортируем все вложенные уровни по полю sort
-    const finallySorted = sortAllNestedLevels(sortedByUserGroups)
+      // Этап 4: Сортируем все вложенные уровни по полю sort
+      const finallySorted = sortAllNestedLevels(sortedByUserGroups)
 
-    return {
-      loading,
-      data: finallySorted
+      return {
+        loading,
+        data: finallySorted
+      }
+    } catch (buildError) {
+      console.error('Error building category hierarchy:', buildError)
+      return {
+        loading,
+        data: [],
+        error: buildError instanceof Error ? buildError : new Error('Failed to build category hierarchy')
+      }
     }
   }
 )
