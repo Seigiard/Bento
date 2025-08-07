@@ -9,7 +9,9 @@ const cacheKey = 'raindropFetcher-';
 class Cache extends Map {
   set(key: string, value: any, persist = true) {
     const res = super.set(key, value);
-    persist && set(`${cacheKey}${key}`, value);
+    if (persist) {
+      set(`${cacheKey}${key}`, value);
+    }
     return res;
   }
 }
@@ -69,6 +71,8 @@ function safeParseData(key: string, data: unknown) {
       return safeParseCollectionResponse(data)
     case key.startsWith('/raindrops'):
       return safeParseRaindropResponse(data)
+        .map((item: RaindropItemType) => ({ ...item, sort: item.sort || 0 }))
+        .sort((a, b) => b.sort - a.sort)
     default:
       return data
   }
