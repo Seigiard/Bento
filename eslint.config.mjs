@@ -1,7 +1,8 @@
-import antfu from '@antfu/eslint-config'
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 import tailwind from 'eslint-plugin-tailwindcss'
 
-export default [
+export default tseslint.config(
   {
     ignores: [
       'dist',
@@ -11,6 +12,8 @@ export default [
       'src/service-worker.js',
     ],
   },
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
   {
     plugins: {
       tailwindcss: tailwind,
@@ -24,4 +27,4 @@ export default [
       },
     },
   },
-]
+);

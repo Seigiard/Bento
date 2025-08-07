@@ -30,13 +30,6 @@ const CollectionSchemaResponse = v.object({
   items: v.array(CollectionBaseSchema),
 })
 
-// Полная схема с children (используется только для валидации)
-const CollectionSchema = v.object({
-  ...CollectionBaseSchema.entries,
-  parent: v.optional(ParentSchema), // переопределяем parent без nullable
-  children: v.optional(v.array(v.any())), // Используем any для children чтобы избежать циклической ссылки
-})
-
 // Схема для группы коллекций в пользовательских данных
 const UserGroupSchema = v.object({
   title: v.string(),
@@ -57,7 +50,7 @@ const UserSchemaResponse = v.object({
 
 // Типы, выведенные из схем
 export type RaindropItemType = v.InferOutput<typeof RaindropItemSchema>
-export type CollectionType = Omit<v.InferOutput<typeof CollectionSchema>, 'children'> & {
+export type CollectionType = Omit<v.InferOutput<typeof CollectionBaseSchema>, 'children'> & {
   children?: CollectionType[]
 }
 export type UserType = v.InferOutput<typeof UserSchema>

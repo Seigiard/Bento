@@ -1,4 +1,4 @@
-import { Fetcher, nanoquery } from '@nanostores/query';
+import { nanoquery } from '@nanostores/query';
 import { $settings } from '../nanostores/settings';
 import { CollectionType, RaindropItemType, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, UserType } from '../services/raindrop/raindrop-schemas';
 
