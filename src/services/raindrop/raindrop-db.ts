@@ -116,10 +116,11 @@ export class RaindropDatabase extends Dexie {
    * Сохранить дочерние коллекции
    */
   async cacheChildCollections(collections: RaindropCollection[], ttl: number): Promise<void> {
-    const cachedCollections: CachedCollection[] = collections.map(col => ({
+    const cachedCollections: CachedCollection[] = collections.map((col, index) => ({
       ...col,
       cachedAt: Date.now(),
       ttl,
+      sortOrder: index,
     }))
 
     await this.transaction('rw', this.childCollections, async () => {

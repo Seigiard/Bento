@@ -71,7 +71,9 @@ export class RaindropAPI {
         this.getUser(),
       ])
 
-      const collections = collectionsResponse.items.map(transformCollectionToSimple)
+      const collections = collectionsResponse.items
+        .map(transformCollectionToSimple)
+        .filter((col): col is RaindropCollection => col !== null)
 
       // Если нет данных пользователя или групп, сортируем по полю sort
       if (!user || !user.groups || user.groups.length === 0) {
@@ -120,7 +122,9 @@ export class RaindropAPI {
   async getChildCollections(parentId?: number): Promise<RaindropCollection[]> {
     try {
       const response = await this.makeRequest('/collections/childrens', CollectionsApiResponseSchema)
-      const allChildren = response.items.map(transformCollectionToSimple)
+      const allChildren = response.items
+        .map(transformCollectionToSimple)
+        .filter((col): col is RaindropCollection => col !== null)
 
       // Если указан parentId, фильтруем только его дочерние коллекции
       if (parentId !== undefined) {

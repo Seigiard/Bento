@@ -13,21 +13,21 @@ export const $categories = batched([$userData, $rootCategories, $childCategories
       }
     }
 
-    // Сначала сортируем root категории согласно пользовательским группам
-    const sortedRootCategories = sortCollectionsByUserGroups(
-      rootCategories.data,
-      user.data
-    )
-
-    // Затем строим иерархическую структуру с дочерними категориями
-    const categoriesWithChildren = buildCategoriesWithChildren(
-      sortedRootCategories,
-      childCategories.data
-    )
+    // Этап 1: Собираем общий массив всех категорий
+    const allCategories = [...rootCategories.data, ...childCategories.data]
+    
+    // Этап 2: Строим иерархическую структуру
+    const hierarchicalCategories = buildHierarchy(allCategories)
+    
+    // Этап 3: Сортируем первый уровень по пользовательским группам
+    const sortedByUserGroups = sortRootLevel(hierarchicalCategories, user.data)
+    
+    // Этап 4: Сортируем все вложенные уровни по полю sort
+    const finallySorted = sortAllNestedLevels(sortedByUserGroups)
 
     return {
       loading,
-      data: categoriesWithChildren
+      data: finallySorted
     }
   }
 )
@@ -88,39 +88,67 @@ function buildChildHierarchy(
     )
     .sort((a, b) => (a.sort || 0) - (b.sort || 0))
 
-  // Преобразовать в простой формат и добавить их детей рекурсивно
+  // Добавить их детей рекурсивно
   return directChildren.map(child => {
-    const simpleChild = transformCollectionToSimple(child)
-
     // Рекурсивно найти детей для текущего ребенка
     const grandChildren = buildChildHierarchy(child._id, allChildCategories, new Set(processedIds))
 
     return {
-      ...simpleChild,
+      ...child,
       children: grandChildren.length > 0 ? grandChildren : undefined
     }
   })
 }
 
 /**
- * Объединяет root категории с их дочерними категориями
- * @param rootCategories - отсортированные root категории
- * @param childCategories - все дочерние категории
- * @returns массив категорий с вложенной структурой
+ * Строит иерархическую структуру из плоского массива категорий
+ * @param allCategories - все категории (root + child)
+ * @returns массив root категорий с вложенными детьми
  */
-function buildCategoriesWithChildren(
-  rootCategories: RaindropCollection[],
-  childCategories: RaindropCollection[]
-): RaindropCollection[] {
+function buildHierarchy(allCategories: RaindropCollection[]): RaindropCollection[] {
+  // Разделяем на root и child категории
+  const rootCategories = allCategories.filter(cat => !cat.parent)
+  const childCategories = allCategories.filter(cat => cat.parent)
+  
   return rootCategories.map(rootCategory => {
-    const simpleRoot = transformCollectionToSimple(rootCategory)
-
-    // Найти дочерние категории для данной root категории
     const children = buildChildHierarchy(rootCategory._id, childCategories)
-
+    
     return {
-      ...simpleRoot,
+      ...rootCategory,
       children: children.length > 0 ? children : undefined
+    }
+  })
+}
+
+/**
+ * Сортирует root-уровень категорий по пользовательским группам
+ * @param categories - иерархические категории
+ * @param user - данные пользователя с группами
+ * @returns категории, отсортированные по пользовательским группам
+ */
+function sortRootLevel(categories: RaindropCollection[], user: User): RaindropCollection[] {
+  return sortCollectionsByUserGroups(categories, user)
+}
+
+/**
+ * Рекурсивно сортирует все вложенные уровни по полю sort
+ * @param categories - категории с детьми
+ * @returns категории с отсортированными детьми на всех уровнях
+ */
+function sortAllNestedLevels(categories: RaindropCollection[]): RaindropCollection[] {
+  return categories.map(category => {
+    if (!category.children) {
+      return category
+    }
+    
+    // Сортируем детей по полю sort и рекурсивно сортируем их детей
+    const sortedChildren = category.children
+      .sort((a: RaindropCollection, b: RaindropCollection) => (a.sort || 0) - (b.sort || 0))
+      .map((child: RaindropCollection) => sortAllNestedLevels([child])[0])
+    
+    return {
+      ...category,
+      children: sortedChildren
     }
   })
 }
