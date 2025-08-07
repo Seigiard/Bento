@@ -1,5 +1,5 @@
 import type { RaindropAPI } from './raindrop-api'
-import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas'
+import type { RaindropItem } from './raindrop-schemas'
 import { db } from './raindrop-db'
 
 export class CachedRaindropAPI {
@@ -11,40 +11,6 @@ export class CachedRaindropAPI {
   }
 
 
-  /**
-   * Получить данные пользователя с кэшированием
-   */
-  async getUser(force = false, ttl?: number): Promise<User | null> {
-    const effectiveTTL = ttl || this.defaultTTL
-
-    if (!force) {
-      const cached = await db.getCachedUser()
-      if (cached) {
-        return cached
-      }
-    }
-
-    try {
-      const user = await this.api.getUser()
-
-      if (user) {
-        await db.cacheUser(user, effectiveTTL)
-        await db.recordSync('partial', 'success')
-      }
-
-      return user
-    }
-    catch (error) {
-      await db.recordSync('partial', 'failed', error instanceof Error ? error.message : 'Unknown error')
-
-      const cached = await db.getCachedUser()
-      if (cached) {
-        console.warn('API request failed, returning cached data:', error)
-        return cached
-      }
-      throw error
-    }
-  }
 
   /**
    * Получить raindrops для коллекции с кэшированием

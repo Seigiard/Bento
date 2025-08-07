@@ -1,9 +1,8 @@
-import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas'
+import type { RaindropItem } from './raindrop-schemas'
 import * as v from 'valibot'
 import {
   RaindropsApiResponseSchema,
   safeParseRaindrop,
-  UserApiResponseSchema,
 } from './raindrop-schemas.js'
 
 export class RaindropAPI {
@@ -41,21 +40,6 @@ export class RaindropAPI {
       throw new Error('Invalid response format from Raindrop API')
     }
   }
-
-  /**
-   * Получить данные пользователя
-   */
-  async getUser(): Promise<User | null> {
-    try {
-      const response = await this.makeRequest('/user', UserApiResponseSchema)
-      return response.user
-    }
-    catch (error) {
-      console.error('Error fetching user data:', error)
-      return null
-    }
-  }
-
 
   /**
    * Получить raindrops для указанной коллекции

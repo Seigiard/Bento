@@ -1,12 +1,7 @@
 import type { Table } from 'dexie'
-import type { RaindropCollection, RaindropItem, User } from './raindrop-schemas'
+import type { RaindropItem } from './raindrop-schemas'
 import Dexie from 'dexie'
 
-export interface CachedCollection extends RaindropCollection {
-  cachedAt: number
-  ttl: number
-  sortOrder: number // Порядок сортировки при сохранении
-}
 
 export interface CachedRaindropItem extends RaindropItem {
   collectionId: number
@@ -14,10 +9,6 @@ export interface CachedRaindropItem extends RaindropItem {
   ttl: number
 }
 
-export interface CachedUser extends User {
-  cachedAt: number
-  ttl: number
-}
 
 export interface SyncMetadata {
   id: string
@@ -30,7 +21,6 @@ export interface SyncMetadata {
 export class RaindropDatabase extends Dexie {
   // Таблицы
   raindrops!: Table<CachedRaindropItem, number>
-  user!: Table<CachedUser, number>
   syncMetadata!: Table<SyncMetadata, string>
 
   constructor() {
@@ -40,9 +30,6 @@ export class RaindropDatabase extends Dexie {
     this.version(1).stores({
       // Raindrops с индексами для поиска по коллекции
       raindrops: '_id, collectionId, title, domain, created, cachedAt, [collectionId+cachedAt]',
-
-      // Пользователь (только один)
-      user: '_id, email, cachedAt',
 
       // Метаданные синхронизации
       syncMetadata: 'id, lastSync, syncType, status',
@@ -96,35 +83,6 @@ export class RaindropDatabase extends Dexie {
     })
   }
 
-  /**
-   * Получить данные пользователя
-   */
-  async getCachedUser(): Promise<CachedUser | null> {
-    const users = await this.user.toArray()
-
-    if (users.length === 0)
-      return null
-
-    const user = users[0]
-
-    return this.isCacheValid(user.cachedAt, user.ttl) ? user : null
-  }
-
-  /**
-   * Сохранить данные пользователя
-   */
-  async cacheUser(user: User, ttl: number): Promise<void> {
-    const cachedUser: CachedUser = {
-      ...user,
-      cachedAt: Date.now(),
-      ttl,
-    }
-
-    await this.transaction('rw', this.user, async () => {
-      await this.user.clear()
-      await this.user.add(cachedUser)
-    })
-  }
 
   /**
    * Записать метаданные синхронизации
@@ -158,9 +116,8 @@ export class RaindropDatabase extends Dexie {
    * Очистить все кэшированные данные
    */
   async clearAllCache(): Promise<void> {
-    await this.transaction('rw', this.raindrops, this.user, async () => {
+    await this.transaction('rw', this.raindrops, async () => {
       await this.raindrops.clear()
-      await this.user.clear()
     })
   }
 
@@ -176,18 +133,13 @@ export class RaindropDatabase extends Dexie {
 
     // Находим самую старую запись
     const oldestRaindrop = await this.raindrops.orderBy('cachedAt').first()
-    const oldestUser = await this.user.orderBy('cachedAt').first()
 
-    const oldestCache = Math.min(
-      ...[oldestRaindrop, oldestUser]
-        .filter(item => item)
-        .map(item => item!.cachedAt),
-    )
+    const oldestCache = oldestRaindrop?.cachedAt || null
 
     return {
       raindrops: raindropsCount,
       totalSize: raindropsCount,
-      oldestCache: isFinite(oldestCache) ? oldestCache : null,
+      oldestCache,
     }
   }
 }

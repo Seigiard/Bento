@@ -107,17 +107,9 @@ export const UserSchema = v.object({
   groups: v.array(UserGroupSchema),
 })
 
-// Схема для ответа API пользователя
-export const UserApiResponseSchema = v.object({
-  result: v.boolean(),
-  user: UserSchema,
-})
-
 // Типы, выведенные из схем
 export type RaindropItemFull = v.InferOutput<typeof RaindropItemFullSchema>
 export type RaindropItem = v.InferOutput<typeof RaindropItemSchema>
-export type RaindropsApiResponse = v.InferOutput<typeof RaindropsApiResponseSchema>
-export type UserGroup = v.InferOutput<typeof UserGroupSchema>
 export type RaindropCollection = Omit<v.InferOutput<typeof RaindropCollectionSchema>, 'children'> & {
   children?: RaindropCollection[]
 }
