@@ -1,6 +1,6 @@
 import { nanoquery } from '@nanostores/query';
 import { $settings } from '../nanostores/settings';
-import { CollectionType, RaindropItemType, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, UserType } from '../services/raindrop/raindrop-schemas';
+import { CollectionType, RaindropItemType, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, UserType } from '../schemas/raindrop-schemas';
 
 const [createRaindropApiFetcherStore] = nanoquery({
   fetcher: async (...keys) => {
