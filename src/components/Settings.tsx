@@ -3,16 +3,17 @@ import { useStore } from '@nanostores/preact'
 import { $settings } from '../nanostores/settings'
 import { SettingsFormFields, themeList } from '../models/settings'
 
+$settings.subscribe((settings) => {
+  // update Tailwind/DaisyUI theme settings
+  document.documentElement.dataset.theme = settings.theme === 'system' ? undefined : settings.theme
+})
+
 export function Settings() {
   const modalRef = useRef<HTMLDialogElement>(null)
   const settings = useStore($settings)
 
   const openModal = () => {
     modalRef.current?.showModal()
-  }
-
-  const closeModal = () => {
-    modalRef.current?.close()
   }
 
   const handleRaindropApiKeyChange = (event: Event) => {
