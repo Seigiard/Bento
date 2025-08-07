@@ -3,13 +3,18 @@ import { useStore } from '@nanostores/preact'
 import { $raindropApi } from '../nanostores/raindrop-api'
 import { Link } from './Link'
 import { useAsyncDataFetch } from '../hooks/useAsyncDataFetch'
+import { createRaindropsStore } from '../nanoquery/raindrop-fetcher'
+import { useState } from 'preact/hooks'
 
 interface CategoryLinksProps {
   categoryId: number
 }
 
 export function CategoryLinks({ categoryId }: CategoryLinksProps) {
+  const [$raindropStore] = useState(createRaindropsStore(categoryId))
   const raindropApi = useStore($raindropApi)
+  const data = useStore($raindropStore)
+  console.log(data)
 
   const { data: raindrops, isLoading, error, refetch } = useAsyncDataFetch<RaindropItem[]>(
     async () => {
@@ -55,8 +60,6 @@ export function CategoryLinks({ categoryId }: CategoryLinksProps) {
     </ul>
   )
 }
-
-
 
 function Loader() {
   return (

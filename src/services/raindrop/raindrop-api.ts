@@ -2,7 +2,7 @@ import type { RaindropItem } from './raindrop-schemas'
 import * as v from 'valibot'
 import {
   RaindropsApiResponseSchema,
-  safeParseRaindrop,
+  safeParseRaindropResponse,
 } from './raindrop-schemas.js'
 
 export class RaindropAPI {
@@ -53,7 +53,7 @@ export class RaindropAPI {
         `/raindrops/${collectionId}?perpage=${perpage}`,
         RaindropsApiResponseSchema,
       )
-      return response.items.map(safeParseRaindrop)
+      return response.items.map(safeParseRaindropResponse)
     }
     catch (error) {
       console.error(

@@ -1,6 +1,6 @@
 import { Fetcher, nanoquery } from '@nanostores/query';
 import { $settings } from '../nanostores/settings';
-import { RaindropCollection, safeParseCollection, User } from '../services/raindrop/raindrop-schemas';
+import { RaindropCollection, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, User } from '../services/raindrop/raindrop-schemas';
 import { batched, ReadableAtom } from 'nanostores';
 
 export type FetcherResponse<T> = {
@@ -9,7 +9,7 @@ export type FetcherResponse<T> = {
   error?: Error;
 };
 
-export const [createRaindropApiFetcherStore, createRaindropApiMutatorStore] = nanoquery({
+const [createRaindropApiFetcherStore] = nanoquery({
   fetcher: async (...keys) => {
     try {
       const response = await fetch(`https://api.raindrop.io/rest/v1${keys.join('')}`, {
@@ -24,7 +24,7 @@ export const [createRaindropApiFetcherStore, createRaindropApiMutatorStore] = na
       }
 
       const data = await response.json()
-      return data
+      return safeParseData(keys[0].toString(), data)
     } catch (error) {
       console.error('Raindrop API fetcher error:', error)
       throw error instanceof Error ? error : new Error('Unknown fetcher error')
@@ -32,50 +32,21 @@ export const [createRaindropApiFetcherStore, createRaindropApiMutatorStore] = na
   },
 });
 
-const $fetchedUserData = createRaindropApiFetcherStore<{ user: User }>('/user');
-const $fetchedRootCategories = createRaindropApiFetcherStore<{ items: RaindropCollection[] }>('/collections');
-const $fetchedChildCategories = createRaindropApiFetcherStore<{ items: RaindropCollection[] }>('/collections/childrens');
+export const $userData = createRaindropApiFetcherStore<{ data: User }>('/user');
+export const $rootCategories = createRaindropApiFetcherStore<{ data: RaindropCollection[] }>('/collections');
+export const $childCategories = createRaindropApiFetcherStore<{ data: RaindropCollection[] }>(['/collections', '/childrens']);
 
-export const $userData: ReadableAtom<FetcherResponse<User>> = batched($fetchedUserData, ({ loading, data, error }) => ({
-  loading,
-  data: data?.user,
-  error,
-}));
+export const createRaindropsStore = (collectionId: RaindropCollection['_id']) => createRaindropApiFetcherStore<{ items: RaindropCollection[] }>(['/raindrops', '/', collectionId]);
 
-export const $rootCategories: ReadableAtom<FetcherResponse<RaindropCollection[]>> = batched($fetchedRootCategories, ({ loading, data, error }) => {
-  if (error) {
-    return { loading, error }
+function safeParseData(key: string, data: unknown) {
+  switch (key) {
+    case '/user':
+      return safeParseUserResponse(data);
+    case '/collections':
+      return safeParseCollectionResponse(data)
+    case '/raindrops':
+      return safeParseRaindropResponse(data)
+    default:
+      return data
   }
-
-  try {
-    return {
-      loading,
-      data: data?.items?.map(safeParseCollection).filter(col => col !== null),
-    }
-  } catch (parseError) {
-    console.error('Error parsing root categories:', parseError)
-    return {
-      loading,
-      error: parseError instanceof Error ? parseError : new Error('Failed to parse root categories')
-    }
-  }
-});
-
-export const $childCategories: ReadableAtom<FetcherResponse<RaindropCollection[]>> = batched($fetchedChildCategories, ({ loading, data, error }) => {
-  if (error) {
-    return { loading, error }
-  }
-
-  try {
-    return {
-      loading,
-      data: data?.items?.map(safeParseCollection).filter(col => col !== null),
-    }
-  } catch (parseError) {
-    console.error('Error parsing child categories:', parseError)
-    return {
-      loading,
-      error: parseError instanceof Error ? parseError : new Error('Failed to parse child categories')
-    }
-  }
-});
+}

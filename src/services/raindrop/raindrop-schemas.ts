@@ -69,6 +69,10 @@ export const RaindropItemSchema = v.object({
   sort: v.number(),
 })
 
+const RaindropItemSchemaResponse = v.object({
+  items: v.array(RaindropItemSchema),
+})
+
 // Базовая схема для упрощенной коллекции (без children)
 const RaindropCollectionBaseSchema = v.object({
   _id: v.number(),
@@ -76,6 +80,10 @@ const RaindropCollectionBaseSchema = v.object({
   parent: v.optional(v.nullable(ParentSchema)),
   sort: v.optional(v.number()),
   created: v.optional(v.string()),
+})
+
+const RaindropCollectionSchemaResponse = v.object({
+  items: v.array(RaindropCollectionBaseSchema),
 })
 
 // Полная схема с children (используется только для валидации)
@@ -107,6 +115,10 @@ export const UserSchema = v.object({
   groups: v.array(UserGroupSchema),
 })
 
+const UserSchemaResponse = v.object({
+  user: UserSchema,
+})
+
 // Типы, выведенные из схем
 export type RaindropItemFull = v.InferOutput<typeof RaindropItemFullSchema>
 export type RaindropItem = v.InferOutput<typeof RaindropItemSchema>
@@ -116,41 +128,58 @@ export type RaindropCollection = Omit<v.InferOutput<typeof RaindropCollectionSch
 export type User = v.InferOutput<typeof UserSchema>
 
 // Функция для преобразования полной коллекции в упрощенную
-export function safeParseCollection(
-  fullCollection: unknown,
-): RaindropCollection {
+export function safeParseCollectionResponse(
+  data: unknown,
+): RaindropCollection[] {
   // Валидируем базовые поля (без children чтобы избежать циклических ссылок)
-  const result = v.safeParse(RaindropCollectionBaseSchema, fullCollection)
+  const result = v.safeParse(RaindropCollectionSchemaResponse, data)
 
   if (!result.success) {
     console.error('Collection validation failed:', {
       issues: result.issues,
-      data: fullCollection
+      data: data
     })
     throw new Error(`Invalid collection format: ${result.issues.map(i => i.message).join(', ')}`)
   }
 
   // Возвращаем валидированные данные с правильной обработкой parent
-  return {
-    ...result.output,
-    parent: result.output.parent || undefined, // Преобразуем null в undefined
-  } as RaindropCollection
+  return result.output.items.map(collection => ({
+    ...collection,
+    parent: collection?.parent || undefined, // Преобразуем null в undefined
+  })) as RaindropCollection[]
 }
 
 // Функция для преобразования полного raindrop в упрощенный
-export function safeParseRaindrop(
-  fullRaindrop: RaindropItemFull,
-): RaindropItem {
+export function safeParseRaindropResponse(
+  data: unknown,
+): RaindropItem[] {
   // Валидируем через схему
-  const result = v.safeParse(RaindropItemSchema, fullRaindrop)
+  const result = v.safeParse(RaindropItemSchemaResponse, data)
 
   if (!result.success) {
     console.error('Raindrop validation failed:', {
       issues: result.issues,
-      data: fullRaindrop
+      data: data
     })
     throw new Error(`Invalid raindrop format: ${result.issues.map(i => i.message).join(', ')}`)
   }
 
-  return result.output
+  return result.output.items
+}
+
+export function safeParseUserResponse(
+  data: unknown,
+): User {
+  // Валидируем через схему
+  const result = v.safeParse(UserSchemaResponse, data)
+
+  if (!result.success) {
+    console.error('User validation failed:', {
+      issues: result.issues,
+      data
+    })
+    throw new Error(`Invalid raindrop format: ${result.issues.map(i => i.message).join(', ')}`)
+  }
+
+  return result.output.user
 }
