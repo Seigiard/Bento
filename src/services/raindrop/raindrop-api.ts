@@ -4,8 +4,8 @@ import {
   CollectionsApiResponseSchema,
 
   RaindropsApiResponseSchema,
-  transformCollectionToSimple,
-  transformRaindropToSimple,
+  safeParseCollection,
+  safeParseRaindrop,
 
   UserApiResponseSchema,
 } from './raindrop-schemas.js'
@@ -72,7 +72,7 @@ export class RaindropAPI {
       ])
 
       const collections = collectionsResponse.items
-        .map(transformCollectionToSimple)
+        .map(safeParseCollection)
         .filter((col): col is RaindropCollection => col !== null)
 
       // Если нет данных пользователя или групп, сортируем по полю sort
@@ -123,7 +123,7 @@ export class RaindropAPI {
     try {
       const response = await this.makeRequest('/collections/childrens', CollectionsApiResponseSchema)
       const allChildren = response.items
-        .map(transformCollectionToSimple)
+        .map(safeParseCollection)
         .filter((col): col is RaindropCollection => col !== null)
 
       // Если указан parentId, фильтруем только его дочерние коллекции
@@ -152,7 +152,7 @@ export class RaindropAPI {
         `/raindrops/${collectionId}?perpage=${perpage}`,
         RaindropsApiResponseSchema,
       )
-      return response.items.map(transformRaindropToSimple)
+      return response.items.map(safeParseRaindrop)
     }
     catch (error) {
       console.error(

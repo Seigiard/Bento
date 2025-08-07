@@ -1,8 +1,8 @@
 import { batched } from "nanostores";
 import { $userData, $rootCategories, $childCategories } from "../nanoquery/raindrop-fetcher";
-import { RaindropCollection, transformCollectionToSimple, User } from "../services/raindrop/raindrop-schemas";
+import { RaindropCollection, safeParseCollection, User } from "../services/raindrop/raindrop-schemas";
 
-export const $categories = batched([$userData, $rootCategories, $childCategories],
+export const $collections = batched([$userData, $rootCategories, $childCategories],
   (user, rootCategories, childCategories): { loading: boolean, data: RaindropCollection[] } => {
     const loading = user.loading || rootCategories.loading || childCategories.loading;
 
@@ -15,13 +15,13 @@ export const $categories = batched([$userData, $rootCategories, $childCategories
 
     // Этап 1: Собираем общий массив всех категорий
     const allCategories = [...rootCategories.data, ...childCategories.data]
-    
+
     // Этап 2: Строим иерархическую структуру
     const hierarchicalCategories = buildHierarchy(allCategories)
-    
+
     // Этап 3: Сортируем первый уровень по пользовательским группам
-    const sortedByUserGroups = sortRootLevel(hierarchicalCategories, user.data)
-    
+    const sortedByUserGroups = sortCollectionsByUserGroups(hierarchicalCategories, user.data)
+
     // Этап 4: Сортируем все вложенные уровни по полю sort
     const finallySorted = sortAllNestedLevels(sortedByUserGroups)
 
@@ -33,34 +33,23 @@ export const $categories = batched([$userData, $rootCategories, $childCategories
 )
 
 /**
- * Сортирует коллекции согласно пользовательским группам
- * @param collections - массив коллекций для сортировки
- * @param user - данные пользователя с группами
- * @returns отсортированный массив коллекций
+ * Строит иерархическую структуру из плоского массива категорий
+ * @param allCategories - все категории (root + child)
+ * @returns массив root категорий с вложенными детьми
  */
-function sortCollectionsByUserGroups(collections: RaindropCollection[], user: User): RaindropCollection[] {
-  const collectionMap = new Map(collections.map(col => [col._id, col]))
-  const sortedCollections: RaindropCollection[] = []
+function buildHierarchy(allCategories: RaindropCollection[]): RaindropCollection[] {
+  // Разделяем на root и child категории
+  const rootCategories = allCategories.filter(cat => !cat.parent)
+  const childCategories = allCategories.filter(cat => cat.parent)
 
-  // Добавляем коллекции в порядке, определенном пользовательскими группами
-  user.groups.forEach((group) => {
-    if (!group.hidden && group.collections) {
-      group.collections.forEach((colId) => {
-        const collection = collectionMap.get(colId)
-        if (collection) {
-          sortedCollections.push(collection)
-          collectionMap.delete(colId) // Удаляем, чтобы не добавить дважды
-        }
-      })
+  return rootCategories.map(rootCategory => {
+    const children = buildChildHierarchy(rootCategory._id, childCategories)
+
+    return {
+      ...rootCategory,
+      children: children.length > 0 ? children : undefined
     }
   })
-
-  // Добавляем коллекции, которые не входят ни в одну группу
-  collectionMap.forEach((collection) => {
-    sortedCollections.push(collection)
-  })
-
-  return sortedCollections
 }
 
 /**
@@ -101,33 +90,34 @@ function buildChildHierarchy(
 }
 
 /**
- * Строит иерархическую структуру из плоского массива категорий
- * @param allCategories - все категории (root + child)
- * @returns массив root категорий с вложенными детьми
+ * Сортирует коллекции согласно пользовательским группам
+ * @param collections - массив коллекций для сортировки
+ * @param user - данные пользователя с группами
+ * @returns отсортированный массив коллекций
  */
-function buildHierarchy(allCategories: RaindropCollection[]): RaindropCollection[] {
-  // Разделяем на root и child категории
-  const rootCategories = allCategories.filter(cat => !cat.parent)
-  const childCategories = allCategories.filter(cat => cat.parent)
-  
-  return rootCategories.map(rootCategory => {
-    const children = buildChildHierarchy(rootCategory._id, childCategories)
-    
-    return {
-      ...rootCategory,
-      children: children.length > 0 ? children : undefined
+function sortCollectionsByUserGroups(collections: RaindropCollection[], user: User): RaindropCollection[] {
+  const collectionMap = new Map(collections.map(col => [col._id, col]))
+  const sortedCollections: RaindropCollection[] = []
+
+  // Добавляем коллекции в порядке, определенном пользовательскими группами
+  user.groups.forEach((group) => {
+    if (!group.hidden && group.collections) {
+      group.collections.forEach((colId) => {
+        const collection = collectionMap.get(colId)
+        if (collection) {
+          sortedCollections.push(collection)
+          collectionMap.delete(colId) // Удаляем, чтобы не добавить дважды
+        }
+      })
     }
   })
-}
 
-/**
- * Сортирует root-уровень категорий по пользовательским группам
- * @param categories - иерархические категории
- * @param user - данные пользователя с группами
- * @returns категории, отсортированные по пользовательским группам
- */
-function sortRootLevel(categories: RaindropCollection[], user: User): RaindropCollection[] {
-  return sortCollectionsByUserGroups(categories, user)
+  // Добавляем коллекции, которые не входят ни в одну группу
+  collectionMap.forEach((collection) => {
+    sortedCollections.push(collection)
+  })
+
+  return sortedCollections
 }
 
 /**
@@ -140,12 +130,12 @@ function sortAllNestedLevels(categories: RaindropCollection[]): RaindropCollecti
     if (!category.children) {
       return category
     }
-    
+
     // Сортируем детей по полю sort и рекурсивно сортируем их детей
     const sortedChildren = category.children
       .sort((a: RaindropCollection, b: RaindropCollection) => (a.sort || 0) - (b.sort || 0))
       .map((child: RaindropCollection) => sortAllNestedLevels([child])[0])
-    
+
     return {
       ...category,
       children: sortedChildren

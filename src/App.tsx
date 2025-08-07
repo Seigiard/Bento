@@ -6,13 +6,12 @@ import { Category } from './components/Category'
 import { useStore } from '@nanostores/preact'
 import { $raindropApi } from './nanostores/raindrop-api'
 import { useAsyncDataFetch } from './hooks/useAsyncDataFetch'
-import { $categories } from './nanostores/raindrop';
+import { $collections } from './nanostores/raindrop';
 
 export function App() {
   const { raindropApiKey } = useStore($settings)
   const raindropApi = useStore($raindropApi)
-  const c = useStore($categories)
-  console.log(c)
+  const cols = useStore($collections)
 
   const { data: collections, isLoading, error, refetch } = useAsyncDataFetch<RaindropCollection[]>(
     async () => {
