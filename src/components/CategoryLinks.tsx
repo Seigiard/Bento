@@ -1,8 +1,5 @@
-import type { RaindropItem } from '../services/raindrop/raindrop-schemas'
 import { useStore } from '@nanostores/preact'
-import { $raindropApi } from '../nanostores/raindrop-api'
 import { Link } from './Link'
-import { useAsyncDataFetch } from '../hooks/useAsyncDataFetch'
 import { createRaindropsStore } from '../nanoquery/raindrop-fetcher'
 import { useState } from 'preact/hooks'
 
@@ -11,20 +8,10 @@ interface CategoryLinksProps {
 }
 
 export function CategoryLinks({ categoryId }: CategoryLinksProps) {
-  const [$raindropStore] = useState(createRaindropsStore(categoryId))
-  const raindropApi = useStore($raindropApi)
-  const data = useStore($raindropStore)
-  console.log(data)
+  const [$raindropStore] = useState(() => createRaindropsStore(categoryId))
+  const { loading, data: raindrops, error } = useStore($raindropStore)
 
-  const { data: raindrops, isLoading, error, refetch } = useAsyncDataFetch<RaindropItem[]>(
-    async () => {
-      if (!raindropApi) throw new Error('API not available')
-      return await raindropApi.getRaindrops(categoryId)
-    },
-    { enabled: !!raindropApi }
-  )
-
-  if (isLoading) {
+  if (loading) {
     return <Loader />
   }
 
@@ -32,13 +19,7 @@ export function CategoryLinks({ categoryId }: CategoryLinksProps) {
     return (
       <div class="pl-6 py-2">
         <div class="alert alert-error alert-sm">
-          <span>{error}</span>
-          <button
-            class="btn btn-ghost btn-xs"
-            onClick={refetch}
-          >
-            Retry
-          </button>
+          <span>{error.message}</span>
         </div>
       </div>
     )

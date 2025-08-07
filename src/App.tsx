@@ -2,7 +2,7 @@ import { $settings } from './nanostores/settings'
 import { Settings } from './components/Settings'
 import { Category } from './components/Category'
 import { useStore } from '@nanostores/preact'
-import { $collections } from './nanostores/raindrop';
+import { $collections } from './nanostores/collections';
 
 export function App() {
   const { raindropApiKey } = useStore($settings)
@@ -25,7 +25,7 @@ export function App() {
         {error && (
           <div class="alert alert-error">
             <span>Error loading categories: {error.message}</span>
-            <button 
+            <button
               class="btn btn-ghost btn-sm"
               onClick={() => window.location.reload()}
             >

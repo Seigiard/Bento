@@ -1,13 +1,6 @@
 import { Fetcher, nanoquery } from '@nanostores/query';
 import { $settings } from '../nanostores/settings';
-import { RaindropCollection, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, User } from '../services/raindrop/raindrop-schemas';
-import { batched, ReadableAtom } from 'nanostores';
-
-export type FetcherResponse<T> = {
-  loading: boolean;
-  data?: T;
-  error?: Error;
-};
+import { RaindropCollection, RaindropItem, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, User } from '../services/raindrop/raindrop-schemas';
 
 const [createRaindropApiFetcherStore] = nanoquery({
   fetcher: async (...keys) => {
@@ -32,19 +25,19 @@ const [createRaindropApiFetcherStore] = nanoquery({
   },
 });
 
-export const $userData = createRaindropApiFetcherStore<{ data: User }>('/user');
-export const $rootCategories = createRaindropApiFetcherStore<{ data: RaindropCollection[] }>('/collections');
-export const $childCategories = createRaindropApiFetcherStore<{ data: RaindropCollection[] }>(['/collections', '/childrens']);
+export const $userData = createRaindropApiFetcherStore<User>('/user');
+export const $rootCategories = createRaindropApiFetcherStore<RaindropCollection[]>('/collections');
+export const $childCategories = createRaindropApiFetcherStore<RaindropCollection[]>(['/collections/childrens']);
 
-export const createRaindropsStore = (collectionId: RaindropCollection['_id']) => createRaindropApiFetcherStore<{ items: RaindropCollection[] }>(['/raindrops', '/', collectionId]);
+export const createRaindropsStore = (collectionId: RaindropCollection['_id']) => createRaindropApiFetcherStore<RaindropItem[]>(['/raindrops/', collectionId]);
 
 function safeParseData(key: string, data: unknown) {
-  switch (key) {
-    case '/user':
+  switch (true) {
+    case key.startsWith('/user'):
       return safeParseUserResponse(data);
-    case '/collections':
+    case key.startsWith('/collections'):
       return safeParseCollectionResponse(data)
-    case '/raindrops':
+    case key.startsWith('/raindrops'):
       return safeParseRaindropResponse(data)
     default:
       return data

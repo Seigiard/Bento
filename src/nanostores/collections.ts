@@ -1,6 +1,12 @@
 import { batched } from "nanostores";
-import { $userData, $rootCategories, $childCategories, FetcherResponse } from "../nanoquery/raindrop-fetcher";
-import { RaindropCollection, safeParseCollectionResponse, User } from "../services/raindrop/raindrop-schemas";
+import { $userData, $rootCategories, $childCategories } from "../nanoquery/raindrop-fetcher";
+import { RaindropCollection, User } from "../services/raindrop/raindrop-schemas";
+
+type FetcherResponse<T> = {
+  loading: boolean;
+  data?: T;
+  error?: Error;
+};
 
 export const $collections = batched([$userData, $rootCategories, $childCategories],
   (user, rootCategories, childCategories): FetcherResponse<RaindropCollection[]> => {
