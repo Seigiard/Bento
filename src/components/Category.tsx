@@ -27,8 +27,8 @@ export function Category({ collection }: CategoryProps) {
       </h2>
       {isOpen && (
         <>
+          <NestedCategories parentCollection={collection} />
           <CategoryLinks categoryId={collection._id} />
-          <NestedCategories parentId={collection._id} />
         </>
       )}
     </>
