@@ -2,6 +2,7 @@ import { useRef } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 import { $settings } from '../nanostores/settings'
 import { SettingsFormFields, themeList } from '../models/settings'
+import { revalidateKeys } from '../nanoquery/raindrop-fetcher'
 
 $settings.subscribe((settings) => {
   // update Tailwind/DaisyUI theme settings
@@ -59,38 +60,46 @@ export function Settings() {
               </svg>
             </button>
           </form>
-          <h3 class="font-bold text-lg mb-4">Settings</h3>
+          <div className='grid grid-cols-1 gap-4'>
+            <h3 class="font-bold text-lg">Settings</h3>
 
-          <fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4 mb-4">
-            <legend class="fieldset-legend">Appearance</legend>
-            <label class="label" for="theme-select">{SettingsFormFields.theme?.title}</label>
-            <select
-              id="theme-select"
-              class="select select-bordered w-full max-w-xs"
-              value={settings.theme}
-              onChange={handleThemeChange}
-            >
-              {themeList.map(theme => (
-                <option key={theme} value={theme}>
-                  {theme.charAt(0).toUpperCase() + theme.slice(1)}
-                </option>
-              ))}
-            </select>
-          </fieldset>
+            <fieldset class="fieldset">
+              <label class="label font-bold" for="theme-select">{SettingsFormFields.theme?.title}</label>
+              <select
+                id="theme-select"
+                class="select select-bordered w-full max-w-xs"
+                value={settings.theme}
+                onChange={handleThemeChange}
+              >
+                {themeList.map(theme => (
+                  <option key={theme} value={theme}>
+                    {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </fieldset>
 
-          <fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4">
-            <legend class="fieldset-legend">Integrations</legend>
-            <label class="label" for="raindrop-api-key">{SettingsFormFields.raindropApiKey?.title}</label>
-            <input
-              id="raindrop-api-key"
-              type="text"
-              placeholder="Enter your Raindrop.io API key"
-              class="input input-bordered w-full"
-              value={settings.raindropApiKey}
-              onInput={handleRaindropApiKeyChange}
-            />
-            <p class="label">{SettingsFormFields.raindropApiKey?.description}</p>
-          </fieldset>
+            <fieldset class="fieldset">
+              <label class="label font-bold" for="raindrop-api-key">{SettingsFormFields.raindropApiKey?.title}</label>
+              <input
+                id="raindrop-api-key"
+                type="text"
+                placeholder="Enter your Raindrop.io API key"
+                class="input input-bordered w-full"
+                value={settings.raindropApiKey}
+                onInput={handleRaindropApiKeyChange}
+              />
+              <p class="label">{SettingsFormFields.raindropApiKey?.description}</p>
+            </fieldset>
+
+            <fieldset class="fieldset">
+              <label class="label font-bold" for="raindrop-api-key">Refresh all data</label>
+              <button class="btn btn-sm justify-self-start" onClick={() => { revalidateKeys(() => true) }}>
+                Refresh
+              </button>
+            </fieldset>
+
+          </div>
         </div>
         <form method="dialog" class="modal-backdrop">
           <button>close</button>

@@ -2,15 +2,15 @@ import { nanoquery } from '@nanostores/query';
 import { atom, onStart } from 'nanostores';
 import { $settings } from '../nanostores/settings';
 import { CollectionType, RaindropItemType, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, UserType } from '../schemas/raindrop-schemas';
-import { get, set, keys } from '@isomorphic-git/idb-keyval';
+import { get as dbGet, set as dbSet, keys as dbKeys } from '@isomorphic-git/idb-keyval';
 
 const cacheKey = 'raindropFetcher-';
 
 class Cache extends Map {
-  set(key: string, value: any, persist = true) {
+  set(key: string, value: unknown, persist = true) {
     const res = super.set(key, value);
     if (persist) {
-      set(`${cacheKey}${key}`, value);
+      dbSet(`${cacheKey}${key}`, value);
     }
     return res;
   }
@@ -18,10 +18,10 @@ class Cache extends Map {
 const cache = new Cache();
 
 async function initCache() {
-  const keys_ = await keys()
+  const keys_ = await dbKeys()
   return Promise.all(keys_.map(async (key) => {
     if (typeof key === 'string' && key.startsWith(cacheKey)) {
-      const value = await get(key)
+      const value = await dbGet(key)
       cache.set(key.replace(cacheKey, ''), value, false);
     }
   }))
@@ -32,7 +32,7 @@ onStart($fetcherReady, () => {
   initCache().then(() => $fetcherReady.set(true));
 });
 
-const [createRaindropApiFetcherStore] = nanoquery({
+const [createRaindropApiFetcherStore, , { revalidateKeys }] = nanoquery({
   cache,
   dedupeTime: 1000 * 60 * 60, // 1 hour
   fetcher: async (...keys) => {
@@ -57,6 +57,7 @@ const [createRaindropApiFetcherStore] = nanoquery({
   },
 });
 
+export { revalidateKeys };
 export const $userData = createRaindropApiFetcherStore<UserType>('/user');
 export const $rootCategories = createRaindropApiFetcherStore<CollectionType[]>('/collections');
 export const $childCategories = createRaindropApiFetcherStore<CollectionType[]>(['/collections/childrens']);
