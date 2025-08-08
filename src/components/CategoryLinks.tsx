@@ -1,6 +1,6 @@
 import { useStore } from '@nanostores/preact'
 import { Link } from './Link'
-import { createRaindropsStore } from '../nanoquery/raindrop-fetcher'
+import { createRaindropsStore } from '../nanoquery/raindrops-fetcher'
 import { useState } from 'preact/hooks'
 import { LinksSkeleton } from './Skeleton'
 import { type CollectionType } from '../schemas/raindrop-schemas'

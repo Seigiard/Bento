@@ -2,7 +2,7 @@ import { useRef } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 import { $settings } from '../nanostores/settings'
 import { SettingsFormFields, themeList } from '../models/settings'
-import { revalidateKeys } from '../nanoquery/raindrop-fetcher'
+import { revalidateKeys } from '../nanoquery/generic-fetcher'
 
 $settings.subscribe((settings) => {
   // update Tailwind/DaisyUI theme settings

@@ -1,9 +1,8 @@
 import { logger } from '@nanostores/logger'
 import { render } from 'preact'
 import { App } from './App'
-import { $collections } from './nanostores/collections'
 import { $expandedCollections } from './nanostores/collection-states'
-import { $userData, $rootCategories, $childCategories } from './nanoquery/raindrop-fetcher'
+import { $raindropCollections } from './nanoquery/raindrop-collections-fetcher'
 
 // navigator.serviceWorker.register(
 //   new URL('./service-worker.js', import.meta.url),
@@ -12,10 +11,7 @@ import { $userData, $rootCategories, $childCategories } from './nanoquery/raindr
 //
 
 const destroy = logger({
-  'UserData': $userData,
-  'Root Categories': $rootCategories,
-  'Child Categories': $childCategories,
-  'Collections': $collections,
+  '$raindropCollections': $raindropCollections,
   'CollectionStates': $expandedCollections,
 })
 

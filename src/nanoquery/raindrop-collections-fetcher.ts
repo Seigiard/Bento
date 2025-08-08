@@ -1,61 +1,39 @@
-import { batched } from "nanostores";
-import { $userData, $rootCategories, $childCategories } from "../nanoquery/raindrop-fetcher";
-import { CollectionType, UserType } from '../schemas/raindrop-schemas'
+import { nanoquery } from '@nanostores/query';
+import { $raindropApiKey } from '../nanostores/settings';
+import { CollectionType, RaindropItemType, safeParseCollectionResponse, safeParseRaindropResponse, safeParseUserResponse, UserType } from '../schemas/raindrop-schemas';
+import { fetchFromRaindropApi } from './fetchFromRaindropApi';
+import { createGenericFetcherStore } from './generic-fetcher';
 
-type FetcherResponse<T> = {
-  loading: boolean;
-  data?: T;
-  error?: Error;
-};
+export const $raindropCollections = createGenericFetcherStore([$raindropApiKey, 'collections'], {
+  dedupeTime: 1000 * 60 * 60, // 1 hour
+  fetcher: async (raindropApiKey) => {
+    const fetchUser = fetchFromRaindropApi(raindropApiKey as string, '/user').then(safeParseUserResponse)
+    const fetchRootCollections = fetchFromRaindropApi(raindropApiKey as string, '/collections').then(safeParseCollectionResponse)
+    const fetchChildCollections = fetchFromRaindropApi(raindropApiKey as string, '/collections/childrens').then(safeParseCollectionResponse)
 
-export const $collections = batched([$userData, $rootCategories, $childCategories],
-  (user, rootCategories, childCategories): FetcherResponse<CollectionType[]> => {
-    const loading = user.loading || rootCategories.loading || childCategories.loading;
-
-    // Проверяем ошибки в любой из зависимостей
-    const error = user.error || rootCategories.error || childCategories.error;
-    if (error) {
-      return {
-        loading,
-        data: [],
-        error
-      }
-    }
-
-    if (loading || !user.data || !rootCategories.data || !childCategories.data) {
-      return {
-        loading,
-        data: []
-      }
-    }
+    const [user, rootCollections, childCollections] = await Promise.all([fetchUser, fetchRootCollections, fetchChildCollections]);
 
     try {
       // Этап 1: Собираем общий массив всех категорий
-      const allCategories = [...rootCategories.data, ...childCategories.data]
+      const allCategories = [...rootCollections, ...childCollections]
 
       // Этап 2: Строим иерархическую структуру
       const hierarchicalCategories = buildHierarchy(allCategories)
 
       // Этап 3: Сортируем первый уровень по пользовательским группам
-      const sortedByUserGroups = sortCollectionsByUserGroups(hierarchicalCategories, user.data)
+      const sortedByUserGroups = sortCollectionsByUserGroups(hierarchicalCategories, user)
 
       // Этап 4: Сортируем все вложенные уровни по полю sort
       const finallySorted = sortAllNestedLevels(sortedByUserGroups)
 
-      return {
-        loading,
-        data: finallySorted
-      }
+      return finallySorted
     } catch (buildError) {
       console.error('Error building category hierarchy:', buildError)
-      return {
-        loading,
-        data: [],
-        error: buildError instanceof Error ? buildError : new Error('Failed to build category hierarchy')
-      }
+      throw buildError
     }
-  }
-)
+  },
+  revalidateInterval: 1000,
+});
 
 /**
  * Строит иерархическую структуру из плоского массива категорий
