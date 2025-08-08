@@ -3,40 +3,35 @@ import { Link } from './Link'
 import { createRaindropsStore } from '../nanoquery/raindrop-fetcher'
 import { useState } from 'preact/hooks'
 import { LinksSkeleton } from './Skeleton'
+import { type CollectionType } from '../schemas/raindrop-schemas'
 
-interface CategoryLinksProps {
-  categoryId: number
-}
-
-export function CategoryLinks({ categoryId }: CategoryLinksProps) {
+export function CategoryLinks({ categoryId }: {
+  categoryId: CollectionType['_id']
+}) {
   const [$raindropStore] = useState(() => createRaindropsStore(categoryId))
-  const { loading, data: raindrops, error } = useStore($raindropStore)
+  const { loading, data, error } = useStore($raindropStore)
 
-  if (loading) {
+  if (!data?.length && loading) {
     return <LinksSkeleton />
   }
 
   if (error) {
     return (
-      <div class="pl-6 py-2">
-        <div class="alert alert-error alert-sm">
-          <span>{error.message}</span>
-        </div>
+      <div class="alert alert-error alert-sm">
+        <span>{error.message}</span>
       </div>
     )
   }
 
-  if (!raindrops || raindrops.length === 0) {
+  if (!data || data.length === 0) {
     return (
-      <div class="pl-6 py-2">
-        <span class="text-sm opacity-60">No links found</span>
-      </div>
+      <span class="text-sm opacity-60">No links found</span>
     )
   }
 
   return (
     <ul className='max-h-full overflow-y-scroll'>
-      {raindrops.map((raindrop) => (
+      {data.map((raindrop) => (
         <Link key={raindrop._id} raindrop={raindrop} />
       ))}
     </ul>
