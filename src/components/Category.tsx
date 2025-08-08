@@ -1,6 +1,6 @@
 import type { CollectionType } from '../schemas/raindrop-schemas'
 import { useStore } from '@nanostores/preact'
-import { $openCategories, toggleCategory } from '../nanostores/category-state'
+import { $expandedCollections, toggleCategory } from '../nanostores/collection-states'
 import { NestedCategories } from './NestedCategories'
 import { CategoryLinks } from './CategoryLinks'
 
@@ -9,7 +9,7 @@ interface CategoryProps {
 }
 
 export function Category({ collection }: CategoryProps) {
-  const openCategories = useStore($openCategories)
+  const openCategories = useStore($expandedCollections)
   const categoryId = collection._id.toString()
   const isOpen = openCategories.includes(categoryId)
 
