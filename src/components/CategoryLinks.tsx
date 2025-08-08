@@ -5,10 +5,10 @@ import { useState } from 'preact/hooks'
 import { LinksSkeleton } from './Skeleton'
 import { type CollectionType } from '../schemas/raindrop-schemas'
 
-export function CategoryLinks({ categoryId }: {
-  categoryId: CollectionType['_id']
+export function CollectionLinks({ collectionId }: {
+  collectionId: CollectionType['_id']
 }) {
-  const [$raindropStore] = useState(() => createRaindropsStore(categoryId))
+  const [$raindropStore] = useState(() => createRaindropsStore(collectionId))
   const { loading, data, error } = useStore($raindropStore)
 
   if (!data?.length && loading) {

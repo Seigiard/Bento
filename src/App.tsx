@@ -1,6 +1,6 @@
 import { $settings } from './nanostores/settings'
 import { Settings } from './components/Settings'
-import { Category } from './components/Category'
+import { Collection } from './components/Collection'
 import { useStore } from '@nanostores/preact'
 import { $collections } from './nanostores/collections';
 import { $fetcherReady } from './nanoquery/raindrop-fetcher';
@@ -50,6 +50,6 @@ function TheApp() {
   }
 
   return collections?.map((collection) => (
-    <Category key={collection._id} collection={collection} />
+    <Collection key={collection._id} collection={collection} />
   ))
 }

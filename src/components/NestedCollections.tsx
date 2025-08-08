@@ -1,11 +1,11 @@
 import type { CollectionType } from '../schemas/raindrop-schemas'
-import { Category } from './Category'
+import { Collection } from './Collection'
 
 interface NestedCategoriesProps {
   parentCollection: CollectionType
 }
 
-export function NestedCategories({ parentCollection }: NestedCategoriesProps) {
+export function NestedCollections({ parentCollection }: NestedCategoriesProps) {
   // Если у родительской категории нет детей, не показываем ничего
   if (!parentCollection.children || parentCollection.children.length === 0) {
     return null
@@ -14,7 +14,7 @@ export function NestedCategories({ parentCollection }: NestedCategoriesProps) {
   return (
     <>
       {parentCollection.children.map((collection) => (
-        <Category key={collection._id} collection={collection} />
+        <Collection key={collection._id} collection={collection} />
       ))}
     </>
   )

@@ -1,14 +1,14 @@
 import type { CollectionType } from '../schemas/raindrop-schemas'
 import { useStore } from '@nanostores/preact'
 import { $expandedCollections, toggleCategory } from '../nanostores/collection-states'
-import { NestedCategories } from './NestedCategories'
-import { CategoryLinks } from './CategoryLinks'
+import { NestedCollections } from './NestedCollections'
+import { CollectionLinks } from './CategoryLinks'
 
 interface CategoryProps {
   collection: CollectionType
 }
 
-export function Category({ collection }: CategoryProps) {
+export function Collection({ collection }: CategoryProps) {
   const openCategories = useStore($expandedCollections)
   const categoryId = collection._id.toString()
   const isOpen = openCategories.includes(categoryId)
@@ -25,8 +25,8 @@ export function Category({ collection }: CategoryProps) {
       <div className="collapse-content -my-2 px-2 min-w-0 min-h-0 grid text-sm overflow-y-scroll">
         {isOpen && (
           <>
-            <NestedCategories parentCollection={collection} />
-            <CategoryLinks categoryId={collection._id} />
+            <NestedCollections parentCollection={collection} />
+            <CollectionLinks collectionId={collection._id} />
           </>
         )}
       </div>
