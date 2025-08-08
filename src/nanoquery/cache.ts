@@ -1,6 +1,8 @@
 import { get as dbGet, set as dbSet, keys as dbKeys } from '@isomorphic-git/idb-keyval';
 import { atom, onStart } from 'nanostores';
-const cacheKey = 'raindropFetcher-';
+import { dequal } from 'dequal/lite';
+
+const cacheKey = 'BentoAppRaindrops-';
 
 class Cache extends Map {
   set(key: string, value: unknown, persist = true) {
@@ -16,10 +18,13 @@ export const cache = new Cache();
 
 async function initCache() {
   const keys_ = await dbKeys()
-  return Promise.all(keys_.map(async (key) => {
-    if (typeof key === 'string' && key.startsWith(cacheKey)) {
-      const value = await dbGet(key)
-      cache.set(key.replace(cacheKey, ''), value, false);
+  return Promise.all(keys_.map(async (key_) => {
+    if (typeof key_ === 'string' && key_.startsWith(cacheKey)) {
+      const value = await dbGet(key_)
+      const key = key_.replace(cacheKey, '');
+      if (!dequal(cache.get(key), value)) {
+        cache.set(key, value, false);
+      }
     }
   }))
 }

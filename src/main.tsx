@@ -11,8 +11,8 @@ import { $raindropCollections } from './nanoquery/raindrop-collections-fetcher'
 //
 
 const destroy = logger({
-  '$raindropCollections': $raindropCollections,
-  'CollectionStates': $expandedCollections,
+  $raindropCollections,
+  $expandedCollections,
 })
 
 const root = document.getElementById('app')

@@ -20,8 +20,8 @@
   "source": "src/index.html",
   "alias": {
     "preact/jsx-dev-runtime": "preact/jsx-runtime",
-		"react-dom/test-utils": "preact/test-utils",
-		"react/jsx-runtime": "preact/jsx-runtime"
+    "react-dom/test-utils": "preact/test-utils",
+    "react/jsx-runtime": "preact/jsx-runtime"
   },
   "staticFiles": {
     "staticPath": "assets",
@@ -29,11 +29,13 @@
   },
   "dependencies": {
     "@isomorphic-git/idb-keyval": "^3.3.2",
+    "@nanostores/logger": "^1.0.0",
     "@nanostores/persistent": "^1.1.0",
     "@nanostores/preact": "^1.0.0",
     "@nanostores/query": "^0.3.4",
     "@parcel/service-worker": "^2.15.4",
     "@tailwindcss/postcss": "^4.1.11",
+    "dequal": "^2.0.3",
     "nanostores": "^0.10.3",
     "preact": "^10.27.0"
   },
