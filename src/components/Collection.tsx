@@ -14,20 +14,20 @@ export function Collection({ collection }: CategoryProps) {
   const isOpen = openCategories.includes(categoryId)
 
   return (
-    <div className="collapse not-first:mt-4 shadow-sm bg-base-100 max-h-full">
+    <div className="collapse hover:bg-base-100 focus-within:bg-base-100 outline-offset-2 outline-2 outline-transparent transition-colors duration-100 not-first:mt-3 max-h-full">
       <input
         type="checkbox"
         name={categoryId}
         checked={isOpen}
         onChange={() => toggleCategory(categoryId)}
       />
-      <div className="collapse-title font-semibold">{collection.title}</div>
-      <div className="collapse-content -my-2 px-2 min-w-0 min-h-0 grid text-sm overflow-y-scroll">
+      <div className="collapse-title py-1.5 font-serif font-semibold text-lg">{collection.title}</div>
+      <div className="collapse-content flex -mt-1 px-0 min-w-0 min-h-0 max-h-full overflow-y-scroll text-sm">
         {isOpen && (
-          <>
-            <NestedCollections parentCollection={collection} />
+          <ul className='px-2 pt-1 -mb-2 w-full h-fit'>
             <CollectionLinks collectionId={collection._id} />
-          </>
+            <NestedCollections parentCollection={collection} />
+          </ul>
         )}
       </div>
     </div>

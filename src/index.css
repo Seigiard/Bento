@@ -3,3 +3,24 @@
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark;
 }
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  prefersdark: false;
+  color-scheme: "light";
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+
+@theme {
+  /*--font-sans: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;*/
+  --font-serif: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+}

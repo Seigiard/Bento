@@ -30,10 +30,10 @@ export function CollectionLinks({ collectionId }: {
   }
 
   return (
-    <ul className='max-h-full overflow-y-scroll'>
+    <>
       {data.map((raindrop) => (
         <Link key={raindrop._id} raindrop={raindrop} />
       ))}
-    </ul>
+    </>
   )
 }

@@ -10,10 +10,10 @@ export function Link({ raindrop }: LinkProps) {
       <a
 				href={raindrop.link}
 				rel="noopener noreferrer"
-				class="block p-2 group rounded hover:bg-base-200 transition-colors"
+				class="block p-2 group rounded hover:bg-base-200 transition-colors outline-offset-0 outline-2 outline-transparent focus-visible:outline-accent"
 			>
 				<div class="flex-1 min-w-0">
-					<h3 class="text-base group-hover:text-primary truncate">
+					<h3 class="text-base truncate">
 						{raindrop.title}
 					</h3>
 					{raindrop.domain && (
