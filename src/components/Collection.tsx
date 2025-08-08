@@ -24,7 +24,7 @@ export function Collection({ collection }: CategoryProps) {
       <div className="collapse-title px-5 font-serif font-semibold text-lg">{collection.title}</div>
       <div className="collapse-content flex px-0 min-w-0 min-h-0 max-h-full overflow-y-scroll text-sm transform-[translateY(-0.75rem)]">
         {isOpen && (
-          <ul className='px-2 pt-1 -mb-3 w-full h-fit'>
+          <ul className='px-2 pt-1 -mb-3 w-full max-h-full h-fit'>
             <CollectionLinks collectionId={collection._id} />
             <NestedCollections parentCollection={collection} />
           </ul>
