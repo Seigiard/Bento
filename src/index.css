@@ -24,3 +24,7 @@
   /*--font-sans: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;*/
   --font-serif: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
 }
+
+:root {
+  --root-bg: var(--color-base-200)
+}
