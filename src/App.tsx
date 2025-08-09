@@ -7,11 +7,11 @@ import { $raindropCollections } from './nanoquery/raindrop-collections-fetcher';
 import { $cacheReady } from './nanoquery/cache';
 import { EditMode } from './components/EditMode';
 import { ThemeButton } from './components/ThemeButton';
-import { $isOnline } from './nanostores/offline';
+import { $isOffline } from './nanostores/offline';
 import { twMerge } from 'tailwind-merge';
 
 export function App() {
-  const isOnline = useStore($isOnline);
+  const isOffline = useStore($isOffline);
 
   return (
     <div className='grid w-dvw h-dvh grid-cols-[1fr_min-content]'>
@@ -21,7 +21,7 @@ export function App() {
       <aside className='border-l border-secondary/10 p-2 bg-base-300 flex flex-col justify-between gap-2'>
         <div className='flex flex-col gap-2'>
           <ThemeButton />
-          {!isOnline && (
+          {isOffline && (
             <div className="tooltip tooltip-left" data-tip="We are Offline">
               <div className="btn btn-circle btn-warning cursor-default">
                 <svg class="w-5 h-5">
@@ -60,14 +60,14 @@ function AppLoader() {
 }
 
 function TheApp() {
-  const isOnline = useStore($isOnline);
+  const isOffline = useStore($isOffline);
   const { loading, data: collections, error } = useStore($raindropCollections)
 
-  if (!collections?.length && loading && isOnline) {
+  if (!collections?.length && loading && !isOffline) {
     return <CategoryCardSkeleton />
   }
 
-  if (error && isOnline) {
+  if (error && !isOffline) {
     return (
       <div class="alert alert-error">
         Error loading categories: {error.message}
@@ -75,7 +75,7 @@ function TheApp() {
     )
   }
 
-  if (!collections?.length && !isOnline) {
+  if (!collections?.length && isOffline) {
     return (
       <div class="alert alert-info">
         <span>No cached data available offline. Connect to internet to load your bookmarks.</span>

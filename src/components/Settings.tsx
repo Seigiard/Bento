@@ -1,13 +1,13 @@
 import { useRef } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 import { $settings } from '../nanostores/settings'
-import { $isOnline } from '../nanostores/offline'
+import { $isOffline } from '../nanostores/offline'
 import { revalidateKeys } from '../nanoquery/generic-fetcher'
 
 export function Settings() {
   const modalRef = useRef<HTMLDialogElement>(null)
   const { raindropApiKey } = useStore($settings)
-  const isOnline = useStore($isOnline)
+  const isOffline = useStore($isOffline)
 
   const openModal = () => {
     modalRef.current?.showModal()
@@ -20,12 +20,12 @@ export function Settings() {
 
   return (
     <>
-      <div className="tooltip tooltip-left" data-tip={isOnline ? "Settings" : "Settings (offline)"}>
+      <div className="tooltip tooltip-left" data-tip={isOffline ? "Settings (offline)" : "Settings"}>
         <button
-          class={`btn btn-ghost btn-circle ${!isOnline ? 'btn-disabled' : ''}`}
-          onClick={isOnline ? openModal : undefined}
+          class={`btn btn-ghost btn-circle ${isOffline ? 'btn-disabled' : ''}`}
+          onClick={isOffline ? undefined : openModal}
           aria-label="Open settings"
-          disabled={!isOnline}
+          disabled={isOffline}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
