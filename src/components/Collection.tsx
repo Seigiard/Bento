@@ -14,7 +14,7 @@ export function Collection({ collection }: CategoryProps) {
   const isOpen = openCategories.includes(categoryId)
 
   return (
-    <div className="collapse hover:bg-base-100 focus-within:bg-base-100 hover:shadow-sm focus-within:shadow-sm has-[input:not(:checked):active]:shadow-xs has-[input:not(:checked):active]:transform-[translateY(-1px)] outline-offset-2 outline-2 outline-transparent transition-[background-color,box-shadow] duration-200 not-first:mt-1 max-h-full">
+    <div className="collapse hover:bg-base-100 focus-within:bg-base-100 hover:shadow-sm focus-within:shadow-sm has-[input:not(:checked):active]:shadow-xs has-[input:not(:checked):active]:transform-[translateY(-1px)] outline-offset-2 outline-2 outline-transparent transition-[background-color,box-shadow] duration-200 not-first:mt-1 max-h-full snap-start">
       <input
         type="checkbox"
         name={categoryId}

@@ -11,7 +11,7 @@ import { ThemeButton } from './components/ThemeButton';
 export function App() {
   return (
     <div className='grid w-dvw h-dvh grid-cols-[1fr_min-content]'>
-      <main class='p-6 w-full h-dvh gap-8 overflow-x-scroll [column-count:auto] [column-width:clamp(20rem,25vw,23rem)] [column-fill:auto]'>
+      <main class='p-6 w-full h-dvh gap-8 overflow-x-scroll snap-x [column-count:auto] [column-width:clamp(20rem,25vw,23rem)] [column-fill:auto]'>
         <AppLoader />
       </main>
       <aside className='border-l border-secondary/10 p-2 bg-base-300 flex flex-col justify-between gap-2'>
