@@ -16,7 +16,7 @@ export function ThemeButton() {
   }
 
   return (
-    <div className="tooltip tooltip-left" data-tip="Switch theme">
+    <div className="tooltip tooltip-left" data-tip={`Switch theme (${theme})`}>
       <button
         class={twMerge(
           "btn btn-ghost btn-circle swap swap-rotate",
