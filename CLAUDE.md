@@ -14,6 +14,14 @@ Bento is a minimalist, elegant and hackable startpage inspired by the Bento box.
 - **TypeScript**: Strict mode with TSX components
 - **API**: Raindrop.io via nanoquery with Valibot validation
 
+## MCP Context7 Usage
+
+When working with this codebase, use MCP Context7 to get up-to-date documentation for:
+- **Tailwind CSS v4**: Latest utility classes and configuration
+- **DaisyUI v5**: Component classes and theming
+- **nanostores**: State management patterns and APIs
+- **@nanostores/query**: Data fetching and caching patterns
+
 ## Architecture
 
 1. **Entry Point**: `src/index.html` → `src/main.tsx` → `src/App.tsx`
@@ -63,7 +71,10 @@ npm run lint    # Check code quality
 
 ## Important Notes
 
-- **Styling**: Components styled with DaisyUI kit. Use context7 for DaisyUI component documentation.
+- **Tailwind CSS v4**: We use Tailwind CSS version 4 with its new features and syntax
+- **DaisyUI v5**: Component library built on top of Tailwind CSS v4
+- **nanostores**: Lightweight state management solution for all application state
+- **Styling**: Components styled with DaisyUI kit. Use MCP Context7 for DaisyUI component documentation
 - **Preact Syntax**: Use `class` instead of `className`
 - **No React Icons**: Use SVG icons directly to avoid compatibility issues
 - **State**: nanostores for all state management
