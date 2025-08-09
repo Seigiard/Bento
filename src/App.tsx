@@ -5,13 +5,23 @@ import { useStore } from '@nanostores/preact'
 import { CategoryCardSkeleton } from './components/Skeleton';
 import { $raindropCollections } from './nanoquery/raindrop-collections-fetcher';
 import { $cacheReady } from './nanoquery/cache';
+import { EditMode } from './components/EditMode';
+import { ThemeButton } from './components/ThemeButton';
 
 export function App() {
   return (
-    <main class='p-6 w-dvw h-dvh gap-8 overflow-x-scroll [column-count:auto] [column-width:clamp(20rem,25vw,23rem)] [column-fill:auto]'>
-      <AppLoader />
-      <Settings />
-    </main>
+    <div className='grid w-dvw h-dvh grid-cols-[1fr_min-content]'>
+      <main class='p-6 w-full h-dvh gap-8 overflow-x-scroll [column-count:auto] [column-width:clamp(20rem,25vw,23rem)] [column-fill:auto]'>
+        <AppLoader />
+      </main>
+      <aside className='border-l border-secondary/10 p-2 bg-base-300 flex flex-col justify-between gap-2'>
+        <ThemeButton />
+        <div className='flex flex-col gap-2'>
+          <EditMode />
+          <Settings />
+        </div>
+      </aside>
+    </div>
   )
 }
 

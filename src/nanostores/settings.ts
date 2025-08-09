@@ -8,4 +8,9 @@ export const $settings = persistentMap<SettingsValue>(
   defaultSettings,
 )
 
+$settings.subscribe((settings) => {
+  // update Tailwind/DaisyUI theme settings
+  document.documentElement.dataset.theme = settings.theme === 'system' ? undefined : settings.theme
+})
+
 export const $raindropApiKey = computed($settings, (settings) => settings.raindropApiKey);

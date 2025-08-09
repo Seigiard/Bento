@@ -1,17 +1,11 @@
 import { useRef } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 import { $settings } from '../nanostores/settings'
-import { SettingsFormFields, themeList } from '../models/settings'
 import { revalidateKeys } from '../nanoquery/generic-fetcher'
-
-$settings.subscribe((settings) => {
-  // update Tailwind/DaisyUI theme settings
-  document.documentElement.dataset.theme = settings.theme === 'system' ? undefined : settings.theme
-})
 
 export function Settings() {
   const modalRef = useRef<HTMLDialogElement>(null)
-  const settings = useStore($settings)
+  const { raindropApiKey } = useStore($settings)
 
   const openModal = () => {
     modalRef.current?.showModal()
@@ -22,28 +16,25 @@ export function Settings() {
     $settings.setKey('raindropApiKey', target.value)
   }
 
-  const handleThemeChange = (event: Event) => {
-    const target = event.target as HTMLSelectElement
-    $settings.setKey('theme', target.value as 'light' | 'dark' | 'system')
-  }
-
   return (
     <>
-      <button
-        class="btn btn-circle absolute bottom-4 right-4"
-        onClick={openModal}
-        aria-label="Open settings"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      <div className="tooltip tooltip-left" data-tip="Settings">
+        <button
+          class="btn btn-ghost btn-circle"
+          onClick={openModal}
+          aria-label="Open settings"
         >
-          <use href="#settingsIcon" />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <use href="#settingsIcon" />
+          </svg>
+        </button>
+      </div>
 
       <dialog ref={modalRef} class="modal">
         <div class="modal-box w-2xl max-w-10/12">
@@ -62,39 +53,26 @@ export function Settings() {
           </form>
           <div className='grid grid-cols-1 gap-4'>
             <h3 class="font-bold text-lg">Settings</h3>
-
             <fieldset class="fieldset">
-              <label class="label font-bold" for="theme-select">{SettingsFormFields.theme?.title}</label>
-              <select
-                id="theme-select"
-                class="select select-bordered w-full max-w-xs"
-                value={settings.theme}
-                onChange={handleThemeChange}
-              >
-                {themeList.map(theme => (
-                  <option key={theme} value={theme}>
-                    {theme.charAt(0).toUpperCase() + theme.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </fieldset>
-
-            <fieldset class="fieldset">
-              <label class="label font-bold" for="raindrop-api-key">{SettingsFormFields.raindropApiKey?.title}</label>
+              <label class="label font-bold" for="raindrop-api-key">
+                Raindrop.io API Key
+              </label>
               <input
                 id="raindrop-api-key"
                 type="text"
                 placeholder="Enter your Raindrop.io API key"
                 class="input input-bordered w-full"
-                value={settings.raindropApiKey}
+                value={raindropApiKey}
                 onInput={handleRaindropApiKeyChange}
               />
-              <p class="label">{SettingsFormFields.raindropApiKey?.description}</p>
+              <p class="label">
+                Get your API key from Raindrop.io settings. All collections will be loaded automatically.
+              </p>
             </fieldset>
 
             <fieldset class="fieldset">
               <label class="label font-bold" for="raindrop-api-key">Refresh all data</label>
-              <button class="btn btn-sm justify-self-start" onClick={() => { revalidateKeys(() => true) }}>
+              <button class="btn justify-self-start" onClick={() => { revalidateKeys(() => true) }}>
                 Refresh
               </button>
             </fieldset>
