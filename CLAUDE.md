@@ -76,7 +76,8 @@ npm run lint    # Check code quality
 - **nanostores**: Lightweight state management solution for all application state
 - **Styling**: Components styled with DaisyUI kit. Use MCP Context7 for DaisyUI component documentation
 - **Preact Syntax**: Use `class` instead of `className`
-- **No React Icons**: Use SVG icons directly to avoid compatibility issues
+- **Icons**: Use SVG sprite defined in index.html. Icons are defined as `<symbol>` elements with IDs. To use an icon in components, use `<svg><use href="#iconId" /></svg>`. This reduces bundle size by avoiding icon libraries. Available icons: settingsIcon, closeIcon, editIcon, checkIcon, draggableIcon, day, night, system
+- **No React Icons**: Use SVG icons directly from the sprite to avoid compatibility issues and reduce bundle size
 - **State**: nanostores for all state management
 - **API Data**: Use nanoquery stores, not direct API calls
 - **Error Handling**: All API calls have loading/error/data states
@@ -97,6 +98,12 @@ npm run lint    # Check code quality
 1. Create `.tsx` file in `src/components/`
 2. Use `useStore()` for nanostores access
 3. Handle loading/error/data states properly
+4. For icons, use SVG sprite: `<svg class="w-5 h-5"><use href="#iconId" /></svg>`
+
+### Adding New Icons
+1. Add SVG `<symbol>` with unique ID to `src/index.html` inside the hidden SVG element
+2. Use in components: `<svg class="w-5 h-5"><use href="#yourIconId" /></svg>`
+3. This approach keeps bundle size small by avoiding icon libraries
 
 ## Data Flow
 
