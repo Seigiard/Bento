@@ -8,25 +8,29 @@ import { $cacheReady } from './nanoquery/cache';
 import { EditMode } from './components/EditMode';
 import { ThemeButton } from './components/ThemeButton';
 import { $isOnline } from './nanostores/offline';
+import { twMerge } from 'tailwind-merge';
 
 export function App() {
   const isOnline = useStore($isOnline);
 
   return (
     <div className='grid w-dvw h-dvh grid-cols-[1fr_min-content]'>
-      {!isOnline && (
-        <div class="alert alert-warning fixed top-4 left-1/2 transform -translate-x-1/2 z-50 max-w-sm">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-12.728 12.728m0-12.728l12.728 12.728"></path>
-          </svg>
-          <span>Offline mode</span>
-        </div>
-      )}
       <main class='p-6 w-full h-dvh gap-8 overflow-x-scroll snap-x [column-count:auto] [column-width:clamp(20rem,25vw,23rem)] [column-fill:auto]'>
-        <AppLoader isOnline={isOnline} />
+        <AppLoader />
       </main>
       <aside className='border-l border-secondary/10 p-2 bg-base-300 flex flex-col justify-between gap-2'>
-        <ThemeButton />
+        <div className='flex flex-col gap-2'>
+          <ThemeButton />
+          {!isOnline && (
+            <div className="tooltip tooltip-left" data-tip="We are Offline">
+              <div className="btn btn-circle btn-warning cursor-default">
+                <svg class="w-5 h-5">
+                  <use href="#offlineIcon" />
+                </svg>
+              </div>
+            </div>
+          )}
+        </div>
         <div className='flex flex-col gap-2'>
           <EditMode />
           <Settings />
@@ -36,7 +40,7 @@ export function App() {
   )
 }
 
-function AppLoader({ isOnline }: { isOnline: boolean }) {
+function AppLoader() {
   const cacheReady = useStore($cacheReady)
   const { raindropApiKey } = useStore($settings)
 
@@ -52,10 +56,11 @@ function AppLoader({ isOnline }: { isOnline: boolean }) {
     )
   }
 
-  return <TheApp isOnline={isOnline} />
+  return <TheApp />
 }
 
-function TheApp({ isOnline }: { isOnline: boolean }) {
+function TheApp() {
+  const isOnline = useStore($isOnline);
   const { loading, data: collections, error } = useStore($raindropCollections)
 
   if (!collections?.length && loading && isOnline) {
