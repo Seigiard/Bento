@@ -9,6 +9,10 @@ import { EditMode } from './components/EditMode';
 import { ThemeButton } from './components/ThemeButton';
 import { $isOffline } from './nanostores/offline';
 import { twMerge } from 'tailwind-merge';
+import { $flatCategories } from './nanostores/flat-categories';
+import { fetchAllLinks } from './nanoquery/raindrops-fetcher';
+
+$flatCategories.subscribe(fetchAllLinks)
 
 export function App() {
   const isOffline = useStore($isOffline);

@@ -1,8 +1,8 @@
 import { render } from 'preact'
 import { App } from './App'
 
-// Simple service worker registration
-if ('serviceWorker' in navigator) {
+// Simple service worker registration - only in production
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
   navigator.serviceWorker.register(
     new URL('./service-worker.js', import.meta.url),
     { type: 'module' }

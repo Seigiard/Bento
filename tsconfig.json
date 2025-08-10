@@ -7,7 +7,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["@parcel/service-worker"],
+    "types": ["node", "@parcel/service-worker"],
     "strict": true,
     "noEmit": true,
     "allowSyntheticDefaultImports": true,
