@@ -39,7 +39,7 @@ export async function fetchAllLinks(flatCategories: readonly CollectionType['_id
 
   // Find categories that need stores created
   const categoriesToCreate = flatCategories.filter(id => !raindropsStores.has(id))
-  
+
   if (categoriesToCreate.length === 0) {
     return
   }
@@ -50,12 +50,12 @@ export async function fetchAllLinks(flatCategories: readonly CollectionType['_id
 
   for (let i = 0; i < categoriesToCreate.length; i += BATCH_SIZE) {
     const batch = categoriesToCreate.slice(i, i + BATCH_SIZE)
-    
+
     // Create stores for this batch
     batch.forEach(categoryId => {
       const store = createRaindropsStore(categoryId)
       raindropsStores.set(categoryId, store)
-      
+
       // Subscribe to trigger initial fetch
       store.subscribe(() => {})
     })
