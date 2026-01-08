@@ -15,12 +15,6 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    ".parcel-cache"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", ".parcel-cache"]
 }

@@ -1,28 +1,31 @@
-import { useRef } from 'preact/hooks'
-import { useStore } from '@nanostores/preact'
-import { $settings } from '../nanostores/settings'
-import { $isOffline } from '../nanostores/offline'
-import { revalidateKeys } from '../nanoquery/generic-fetcher'
+import { useRef } from "preact/hooks";
+import { useStore } from "@nanostores/preact";
+import { $settings } from "../nanostores/settings";
+import { $isOffline } from "../nanostores/offline";
+import { revalidateKeys } from "../nanoquery/generic-fetcher";
 
 export function Settings() {
-  const modalRef = useRef<HTMLDialogElement>(null)
-  const { raindropApiKey } = useStore($settings)
-  const isOffline = useStore($isOffline)
+  const modalRef = useRef<HTMLDialogElement>(null);
+  const { raindropApiKey } = useStore($settings);
+  const isOffline = useStore($isOffline);
 
   const openModal = () => {
-    modalRef.current?.showModal()
-  }
+    modalRef.current?.showModal();
+  };
 
   const handleRaindropApiKeyChange = (event: Event) => {
-    const target = event.target as HTMLInputElement
-    $settings.setKey('raindropApiKey', target.value)
-  }
+    const target = event.target as HTMLInputElement;
+    $settings.setKey("raindropApiKey", target.value);
+  };
 
   return (
     <>
-      <div className="tooltip tooltip-left" data-tip={isOffline ? "Settings (offline)" : "Settings"}>
+      <div
+        className="tooltip tooltip-left"
+        data-tip={isOffline ? "Settings (offline)" : "Settings"}
+      >
         <button
-          class={`btn btn-ghost btn-circle ${isOffline ? 'btn-disabled' : ''}`}
+          class={`btn btn-ghost btn-circle ${isOffline ? "btn-disabled" : ""}`}
           onClick={isOffline ? undefined : openModal}
           aria-label="Open settings"
           disabled={isOffline}
@@ -54,7 +57,7 @@ export function Settings() {
               </svg>
             </button>
           </form>
-          <div className='grid grid-cols-1 gap-4'>
+          <div className="grid grid-cols-1 gap-4">
             <h3 class="font-bold text-lg">Settings</h3>
             <fieldset class="fieldset">
               <label class="label font-bold" for="raindrop-api-key">
@@ -69,17 +72,24 @@ export function Settings() {
                 onInput={handleRaindropApiKeyChange}
               />
               <p class="label">
-                Get your API key from Raindrop.io settings. All collections will be loaded automatically.
+                Get your API key from Raindrop.io settings. All collections will be loaded
+                automatically.
               </p>
             </fieldset>
 
             <fieldset class="fieldset">
-              <label class="label font-bold" for="raindrop-api-key">Refresh all data</label>
-              <button class="btn justify-self-start" onClick={() => { revalidateKeys(() => true) }}>
+              <label class="label font-bold" for="raindrop-api-key">
+                Refresh all data
+              </label>
+              <button
+                class="btn justify-self-start"
+                onClick={() => {
+                  revalidateKeys(() => true);
+                }}
+              >
                 Refresh
               </button>
             </fieldset>
-
           </div>
         </div>
         <form method="dialog" class="modal-backdrop">
@@ -87,5 +97,5 @@ export function Settings() {
         </form>
       </dialog>
     </>
-  )
+  );
 }

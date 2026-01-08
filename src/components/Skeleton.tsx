@@ -2,24 +2,29 @@ export function CategoryCardSkeleton() {
   return (
     <>
       <div className="collapse not-first:mt-3 max-h-full pointer-events-none opacity-50">
-        <input type="checkbox" checked/>
-        <div className="collapse-title"><div class="skeleton h-4 w-3/5"></div></div>
+        <input type="checkbox" checked />
+        <div className="collapse-title">
+          <div class="skeleton h-4 w-3/5"></div>
+        </div>
         <div className="collapse-content -my-2 px-2 min-w-0 min-h-0 grid text-sm overflow-y-scroll">
           <LinksSkeleton />
         </div>
       </div>
       <div className="collapse not-first:mt-3 max-h-full pointer-events-none opacity-50">
-        <input type="checkbox" checked/>
-        <div className="collapse-title"><div class="skeleton h-4 w-2/3"></div></div>
+        <input type="checkbox" checked />
+        <div className="collapse-title">
+          <div class="skeleton h-4 w-2/3"></div>
+        </div>
       </div>
       <div className="collapse not-first:mt-3 max-h-full pointer-events-none opacity-50">
-        <input type="checkbox" checked/>
-        <div className="collapse-title"><div class="skeleton h-4 w-4/5"></div></div>
+        <input type="checkbox" checked />
+        <div className="collapse-title">
+          <div class="skeleton h-4 w-4/5"></div>
+        </div>
       </div>
     </>
-  )
+  );
 }
-
 
 export function LinksSkeleton() {
   return (
@@ -37,5 +42,5 @@ export function LinksSkeleton() {
         <div class="skeleton h-3 w-2/5"></div>
       </div>
     </div>
-  )
+  );
 }

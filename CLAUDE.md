@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Bento is a minimalist, elegant and hackable startpage inspired by the Bento box. It's a personalized new tab page built with **Preact**, **TypeScript**, **Tailwind CSS**, **DaisyUI**, and **nanostores**.
 
 ## Technology Stack
+
 - **Framework**: Preact v10 (lightweight React alternative)
 - **Build Tool**: Parcel v2
 - **State Management**: nanostores + @nanostores/query
@@ -17,6 +18,7 @@ Bento is a minimalist, elegant and hackable startpage inspired by the Bento box.
 ## MCP Context7 Usage
 
 When working with this codebase, use MCP Context7 to get up-to-date documentation for:
+
 - **Tailwind CSS v4**: Latest utility classes and configuration
 - **DaisyUI v5**: Component classes and theming
 - **nanostores**: State management patterns and APIs
@@ -64,9 +66,10 @@ src/
 ## Development
 
 ```bash
-npm run dev     # Start dev server
-npm run build   # Production build
-npm run lint    # Check code quality
+bun run dev      # Start dev server
+bun run build    # Production build
+bun run lint     # Check code quality
+bun run format   # Format code
 ```
 
 ## Important Notes
@@ -85,22 +88,26 @@ npm run lint    # Check code quality
 ## Adding Features
 
 ### New Setting
+
 1. Update `src/models/settings.ts` interface
 2. Add to `defaultSettings` and `SettingsFormFields`
 3. Update Settings component UI
 
 ### New API Endpoint
+
 1. Add schema validation in `raindrop-schemas.ts`
 2. Create store in `raindrop-fetcher.ts` using `createRaindropApiFetcherStore`
 3. Use with `useStore()` in components
 
 ### New Component
+
 1. Create `.tsx` file in `src/components/`
 2. Use `useStore()` for nanostores access
 3. Handle loading/error/data states properly
 4. For icons, use SVG sprite: `<svg class="w-5 h-5"><use href="#iconId" /></svg>`
 
 ### Adding New Icons
+
 1. Add SVG `<symbol>` with unique ID to `src/index.html` inside the hidden SVG element
 2. Use in components: `<svg class="w-5 h-5"><use href="#yourIconId" /></svg>`
 3. This approach keeps bundle size small by avoiding icon libraries
@@ -112,11 +119,13 @@ API → nanoquery → Valibot validation → nanostores → Components
 ```
 
 ### Category Hierarchy
+
 1. **Fetch**: `$userData`, `$rootCategories`, `$childCategories`
 2. **Process**: `$collections` builds hierarchy with sorting
 3. **Display**: `Category` → `NestedCategories` → recursive structure
 
 ### Error Handling Pattern
+
 ```typescript
 const { loading, data, error } = useStore($someStore)
 

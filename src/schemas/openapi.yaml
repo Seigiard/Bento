@@ -68,7 +68,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetRootCollectionsResponse'
+                $ref: "#/components/schemas/GetRootCollectionsResponse"
     put:
       operationId: reorderAllCollections
       tags:
@@ -89,7 +89,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SimpleResponse'
+                $ref: "#/components/schemas/SimpleResponse"
     delete:
       operationId: removeCollections
       tags:
@@ -111,7 +111,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RemoveCollectionsResponse'
+                $ref: "#/components/schemas/RemoveCollectionsResponse"
 
   /rest/v1/collections/childrens:
     get:
@@ -124,7 +124,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetChildCollectionsResponse'
+                $ref: "#/components/schemas/GetChildCollectionsResponse"
 
   /rest/v1/collection/{id}:
     parameters:
@@ -143,7 +143,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetCollectionResponse'
+                $ref: "#/components/schemas/GetCollectionResponse"
     put:
       operationId: updateCollection
       tags:
@@ -152,14 +152,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateCollectionRequest'
+              $ref: "#/components/schemas/UpdateCollectionRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateCollectionResponse'
+                $ref: "#/components/schemas/UpdateCollectionResponse"
     delete:
       operationId: removeCollection
       tags:
@@ -170,7 +170,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SimpleResponse'
+                $ref: "#/components/schemas/SimpleResponse"
 
   /rest/v1/collection:
     post:
@@ -181,14 +181,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateCollectionRequest'
+              $ref: "#/components/schemas/CreateCollectionRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateCollectionResponse'
+                $ref: "#/components/schemas/CreateCollectionResponse"
 
   /rest/v1/collection/{id}/cover:
     put:
@@ -216,7 +216,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UploadCollectionCoverResponse'
+                $ref: "#/components/schemas/UploadCollectionCoverResponse"
 
   /rest/v1/collections/merge:
     put:
@@ -241,7 +241,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MergeCollectionsResponse'
+                $ref: "#/components/schemas/MergeCollectionsResponse"
 
   /rest/v1/collections/clean:
     put:
@@ -254,7 +254,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RemoveAllEmptyCollectionsResponse'
+                $ref: "#/components/schemas/RemoveAllEmptyCollectionsResponse"
 
   /rest/v1/collection/-99:
     delete:
@@ -267,7 +267,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SimpleResponse'
+                $ref: "#/components/schemas/SimpleResponse"
 
   /rest/v1/user/stats:
     get:
@@ -281,7 +281,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetSystemCollectionStatsResponse'
+                $ref: "#/components/schemas/GetSystemCollectionStatsResponse"
 
   /rest/v1/collection/{id}/sharing:
     parameters:
@@ -305,14 +305,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ShareCollectionRequest'
+              $ref: "#/components/schemas/ShareCollectionRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShareCollectionResponse'
+                $ref: "#/components/schemas/ShareCollectionResponse"
 
     delete:
       operationId: unshareOrLeaveCollection
@@ -324,7 +324,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SimpleResponse'
+                $ref: "#/components/schemas/SimpleResponse"
 
   /rest/v1/collection/{id}/sharing/{userId}:
     parameters:
@@ -349,7 +349,7 @@ paths:
               type: object
               properties:
                 role:
-                  $ref: '#/components/schemas/Role'
+                  $ref: "#/components/schemas/Role"
       responses:
         200:
           description: OK
@@ -363,7 +363,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SimpleResponse'
+                $ref: "#/components/schemas/SimpleResponse"
 
   /rest/v1/collection/{id}/join:
     post:
@@ -387,7 +387,7 @@ paths:
                   result:
                     type: boolean
                   role:
-                    $ref: '#/components/schemas/Role'
+                    $ref: "#/components/schemas/Role"
 
   /rest/v1/collections/covers/{text}:
     get:
@@ -406,7 +406,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchCoversResponse'
+                $ref: "#/components/schemas/SearchCoversResponse"
 
   /rest/v1/collections/covers:
     get:
@@ -419,7 +419,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetFeaturedCoversResponse'
+                $ref: "#/components/schemas/GetFeaturedCoversResponse"
 
   /rest/v1/raindrop:
     post:
@@ -430,14 +430,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateRaindropRequest'
+              $ref: "#/components/schemas/CreateRaindropRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateRaindropResponse'
+                $ref: "#/components/schemas/CreateRaindropResponse"
 
   /rest/v1/raindrop/{id}:
     parameters:
@@ -457,7 +457,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetRaindropResponse'
+                $ref: "#/components/schemas/GetRaindropResponse"
     put:
       operationId: updateRaindrop
       tags:
@@ -467,14 +467,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateRaindropRequest'
+              $ref: "#/components/schemas/UpdateRaindropRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateRaindropResponse'
+                $ref: "#/components/schemas/UpdateRaindropResponse"
     delete:
       operationId: removeRaindrop
       tags:
@@ -485,7 +485,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RemoveRaindropResponse'
+                $ref: "#/components/schemas/RemoveRaindropResponse"
 
   /rest/v1/raindrop/file:
     put:
@@ -496,14 +496,14 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UploadFileRequest'
+              $ref: "#/components/schemas/UploadFileRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UploadFileResponse'
+                $ref: "#/components/schemas/UploadFileResponse"
 
   /rest/v1/raindrop/{id}/cover:
     put:
@@ -520,7 +520,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UploadRaindropCoverRequest'
+              $ref: "#/components/schemas/UploadRaindropCoverRequest"
 
       responses:
         200:
@@ -528,7 +528,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UploadRaindropCoverResponse'
+                $ref: "#/components/schemas/UploadRaindropCoverResponse"
 
   /rest/v1/raindrop/{id}/cache:
     get:
@@ -564,7 +564,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuggestForNewBookmarkResponse'
+                $ref: "#/components/schemas/SuggestForNewBookmarkResponse"
 
   /rest/v1/raindrop/{id}/suggest:
     get:
@@ -583,7 +583,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuggestForExistingBookmarkResponse'
+                $ref: "#/components/schemas/SuggestForExistingBookmarkResponse"
 
   /rest/v1/raindrops/{collectionId}:
     parameters:
@@ -619,7 +619,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetRaindropsResponse'
+                $ref: "#/components/schemas/GetRaindropsResponse"
     put:
       operationId: updateRaindrops
       tags:
@@ -628,14 +628,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateRaindropsRequest'
+              $ref: "#/components/schemas/UpdateRaindropsRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateRaindropsResponse'
+                $ref: "#/components/schemas/UpdateRaindropsResponse"
     delete:
       operationId: removeRaindrops
       tags:
@@ -649,14 +649,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RemoveRaindropsRequest'
+              $ref: "#/components/schemas/RemoveRaindropsRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RemoveRaindropsResponse'
+                $ref: "#/components/schemas/RemoveRaindropsResponse"
 
   /rest/v1/raindrops:
     post:
@@ -667,14 +667,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateRaindropsRequest'
+              $ref: "#/components/schemas/CreateRaindropsRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateRaindropsResponse'
+                $ref: "#/components/schemas/CreateRaindropsResponse"
 
   /rest/v1/highlights:
     get:
@@ -696,7 +696,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetAllHighlightsResponse'
+                $ref: "#/components/schemas/GetAllHighlightsResponse"
 
   /rest/v1/highlights/{collectionId}:
     get:
@@ -723,7 +723,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetHighlightsInCollectionResponse'
+                $ref: "#/components/schemas/GetHighlightsInCollectionResponse"
 
   /rest/v1/user:
     get:
@@ -736,7 +736,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetCurrentUserResponse'
+                $ref: "#/components/schemas/GetCurrentUserResponse"
     put:
       operationId: updateCurrentUser
       tags:
@@ -745,14 +745,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateCurrentUserRequest'
+              $ref: "#/components/schemas/UpdateCurrentUserRequest"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateCurrentUserResponse'
+                $ref: "#/components/schemas/UpdateCurrentUserResponse"
 
   /rest/v1/user/{name}:
     get:
@@ -771,7 +771,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetPublicUserByNameResponse'
+                $ref: "#/components/schemas/GetPublicUserByNameResponse"
 
   /rest/v1/user/connect/{provider}:
     get:
@@ -822,7 +822,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetTagsInCollectionResponse'
+                $ref: "#/components/schemas/GetTagsInCollectionResponse"
     put:
       operationId: renameOrMergeTags
       tags:
@@ -851,7 +851,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SimpleResponse'
+                $ref: "#/components/schemas/SimpleResponse"
     delete:
       operationId: removeTagsFromCollection
       tags:
@@ -878,7 +878,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SimpleResponse'
+                $ref: "#/components/schemas/SimpleResponse"
 
   /rest/v1/filters/{collectionId}:
     get:
@@ -906,7 +906,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetFiltersResponse'
+                $ref: "#/components/schemas/GetFiltersResponse"
 
   /rest/v1/import/url/parse:
     get:
@@ -925,7 +925,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ParseURLResponse'
+                $ref: "#/components/schemas/ParseURLResponse"
 
   /rest/v1/import/url/exists:
     post:
@@ -949,7 +949,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CheckURLsExistResponse'
+                $ref: "#/components/schemas/CheckURLsExistResponse"
 
   /rest/v1/import/file:
     post:
@@ -971,7 +971,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ImportHTMLBookmarkFileResponse'
+                $ref: "#/components/schemas/ImportHTMLBookmarkFileResponse"
 components:
   securitySchemes:
     # checkov:skip=CKV_OPENAPI_3:FIXME
@@ -1101,7 +1101,7 @@ components:
         _id:
           type: integer
         config:
-          $ref: '#/components/schemas/UserConfig'
+          $ref: "#/components/schemas/UserConfig"
         dropbox:
           type: object
           required: [enabled]
@@ -1135,7 +1135,7 @@ components:
         groups:
           type: array
           items:
-            $ref: '#/components/schemas/Group'
+            $ref: "#/components/schemas/Group"
         password:
           type: boolean
         pro:
@@ -1250,7 +1250,7 @@ components:
         description:
           type: string
         user:
-          $ref: '#/components/schemas/UserRef'
+          $ref: "#/components/schemas/UserRef"
         public:
           type: boolean
         view:
@@ -1266,7 +1266,7 @@ components:
         expanded:
           type: boolean
         creatorRef:
-          $ref: '#/components/schemas/CreatorRef'
+          $ref: "#/components/schemas/CreatorRef"
         lastAction:
           type: string
           format: date-time
@@ -1281,7 +1281,7 @@ components:
         color:
           type: string
         access:
-          $ref: '#/components/schemas/CollectionAccess'
+          $ref: "#/components/schemas/CollectionAccess"
         author:
           type: boolean
         parent:
@@ -1304,7 +1304,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Collection'
+            $ref: "#/components/schemas/Collection"
 
     RemoveCollectionsResponse:
       type: object
@@ -1329,12 +1329,12 @@ components:
           type: array
           items:
             allOf:
-              - $ref: '#/components/schemas/Collection'
+              - $ref: "#/components/schemas/Collection"
               - type: object
                 required: [parent]
                 properties:
                   parent:
-                    $ref: '#/components/schemas/CollectionRef'
+                    $ref: "#/components/schemas/CollectionRef"
 
     GetCollectionResponse:
       type: object
@@ -1342,7 +1342,7 @@ components:
         result:
           type: boolean
         item:
-          $ref: '#/components/schemas/Collection'
+          $ref: "#/components/schemas/Collection"
 
     UpdateCollectionRequest:
       type: object
@@ -1355,9 +1355,9 @@ components:
           type: integer
         public:
           type: boolean
-          description: 'Collection and raindrops that it contains will be accessible without authentication?'
+          description: "Collection and raindrops that it contains will be accessible without authentication?"
         parent:
-          $ref: '#/components/schemas/CollectionRef'
+          $ref: "#/components/schemas/CollectionRef"
         cover:
           type: array
           items:
@@ -1373,7 +1373,7 @@ components:
         result:
           type: boolean
         item:
-          $ref: '#/components/schemas/Collection'
+          $ref: "#/components/schemas/Collection"
 
     CreateCollectionRequest:
       type: object
@@ -1388,7 +1388,7 @@ components:
         public:
           type: boolean
         parent:
-          $ref: '#/components/schemas/CollectionRef'
+          $ref: "#/components/schemas/CollectionRef"
         cover:
           type: array
           items:
@@ -1403,14 +1403,14 @@ components:
           type: boolean
         item:
           allOf:
-            - $ref: '#/components/schemas/Collection'
+            - $ref: "#/components/schemas/Collection"
             - type: object
               required: [__v, creatorRef, parent]
               properties:
                 __v:
                   type: integer
                 creatorRef:
-                  $ref: '#/components/schemas/CreatorRef'
+                  $ref: "#/components/schemas/CreatorRef"
                 parent:
                   type: object
                   nullable: true
@@ -1423,7 +1423,7 @@ components:
           type: boolean
         item:
           allOf:
-            - $ref: '#/components/schemas/Collection'
+            - $ref: "#/components/schemas/Collection"
             - type: object
               required: [__v]
               properties:
@@ -1486,7 +1486,7 @@ components:
       required: [emails, role]
       properties:
         role:
-          $ref: '#/components/schemas/Role'
+          $ref: "#/components/schemas/Role"
         emails:
           type: array
           items:
@@ -1744,7 +1744,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/ImportHTMLBookmarkFileResponseItemFolder'
+            $ref: "#/components/schemas/ImportHTMLBookmarkFileResponseItemFolder"
         count:
           type: object
           required: [bookmarks, folders, tags, highlights, duplicates]
@@ -1769,11 +1769,11 @@ components:
         folders:
           type: array
           items:
-            $ref: '#/components/schemas/ImportHTMLBookmarkFileResponseItemFolder'
+            $ref: "#/components/schemas/ImportHTMLBookmarkFileResponseItemFolder"
         bookmarks:
           type: array
           items:
-            $ref: '#/components/schemas/ImportHTMLBookmarkFileResponseItemBookmark'
+            $ref: "#/components/schemas/ImportHTMLBookmarkFileResponseItemBookmark"
 
     ImportHTMLBookmarkFileResponseItemBookmark:
       type: object
@@ -1900,7 +1900,7 @@ components:
             _id:
               type: integer
             collection:
-              $ref: '#/components/schemas/CollectionRef'
+              $ref: "#/components/schemas/CollectionRef"
             collectionId:
               type: integer
             cover:
@@ -1909,7 +1909,7 @@ components:
               type: string
               format: date-time
             creatorRef:
-              $ref: '#/components/schemas/CreatorRef'
+              $ref: "#/components/schemas/CreatorRef"
             domain:
               type: string
             excerpt:
@@ -1945,7 +1945,7 @@ components:
             type:
               type: string
             user:
-              $ref: '#/components/schemas/UserRef'
+              $ref: "#/components/schemas/UserRef"
 
     GetRaindropResponse:
       type: object
@@ -1983,7 +1983,7 @@ components:
             _id:
               type: integer
             collection:
-              $ref: '#/components/schemas/CollectionRef'
+              $ref: "#/components/schemas/CollectionRef"
             collectionId:
               type: integer
             cover:
@@ -1992,7 +1992,7 @@ components:
               type: string
               format: date-time
             creatorRef:
-              $ref: '#/components/schemas/CreatorRef'
+              $ref: "#/components/schemas/CreatorRef"
             domain:
               type: string
             excerpt:
@@ -2014,7 +2014,7 @@ components:
                     type: string
                     format: date-time
                   creatorRef:
-                    $ref: '#/components/schemas/CreatorRef'
+                    $ref: "#/components/schemas/CreatorRef"
                   _id:
                     type: string
             lastUpdate:
@@ -2048,7 +2048,7 @@ components:
             type:
               type: string
             user:
-              $ref: '#/components/schemas/UserRef'
+              $ref: "#/components/schemas/UserRef"
 
     UpdateRaindropRequest:
       type: object
@@ -2089,7 +2089,7 @@ components:
             _id:
               type: integer
             collection:
-              $ref: '#/components/schemas/CollectionRef'
+              $ref: "#/components/schemas/CollectionRef"
             collectionId:
               type: integer
             cover:
@@ -2098,7 +2098,7 @@ components:
               type: string
               format: date-time
             creatorRef:
-              $ref: '#/components/schemas/CreatorRef'
+              $ref: "#/components/schemas/CreatorRef"
             domain:
               type: string
             excerpt:
@@ -2134,7 +2134,7 @@ components:
             type:
               type: string
             user:
-              $ref: '#/components/schemas/UserRef'
+              $ref: "#/components/schemas/UserRef"
             highlights:
               type: array
               items:
@@ -2152,7 +2152,7 @@ components:
                     type: string
                     format: date-time
                   creatorRef:
-                    $ref: '#/components/schemas/CreatorRef'
+                    $ref: "#/components/schemas/CreatorRef"
                   _id:
                     type: string
 
@@ -2189,7 +2189,7 @@ components:
             _id:
               type: integer
             collection:
-              $ref: '#/components/schemas/CollectionRef'
+              $ref: "#/components/schemas/CollectionRef"
             collectionId:
               type: integer
             cover:
@@ -2198,7 +2198,7 @@ components:
               type: string
               format: date-time
             creatorRef:
-              $ref: '#/components/schemas/CreatorRef'
+              $ref: "#/components/schemas/CreatorRef"
             domain:
               type: string
             excerpt:
@@ -2236,7 +2236,7 @@ components:
             type:
               type: string
             user:
-              $ref: '#/components/schemas/UserRef'
+              $ref: "#/components/schemas/UserRef"
 
     UploadFileRequest:
       type: object
@@ -2284,7 +2284,7 @@ components:
             _id:
               type: integer
             collection:
-              $ref: '#/components/schemas/CollectionRef'
+              $ref: "#/components/schemas/CollectionRef"
             collectionId:
               type: integer
             cover:
@@ -2294,7 +2294,7 @@ components:
               type: string
               format: date-time
             creatorRef:
-              $ref: '#/components/schemas/CreatorRef'
+              $ref: "#/components/schemas/CreatorRef"
             domain:
               type: string
             excerpt:
@@ -2340,7 +2340,7 @@ components:
             type:
               type: string
             user:
-              $ref: '#/components/schemas/UserRef'
+              $ref: "#/components/schemas/UserRef"
 
     UploadRaindropCoverRequest:
       type: object
@@ -2384,7 +2384,7 @@ components:
             _id:
               type: integer
             collection:
-              $ref: '#/components/schemas/CollectionRef'
+              $ref: "#/components/schemas/CollectionRef"
             collectionId:
               type: integer
             cover:
@@ -2394,7 +2394,7 @@ components:
               type: string
               format: date-time
             creatorRef:
-              $ref: '#/components/schemas/CreatorRef'
+              $ref: "#/components/schemas/CreatorRef"
             domain:
               type: string
             excerpt:
@@ -2430,7 +2430,7 @@ components:
             type:
               type: string
             user:
-              $ref: '#/components/schemas/UserRef'
+              $ref: "#/components/schemas/UserRef"
 
     SuggestForNewBookmarkResponse:
       type: object
@@ -2484,7 +2484,7 @@ components:
               _id:
                 type: integer
               collection:
-                $ref: '#/components/schemas/CollectionRef'
+                $ref: "#/components/schemas/CollectionRef"
               collectionId:
                 type: integer
               cover:
@@ -2493,7 +2493,7 @@ components:
                 type: string
                 format: date-time
               creatorRef:
-                $ref: '#/components/schemas/CreatorRef'
+                $ref: "#/components/schemas/CreatorRef"
               domain:
                 type: string
               excerpt:
@@ -2515,7 +2515,7 @@ components:
                       type: string
                       format: date-time
                     creatorRef:
-                      $ref: '#/components/schemas/CreatorRef'
+                      $ref: "#/components/schemas/CreatorRef"
                     _id:
                       type: string
               lastUpdate:
@@ -2549,7 +2549,7 @@ components:
               type:
                 type: string
               user:
-                $ref: '#/components/schemas/UserRef'
+                $ref: "#/components/schemas/UserRef"
 
     UpdateRaindropsRequest:
       type: object
@@ -2644,7 +2644,7 @@ components:
               _id:
                 type: integer
               collection:
-                $ref: '#/components/schemas/CollectionRef'
+                $ref: "#/components/schemas/CollectionRef"
               collectionId:
                 type: integer
               cover:
@@ -2653,7 +2653,7 @@ components:
                 type: string
                 format: date-time
               creatorRef:
-                $ref: '#/components/schemas/CreatorRef'
+                $ref: "#/components/schemas/CreatorRef"
               domain:
                 type: string
               excerpt:
@@ -2689,7 +2689,7 @@ components:
               type:
                 type: string
               user:
-                $ref: '#/components/schemas/UserRef'
+                $ref: "#/components/schemas/UserRef"
               highlights:
                 type: array
                 items:
@@ -2707,7 +2707,7 @@ components:
                       type: string
                       format: date-time
                     creatorRef:
-                      $ref: '#/components/schemas/CreatorRef'
+                      $ref: "#/components/schemas/CreatorRef"
                     _id:
                       type: string
 
@@ -2738,7 +2738,7 @@ components:
         - required: [user]
           properties:
             user:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
 
     UpdateCurrentUserRequest:
       type: object
@@ -2759,7 +2759,7 @@ components:
                 items:
                   type: integer
         config:
-          $ref: '#/components/schemas/UserConfig'
+          $ref: "#/components/schemas/UserConfig"
         newpassword:
           type: string
         oldpassword:
@@ -2777,13 +2777,13 @@ components:
           type: boolean
         user:
           allOf:
-            - $ref: '#/components/schemas/User'
+            - $ref: "#/components/schemas/User"
             - properties:
                 __v:
                   type: integer
         item:
           allOf:
-            - $ref: '#/components/schemas/User'
+            - $ref: "#/components/schemas/User"
             - properties:
                 __v:
                   type: integer
@@ -2796,7 +2796,8 @@ components:
           type: boolean
         user:
           type: object
-          required: [_id, fullName, name, email, avatar, pro, lastAction, registered, lastUpdate, config]
+          required:
+            [_id, fullName, name, email, avatar, pro, lastAction, registered, lastUpdate, config]
           properties:
             _id:
               type: integer

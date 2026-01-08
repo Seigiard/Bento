@@ -7,15 +7,19 @@
 ## Основные принципы
 
 ### 1. **Изоляция бизнес-логики от UI**
+
 Core слой не содержит никаких зависимостей от UI фреймворков, DOM API или специфичных для платформы функций.
 
 ### 2. **Dependency Injection через конструкторы**
+
 Все зависимости передаются явно через конструкторы, без использования глобальных состояний или сложных DI контейнеров.
 
 ### 3. **Event-driven коммуникация**
+
 Сервисы уведомляют об изменениях через простую систему подписок, что позволяет UI слою реагировать на изменения framework-agnostic способом.
 
 ### 4. **Адаптеры для внешних систем**
+
 Все взаимодействия с внешними API, базами данных и другими системами изолированы в отдельном слое адаптеров.
 
 ## Структура слоев
@@ -52,23 +56,23 @@ src/
 // core/models/Category.js
 export class Category {
   constructor(id, title, parentId = null) {
-    this.id = id
-    this.title = title
-    this.parentId = parentId
-    this.isExpanded = false
-    this.children = []
-    this.raindrops = []
+    this.id = id;
+    this.title = title;
+    this.parentId = parentId;
+    this.isExpanded = false;
+    this.children = [];
+    this.raindrops = [];
   }
 }
 
 // core/models/Raindrop.js
 export class Raindrop {
   constructor(id, title, link, excerpt, tags = []) {
-    this.id = id
-    this.title = title
-    this.link = link
-    this.excerpt = excerpt
-    this.tags = tags
+    this.id = id;
+    this.title = title;
+    this.link = link;
+    this.excerpt = excerpt;
+    this.tags = tags;
   }
 }
 ```
@@ -95,44 +99,44 @@ export interface IStateProvider {
 // core/services/CategoryService.js
 export class CategoryService {
   constructor(dataProvider, stateProvider) {
-    this.dataProvider = dataProvider
-    this.stateProvider = stateProvider
-    this.listeners = new Set()
+    this.dataProvider = dataProvider;
+    this.stateProvider = stateProvider;
+    this.listeners = new Set();
   }
 
   // Методы бизнес-логики
   async loadRootCategories() {
-    const categories = await this.dataProvider.getRootCategories()
-    this.notifyListeners({ type: 'categoriesLoaded', categories })
-    return categories
+    const categories = await this.dataProvider.getRootCategories();
+    this.notifyListeners({ type: "categoriesLoaded", categories });
+    return categories;
   }
 
   async toggleCategory(categoryId) {
-    const state = await this.stateProvider.getState(`category:${categoryId}`)
+    const state = await this.stateProvider.getState(`category:${categoryId}`);
 
     if (!state?.isExpanded) {
-      const children = await this.dataProvider.getChildCategories(categoryId)
-      await this.stateProvider.setState(`category:${categoryId}`, { isExpanded: true })
+      const children = await this.dataProvider.getChildCategories(categoryId);
+      await this.stateProvider.setState(`category:${categoryId}`, { isExpanded: true });
 
       this.notifyListeners({
-        type: 'categoryExpanded',
+        type: "categoryExpanded",
         categoryId,
-        children
-      })
+        children,
+      });
     } else {
-      await this.stateProvider.setState(`category:${categoryId}`, { isExpanded: false })
-      this.notifyListeners({ type: 'categoryCollapsed', categoryId })
+      await this.stateProvider.setState(`category:${categoryId}`, { isExpanded: false });
+      this.notifyListeners({ type: "categoryCollapsed", categoryId });
     }
   }
 
   // Система подписок
   subscribe(listener) {
-    this.listeners.add(listener)
-    return () => this.listeners.delete(listener)
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
   }
 
   notifyListeners(event) {
-    this.listeners.forEach(listener => listener(event))
+    this.listeners.forEach((listener) => listener(event));
   }
 }
 ```
@@ -145,29 +149,27 @@ export class CategoryService {
 // data/providers/RaindropDataProvider.js
 export class RaindropDataProvider {
   constructor(apiClient, cache) {
-    this.apiClient = apiClient
-    this.cache = cache
+    this.apiClient = apiClient;
+    this.cache = cache;
   }
 
   async getRootCategories() {
-    const cacheKey = 'categories:root'
-    const cached = await this.cache.get(cacheKey)
+    const cacheKey = "categories:root";
+    const cached = await this.cache.get(cacheKey);
 
     if (cached && !this.isExpired(cached)) {
-      return cached.data
+      return cached.data;
     }
 
-    const response = await this.apiClient.getCollections()
-    const categories = response.items.map(item =>
-      new Category(item._id, item.title)
-    )
+    const response = await this.apiClient.getCollections();
+    const categories = response.items.map((item) => new Category(item._id, item.title));
 
     await this.cache.set(cacheKey, {
       data: categories,
-      timestamp: Date.now()
-    })
+      timestamp: Date.now(),
+    });
 
-    return categories
+    return categories;
   }
 
   async getChildCategories(parentId) {
@@ -175,7 +177,7 @@ export class RaindropDataProvider {
   }
 
   isExpired(cached, ttl = 5 * 60 * 1000) {
-    return Date.now() - cached.timestamp > ttl
+    return Date.now() - cached.timestamp > ttl;
   }
 }
 ```
@@ -186,50 +188,50 @@ export class RaindropDataProvider {
 // data/providers/IndexedDBStateProvider.js
 export class IndexedDBStateProvider {
   constructor() {
-    this.dbName = 'RaindropExtension'
-    this.version = 1
-    this.db = null
+    this.dbName = "RaindropExtension";
+    this.version = 1;
+    this.db = null;
   }
 
   async init() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open(this.dbName, this.version)
+      const request = indexedDB.open(this.dbName, this.version);
 
-      request.onerror = () => reject(request.error)
+      request.onerror = () => reject(request.error);
       request.onsuccess = () => {
-        this.db = request.result
-        resolve()
-      }
+        this.db = request.result;
+        resolve();
+      };
 
       request.onupgradeneeded = (event) => {
-        const db = event.target.result
-        if (!db.objectStoreNames.contains('states')) {
-          db.createObjectStore('states', { keyPath: 'key' })
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains("states")) {
+          db.createObjectStore("states", { keyPath: "key" });
         }
-      }
-    })
+      };
+    });
   }
 
   async getState(key) {
-    const transaction = this.db.transaction(['states'], 'readonly')
-    const store = transaction.objectStore('states')
+    const transaction = this.db.transaction(["states"], "readonly");
+    const store = transaction.objectStore("states");
 
     return new Promise((resolve, reject) => {
-      const request = store.get(key)
-      request.onsuccess = () => resolve(request.result?.value)
-      request.onerror = () => reject(request.error)
-    })
+      const request = store.get(key);
+      request.onsuccess = () => resolve(request.result?.value);
+      request.onerror = () => reject(request.error);
+    });
   }
 
   async setState(key, value) {
-    const transaction = this.db.transaction(['states'], 'readwrite')
-    const store = transaction.objectStore('states')
+    const transaction = this.db.transaction(["states"], "readwrite");
+    const store = transaction.objectStore("states");
 
     return new Promise((resolve, reject) => {
-      const request = store.put({ key, value })
-      request.onsuccess = () => resolve()
-      request.onerror = () => reject(request.error)
-    })
+      const request = store.put({ key, value });
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
   }
 }
 ```
@@ -240,89 +242,92 @@ export class IndexedDBStateProvider {
 
 ```javascript
 // ui-adapters/react/useCategoryService.js
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from "react";
 
 export function useCategoryService(categoryService) {
-  const [categories, setCategories] = useState([])
-  const [expandedIds, setExpandedIds] = useState(new Set())
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [categories, setCategories] = useState([]);
+  const [expandedIds, setExpandedIds] = useState(new Set());
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const unsubscribe = categoryService.subscribe((event) => {
       switch (event.type) {
-        case 'categoriesLoaded':
-          setCategories(event.categories)
-          setLoading(false)
-          break
+        case "categoriesLoaded":
+          setCategories(event.categories);
+          setLoading(false);
+          break;
 
-        case 'categoryExpanded':
-          setExpandedIds(prev => new Set([...prev, event.categoryId]))
-          updateCategoryInTree(event.categoryId, cat => ({
+        case "categoryExpanded":
+          setExpandedIds((prev) => new Set([...prev, event.categoryId]));
+          updateCategoryInTree(event.categoryId, (cat) => ({
             ...cat,
             children: event.children,
-            isExpanded: true
-          }))
-          break
+            isExpanded: true,
+          }));
+          break;
 
-        case 'categoryCollapsed':
-          setExpandedIds(prev => {
-            const next = new Set(prev)
-            next.delete(event.categoryId)
-            return next
-          })
-          updateCategoryInTree(event.categoryId, cat => ({
+        case "categoryCollapsed":
+          setExpandedIds((prev) => {
+            const next = new Set(prev);
+            next.delete(event.categoryId);
+            return next;
+          });
+          updateCategoryInTree(event.categoryId, (cat) => ({
             ...cat,
-            isExpanded: false
-          }))
-          break
+            isExpanded: false,
+          }));
+          break;
 
-        case 'error':
-          setError(event.error)
-          setLoading(false)
-          break
+        case "error":
+          setError(event.error);
+          setLoading(false);
+          break;
       }
-    })
+    });
 
     // Начальная загрузка
-    categoryService.loadRootCategories().catch(err => {
-      setError(err)
-      setLoading(false)
-    })
+    categoryService.loadRootCategories().catch((err) => {
+      setError(err);
+      setLoading(false);
+    });
 
-    return unsubscribe
-  }, [categoryService])
+    return unsubscribe;
+  }, [categoryService]);
 
-  const toggleCategory = useCallback((categoryId) => {
-    categoryService.toggleCategory(categoryId)
-  }, [categoryService])
+  const toggleCategory = useCallback(
+    (categoryId) => {
+      categoryService.toggleCategory(categoryId);
+    },
+    [categoryService],
+  );
 
   const updateCategoryInTree = useCallback((categoryId, updater) => {
-    setCategories(prev => updateCategoryRecursive(prev, categoryId, updater))
-  }, [])
+    setCategories((prev) => updateCategoryRecursive(prev, categoryId, updater));
+  }, []);
 
   return {
     categories,
     expandedIds,
     loading,
     error,
-    toggleCategory
-  }
+    toggleCategory,
+  };
 }
 
 function updateCategoryRecursive(categories, targetId, updater) {
-  return categories.map(category => {
+  return categories.map((category) => {
     if (category.id === targetId) {
-      return updater(category)
+      return updater(category);
     }
     if (category.children?.length > 0) {
       return {
         ...category,
-        children: updateCategoryRecursive(category.children, targetId, updater)
-      }
+        children: updateCategoryRecursive(category.children, targetId, updater),
+      };
     }
-    return category
-  })
+    return category;
+  });
 }
 ```
 
@@ -330,44 +335,44 @@ function updateCategoryRecursive(categories, targetId, updater) {
 
 ```javascript
 // ui-adapters/vue/useCategoryService.js
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from "vue";
 
 export function useCategoryService(categoryService) {
-  const categories = ref([])
-  const expandedIds = ref(new Set())
-  const loading = ref(true)
-  const error = ref(null)
+  const categories = ref([]);
+  const expandedIds = ref(new Set());
+  const loading = ref(true);
+  const error = ref(null);
 
-  let unsubscribe = null
+  let unsubscribe = null;
 
   const toggleCategory = (categoryId) => {
-    categoryService.toggleCategory(categoryId)
-  }
+    categoryService.toggleCategory(categoryId);
+  };
 
   onMounted(async () => {
     unsubscribe = categoryService.subscribe((event) => {
       // Обработка событий аналогично React версии
-    })
+    });
 
     try {
-      await categoryService.loadRootCategories()
+      await categoryService.loadRootCategories();
     } catch (err) {
-      error.value = err
-      loading.value = false
+      error.value = err;
+      loading.value = false;
     }
-  })
+  });
 
   onUnmounted(() => {
-    unsubscribe?.()
-  })
+    unsubscribe?.();
+  });
 
   return {
     categories,
     expandedIds,
     loading,
     error,
-    toggleCategory
-  }
+    toggleCategory,
+  };
 }
 ```
 
@@ -377,83 +382,87 @@ export function useCategoryService(categoryService) {
 // ui-adapters/vanilla/CategoryController.js
 export class CategoryController {
   constructor(categoryService, rootElement) {
-    this.categoryService = categoryService
-    this.rootElement = rootElement
+    this.categoryService = categoryService;
+    this.rootElement = rootElement;
     this.state = {
       categories: [],
       expandedIds: new Set(),
       loading: true,
-      error: null
-    }
-    this.unsubscribe = null
+      error: null,
+    };
+    this.unsubscribe = null;
   }
 
   init() {
     // Подписка на события
     this.unsubscribe = this.categoryService.subscribe((event) => {
-      this.handleEvent(event)
-      this.render()
-    })
+      this.handleEvent(event);
+      this.render();
+    });
 
     // Обработка кликов
-    this.rootElement.addEventListener('click', (e) => {
-      const categoryEl = e.target.closest('[data-category-id]')
+    this.rootElement.addEventListener("click", (e) => {
+      const categoryEl = e.target.closest("[data-category-id]");
       if (categoryEl) {
-        const categoryId = categoryEl.dataset.categoryId
-        this.categoryService.toggleCategory(categoryId)
+        const categoryId = categoryEl.dataset.categoryId;
+        this.categoryService.toggleCategory(categoryId);
       }
-    })
+    });
 
     // Начальная загрузка
-    this.categoryService.loadRootCategories().catch(err => {
-      this.state.error = err
-      this.state.loading = false
-      this.render()
-    })
+    this.categoryService.loadRootCategories().catch((err) => {
+      this.state.error = err;
+      this.state.loading = false;
+      this.render();
+    });
   }
 
   handleEvent(event) {
     switch (event.type) {
-      case 'categoriesLoaded':
-        this.state.categories = event.categories
-        this.state.loading = false
-        break
+      case "categoriesLoaded":
+        this.state.categories = event.categories;
+        this.state.loading = false;
+        break;
       // Остальные события...
     }
   }
 
   render() {
     if (this.state.loading) {
-      this.rootElement.innerHTML = '<div class="loading">Loading...</div>'
-      return
+      this.rootElement.innerHTML = '<div class="loading">Loading...</div>';
+      return;
     }
 
     if (this.state.error) {
-      this.rootElement.innerHTML = `<div class="error">${this.state.error.message}</div>`
-      return
+      this.rootElement.innerHTML = `<div class="error">${this.state.error.message}</div>`;
+      return;
     }
 
-    this.rootElement.innerHTML = this.renderCategories(this.state.categories)
+    this.rootElement.innerHTML = this.renderCategories(this.state.categories);
   }
 
   renderCategories(categories, level = 0) {
     return `
       <ul class="categories" style="margin-left: ${level * 20}px">
-        ${categories.map(cat => `
+        ${categories
+          .map(
+            (cat) => `
           <li>
             <div class="category" data-category-id="${cat.id}">
-              <span class="toggle">${cat.isExpanded ? '▼' : '▶'}</span>
+              <span class="toggle">${cat.isExpanded ? "▼" : "▶"}</span>
               <span class="title">${cat.title}</span>
             </div>
-            ${cat.isExpanded && cat.children ? this.renderCategories(cat.children, level + 1) : ''}
+            ${cat.isExpanded && cat.children ? this.renderCategories(cat.children, level + 1) : ""}
           </li>
-        `).join('')}
+        `,
+          )
+          .join("")}
       </ul>
-    `
+    `;
   }
 
   destroy() {
-    this.unsubscribe?.()
+    this.unsubscribe?.();
   }
 }
 ```
@@ -464,90 +473,83 @@ export class CategoryController {
 
 ```javascript
 // init/createApp.js
-import { RaindropAPIClient } from '../data/api/RaindropAPIClient'
-import { RaindropDataProvider } from '../data/providers/RaindropDataProvider'
-import { IndexedDBStateProvider } from '../data/providers/IndexedDBStateProvider'
-import { MemoryCache } from '../data/cache/MemoryCache'
-import { CategoryService } from '../core/services/CategoryService'
-import { RaindropService } from '../core/services/RaindropService'
+import { RaindropAPIClient } from "../data/api/RaindropAPIClient";
+import { RaindropDataProvider } from "../data/providers/RaindropDataProvider";
+import { IndexedDBStateProvider } from "../data/providers/IndexedDBStateProvider";
+import { MemoryCache } from "../data/cache/MemoryCache";
+import { CategoryService } from "../core/services/CategoryService";
+import { RaindropService } from "../core/services/RaindropService";
 
 export async function createApp(config) {
   // Создание инфраструктурных компонентов
-  const apiClient = new RaindropAPIClient(config.apiKey)
-  const cache = new MemoryCache()
-  const stateProvider = new IndexedDBStateProvider()
+  const apiClient = new RaindropAPIClient(config.apiKey);
+  const cache = new MemoryCache();
+  const stateProvider = new IndexedDBStateProvider();
 
   // Инициализация
-  await stateProvider.init()
+  await stateProvider.init();
 
   // Создание провайдеров
-  const dataProvider = new RaindropDataProvider(apiClient, cache)
+  const dataProvider = new RaindropDataProvider(apiClient, cache);
 
   // Создание сервисов
-  const categoryService = new CategoryService(dataProvider, stateProvider)
-  const raindropService = new RaindropService(dataProvider, stateProvider)
+  const categoryService = new CategoryService(dataProvider, stateProvider);
+  const raindropService = new RaindropService(dataProvider, stateProvider);
 
   return {
     services: {
       categoryService,
-      raindropService
+      raindropService,
     },
     // Методы для управления жизненным циклом
     destroy() {
       // Очистка ресурсов
-      cache.clear()
-    }
-  }
+      cache.clear();
+    },
+  };
 }
 ```
+
 ## Примеры использования
 
 ### React приложение
 
 ```javascript
 // ui/react/App.jsx
-import React, { useMemo } from 'react'
-import { createApp } from '../../init/createApp'
-import { useCategoryService } from '../../ui-adapters/react/useCategoryService'
-import { CategoryTree } from './components/CategoryTree'
+import React, { useMemo } from "react";
+import { createApp } from "../../init/createApp";
+import { useCategoryService } from "../../ui-adapters/react/useCategoryService";
+import { CategoryTree } from "./components/CategoryTree";
 
 function App() {
   // Создаем приложение один раз
   const app = useMemo(() => {
     return createApp({
-      apiKey: process.env.REACT_APP_RAINDROP_API_KEY
-    })
-  }, [])
+      apiKey: process.env.REACT_APP_RAINDROP_API_KEY,
+    });
+  }, []);
 
   // Используем адаптер для подключения к сервису
-  const {
-    categories,
-    expandedIds,
-    loading,
-    error,
-    toggleCategory
-  } = useCategoryService(app.services.categoryService)
+  const { categories, expandedIds, loading, error, toggleCategory } = useCategoryService(
+    app.services.categoryService,
+  );
 
-  if (loading) return <div>Loading categories...</div>
-  if (error) return <div>Error: {error.message}</div>
+  if (loading) return <div>Loading categories...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="app">
       <h1>My Raindrop Collections</h1>
-      <CategoryTree
-        categories={categories}
-        expandedIds={expandedIds}
-        onToggle={toggleCategory}
-      />
+      <CategoryTree categories={categories} expandedIds={expandedIds} onToggle={toggleCategory} />
     </div>
-  )
+  );
 }
 
 // ui/react/components/CategoryTree.jsx
 export function CategoryTree({ categories, expandedIds, onToggle }) {
   return (
     <ul className="category-tree">
-      {categories.map(category => (
+      {categories.map((category) => (
         <CategoryItem
           key={category.id}
           category={category}
@@ -556,26 +558,21 @@ export function CategoryTree({ categories, expandedIds, onToggle }) {
         />
       ))}
     </ul>
-  )
+  );
 }
 
 function CategoryItem({ category, isExpanded, onToggle }) {
   return (
     <li>
-      <div
-        className="category-header"
-        onClick={() => onToggle(category.id)}
-      >
-        <span className="toggle-icon">
-          {isExpanded ? '▼' : '▶'}
-        </span>
+      <div className="category-header" onClick={() => onToggle(category.id)}>
+        <span className="toggle-icon">{isExpanded ? "▼" : "▶"}</span>
         <span className="category-title">{category.title}</span>
         <span className="count">{category.count || 0}</span>
       </div>
 
       {isExpanded && category.children && (
         <ul className="category-children">
-          {category.children.map(child => (
+          {category.children.map((child) => (
             <CategoryItem
               key={child.id}
               category={child}
@@ -586,11 +583,9 @@ function CategoryItem({ category, isExpanded, onToggle }) {
         </ul>
       )}
 
-      {isExpanded && category.raindrops && (
-        <RaindropList raindrops={category.raindrops} />
-      )}
+      {isExpanded && category.raindrops && <RaindropList raindrops={category.raindrops} />}
     </li>
-  )
+  );
 }
 ```
 
@@ -808,188 +803,179 @@ initApp()
 
 ```javascript
 // extension/popup/popup.js
-import { createApp } from '../../init/createApp.js'
-import { CategoryController } from '../../ui-adapters/vanilla/CategoryController.js'
+import { createApp } from "../../init/createApp.js";
+import { CategoryController } from "../../ui-adapters/vanilla/CategoryController.js";
 
 // Получаем API ключ из storage
-chrome.storage.sync.get(['apiKey'], async (result) => {
+chrome.storage.sync.get(["apiKey"], async (result) => {
   if (!result.apiKey) {
     document.body.innerHTML = `
       <div class="setup-required">
         <p>Please set up your Raindrop API key in extension options</p>
         <button id="open-options">Open Options</button>
       </div>
-    `
+    `;
 
-    document.getElementById('open-options').addEventListener('click', () => {
-      chrome.runtime.openOptionsPage()
-    })
-    return
+    document.getElementById("open-options").addEventListener("click", () => {
+      chrome.runtime.openOptionsPage();
+    });
+    return;
   }
 
   // Инициализируем приложение
-  const app = await createApp({ apiKey: result.apiKey })
+  const app = await createApp({ apiKey: result.apiKey });
 
   const controller = new CategoryController(
     app.services.categoryService,
-    document.getElementById('categories')
-  )
+    document.getElementById("categories"),
+  );
 
-  controller.init()
-})
+  controller.init();
+});
 
 // extension/content-script.js
-import { createApp } from '../../init/createApp.js'
+import { createApp } from "../../init/createApp.js";
 
 // Создаем виджет для отображения на странице
 class RaindropWidget {
   constructor(app) {
-    this.app = app
-    this.widget = null
+    this.app = app;
+    this.widget = null;
   }
 
   async init() {
     // Создаем контейнер для виджета
-    this.widget = document.createElement('div')
-    this.widget.id = 'raindrop-widget'
-    this.widget.className = 'raindrop-widget-container'
-    document.body.appendChild(this.widget)
+    this.widget = document.createElement("div");
+    this.widget.id = "raindrop-widget";
+    this.widget.className = "raindrop-widget-container";
+    document.body.appendChild(this.widget);
 
     // Используем контроллер для управления
-    const controller = new CategoryController(
-      this.app.services.categoryService,
-      this.widget
-    )
+    const controller = new CategoryController(this.app.services.categoryService, this.widget);
 
-    controller.init()
+    controller.init();
 
     // Добавляем кнопку закрытия
-    const closeBtn = document.createElement('button')
-    closeBtn.textContent = '×'
-    closeBtn.className = 'close-widget'
-    closeBtn.onclick = () => this.destroy()
-    this.widget.appendChild(closeBtn)
+    const closeBtn = document.createElement("button");
+    closeBtn.textContent = "×";
+    closeBtn.className = "close-widget";
+    closeBtn.onclick = () => this.destroy();
+    this.widget.appendChild(closeBtn);
   }
 
   destroy() {
-    this.widget?.remove()
+    this.widget?.remove();
   }
 }
 
 // Инициализация при загрузке страницы
-chrome.storage.sync.get(['apiKey'], async (result) => {
+chrome.storage.sync.get(["apiKey"], async (result) => {
   if (result.apiKey) {
-    const app = await createApp({ apiKey: result.apiKey })
-    const widget = new RaindropWidget(app)
+    const app = await createApp({ apiKey: result.apiKey });
+    const widget = new RaindropWidget(app);
 
     // Показываем виджет по хоткею
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'R') {
-        widget.init()
+    document.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === "R") {
+        widget.init();
       }
-    })
+    });
   }
-})
+});
 ```
 
 ### Тестирование
 
 ```javascript
 // tests/core/services/CategoryService.test.js
-import { CategoryService } from '../../../core/services/CategoryService'
-import { Category } from '../../../core/models/Category'
+import { CategoryService } from "../../../core/services/CategoryService";
+import { Category } from "../../../core/models/Category";
 
-describe('CategoryService', () => {
-  let service
-  let mockDataProvider
-  let mockStateProvider
+describe("CategoryService", () => {
+  let service;
+  let mockDataProvider;
+  let mockStateProvider;
 
   beforeEach(() => {
     mockDataProvider = {
       getRootCategories: jest.fn(),
-      getChildCategories: jest.fn()
-    }
+      getChildCategories: jest.fn(),
+    };
 
     mockStateProvider = {
       getState: jest.fn(),
-      setState: jest.fn()
-    }
+      setState: jest.fn(),
+    };
 
-    service = new CategoryService(mockDataProvider, mockStateProvider)
-  })
+    service = new CategoryService(mockDataProvider, mockStateProvider);
+  });
 
-  test('loadRootCategories loads and notifies listeners', async () => {
-    const mockCategories = [
-      new Category('1', 'Work'),
-      new Category('2', 'Personal')
-    ]
+  test("loadRootCategories loads and notifies listeners", async () => {
+    const mockCategories = [new Category("1", "Work"), new Category("2", "Personal")];
 
-    mockDataProvider.getRootCategories.mockResolvedValue(mockCategories)
+    mockDataProvider.getRootCategories.mockResolvedValue(mockCategories);
 
-    const listener = jest.fn()
-    service.subscribe(listener)
+    const listener = jest.fn();
+    service.subscribe(listener);
 
-    const result = await service.loadRootCategories()
+    const result = await service.loadRootCategories();
 
-    expect(result).toEqual(mockCategories)
+    expect(result).toEqual(mockCategories);
     expect(listener).toHaveBeenCalledWith({
-      type: 'categoriesLoaded',
-      categories: mockCategories
-    })
-  })
+      type: "categoriesLoaded",
+      categories: mockCategories,
+    });
+  });
 
-  test('toggleCategory expands collapsed category', async () => {
-    const categoryId = '123'
+  test("toggleCategory expands collapsed category", async () => {
+    const categoryId = "123";
     const mockChildren = [
-      new Category('456', 'Child 1', categoryId),
-      new Category('789', 'Child 2', categoryId)
-    ]
+      new Category("456", "Child 1", categoryId),
+      new Category("789", "Child 2", categoryId),
+    ];
 
-    mockStateProvider.getState.mockResolvedValue({ isExpanded: false })
-    mockDataProvider.getChildCategories.mockResolvedValue(mockChildren)
+    mockStateProvider.getState.mockResolvedValue({ isExpanded: false });
+    mockDataProvider.getChildCategories.mockResolvedValue(mockChildren);
 
-    const listener = jest.fn()
-    service.subscribe(listener)
+    const listener = jest.fn();
+    service.subscribe(listener);
 
-    await service.toggleCategory(categoryId)
+    await service.toggleCategory(categoryId);
 
-    expect(mockStateProvider.setState).toHaveBeenCalledWith(
-      `category:${categoryId}`,
-      { isExpanded: true }
-    )
+    expect(mockStateProvider.setState).toHaveBeenCalledWith(`category:${categoryId}`, {
+      isExpanded: true,
+    });
 
     expect(listener).toHaveBeenCalledWith({
-      type: 'categoryExpanded',
+      type: "categoryExpanded",
       categoryId,
-      children: mockChildren
-    })
-  })
-})
+      children: mockChildren,
+    });
+  });
+});
 
 // tests/ui-adapters/react/useCategoryService.test.js
-import { renderHook, act } from '@testing-library/react-hooks'
-import { useCategoryService } from '../../../ui-adapters/react/useCategoryService'
-import { CategoryService } from '../../../core/services/CategoryService'
+import { renderHook, act } from "@testing-library/react-hooks";
+import { useCategoryService } from "../../../ui-adapters/react/useCategoryService";
+import { CategoryService } from "../../../core/services/CategoryService";
 
-describe('useCategoryService', () => {
-  test('updates state when categories are loaded', async () => {
+describe("useCategoryService", () => {
+  test("updates state when categories are loaded", async () => {
     const mockService = new CategoryService(
       { getRootCategories: jest.fn().mockResolvedValue([]) },
-      { getState: jest.fn(), setState: jest.fn() }
-    )
+      { getState: jest.fn(), setState: jest.fn() },
+    );
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useCategoryService(mockService)
-    )
+    const { result, waitForNextUpdate } = renderHook(() => useCategoryService(mockService));
 
-    expect(result.current.loading).toBe(true)
+    expect(result.current.loading).toBe(true);
 
-    await waitForNextUpdate()
+    await waitForNextUpdate();
 
-    expect(result.current.loading).toBe(false)
-    expect(result.current.categories).toEqual([])
-  })
-})
+    expect(result.current.loading).toBe(false);
+    expect(result.current.categories).toEqual([]);
+  });
+});
 ```
 
 ### Миграция между фреймворками

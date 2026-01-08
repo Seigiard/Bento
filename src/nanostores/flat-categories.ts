@@ -1,8 +1,8 @@
-import { batched } from 'nanostores'
-import { $raindropCollections } from '../nanoquery/raindrop-collections-fetcher'
-import { $expandedCollections } from './collection-states'
-import { CollectionType } from '../schemas/raindrop-schemas'
-import { $isOffline } from './offline'
+import { batched } from "nanostores";
+import { $raindropCollections } from "../nanoquery/raindrop-collections-fetcher";
+import { $expandedCollections } from "./collection-states";
+import { CollectionType } from "../schemas/raindrop-schemas";
+import { $isOffline } from "./offline";
 
 /**
  * Flattens hierarchical categories into a sorted array of IDs
@@ -14,50 +14,50 @@ import { $isOffline } from './offline'
 export const $flatCategories = batched(
   [$isOffline, $raindropCollections, $expandedCollections],
   (isOffline, collectionsStore, expandedIds) => {
-    const collections = collectionsStore.data
+    const collections = collectionsStore.data;
     if (isOffline || !collections || !collections.length) {
-      return []
+      return [];
     }
 
-    const expandedSet = new Set(expandedIds)
-    const result: CollectionType['_id'][] = []
-    const processed = new Set<CollectionType['_id']>()
+    const expandedSet = new Set(expandedIds);
+    const result: CollectionType["_id"][] = [];
+    const processed = new Set<CollectionType["_id"]>();
 
     // Helper function to flatten a category and its children
     function flattenCategory(category: CollectionType) {
-      const categoryId = category._id
+      const categoryId = category._id;
 
       if (processed.has(categoryId)) {
-        return
+        return;
       }
 
-      processed.add(categoryId)
-      result.push(categoryId)
+      processed.add(categoryId);
+      result.push(categoryId);
 
       // Add children right after parent
       if (category.children && category.children.length > 0) {
-        category.children.forEach(child => flattenCategory(child))
+        category.children.forEach((child) => flattenCategory(child));
       }
     }
 
     // Separate expanded and non-expanded root categories
-    const expandedCategories: CollectionType[] = []
-    const nonExpandedCategories: CollectionType[] = []
+    const expandedCategories: CollectionType[] = [];
+    const nonExpandedCategories: CollectionType[] = [];
 
-    collections.forEach(category => {
+    collections.forEach((category) => {
       if (expandedSet.has(String(category._id))) {
-        expandedCategories.push(category)
+        expandedCategories.push(category);
       } else {
-        nonExpandedCategories.push(category)
+        nonExpandedCategories.push(category);
       }
-    })
+    });
 
     // Process expanded categories first (maintaining their original order)
-    expandedCategories.forEach(category => flattenCategory(category))
+    expandedCategories.forEach((category) => flattenCategory(category));
 
     // Then process non-expanded categories
-    nonExpandedCategories.forEach(category => flattenCategory(category))
+    nonExpandedCategories.forEach((category) => flattenCategory(category));
 
-    return result
-  }
-)
+    return result;
+  },
+);

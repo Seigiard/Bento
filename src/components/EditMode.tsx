@@ -1,11 +1,11 @@
-import { useStore } from '@nanostores/preact'
-import { $editMode } from '../nanostores/editmode'
+import { useStore } from "@nanostores/preact";
+import { $editMode } from "../nanostores/editmode";
 
 export function EditMode() {
-  const editMode = useStore($editMode)
+  const editMode = useStore($editMode);
 
   function handleEditModeToggle() {
-    $editMode.set(!editMode)
+    $editMode.set(!editMode);
   }
 
   return (
@@ -27,5 +27,5 @@ export function EditMode() {
         </svg>
       </button>
     </div>
-  )
+  );
 }
