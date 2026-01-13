@@ -37,11 +37,11 @@
   },
   "devDependencies": {
     "@size-limit/file": "^11.2.0",
-    "@types/node": "^24.10.4",
+    "@types/node": "^24.10.8",
     "daisyui": "^5.5.14",
     "file-loader": "^6.2.0",
     "oxfmt": "^0.23.0",
-    "oxlint": "^1.38.0",
+    "oxlint": "^1.39.0",
     "oxlint-tsgolint": "^0.10.1",
     "parcel": "^2.16.3",
     "parcel-reporter-static-files-copy": "^1.5.3",
@@ -53,7 +53,7 @@
     "valibot": "^1.2.0"
   },
   "optionalDependencies": {
-    "@parcel/watcher-darwin-x64": "^2.5.1"
+    "@parcel/watcher-darwin-x64": "^2.5.4"
   },
   "alias": {
     "preact/jsx-dev-runtime": "preact/jsx-runtime",
