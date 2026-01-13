@@ -1,8 +1,10 @@
-import type { CollectionType } from "../schemas/raindrop-schemas";
 import { useStore } from "@nanostores/preact";
+
 import { $expandedCollections, toggleCategory } from "../nanostores/collection-states";
-import { NestedCollections } from "./NestedCollections";
+import type { CollectionType } from "../schemas/raindrop-schemas";
+
 import { CollectionLinks } from "./CategoryLinks";
+import { NestedCollections } from "./NestedCollections";
 
 interface CategoryProps {
   collection: CollectionType;

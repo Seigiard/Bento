@@ -1,4 +1,5 @@
 import { render } from "preact";
+
 import { App } from "./App";
 
 // Simple service worker registration - only in production

@@ -1,16 +1,17 @@
-import { $settings } from "./nanostores/settings";
-import { Settings } from "./components/Settings";
-import { Collection } from "./components/Collection";
 import { useStore } from "@nanostores/preact";
-import { CategoryCardSkeleton } from "./components/Skeleton";
-import { $raindropCollections } from "./nanoquery/raindrop-collections-fetcher";
-import { $cacheReady } from "./nanoquery/cache";
-import { EditMode } from "./components/EditMode";
-import { ThemeButton } from "./components/ThemeButton";
-import { $isOffline } from "./nanostores/offline";
 import { twMerge } from "tailwind-merge";
-import { $flatCategories } from "./nanostores/flat-categories";
+
+import { Collection } from "./components/Collection";
+import { EditMode } from "./components/EditMode";
+import { Settings } from "./components/Settings";
+import { CategoryCardSkeleton } from "./components/Skeleton";
+import { ThemeButton } from "./components/ThemeButton";
+import { $cacheReady } from "./nanoquery/cache";
+import { $raindropCollections } from "./nanoquery/raindrop-collections-fetcher";
 import { fetchAllLinks } from "./nanoquery/raindrops-fetcher";
+import { $flatCategories } from "./nanostores/flat-categories";
+import { $isOffline } from "./nanostores/offline";
+import { $settings } from "./nanostores/settings";
 
 $flatCategories.subscribe(fetchAllLinks);
 

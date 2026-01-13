@@ -1,8 +1,9 @@
-import { useRef } from "preact/hooks";
 import { useStore } from "@nanostores/preact";
-import { $settings } from "../nanostores/settings";
-import { $isOffline } from "../nanostores/offline";
+import { useRef } from "preact/hooks";
+
 import { revalidateKeys } from "../nanoquery/generic-fetcher";
+import { $isOffline } from "../nanostores/offline";
+import { $settings } from "../nanostores/settings";
 
 export function Settings() {
   const modalRef = useRef<HTMLDialogElement>(null);

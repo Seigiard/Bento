@@ -1,7 +1,8 @@
 import { useStore } from "@nanostores/preact";
-import { $settings } from "../nanostores/settings";
-import { themeList } from "../models/settings";
 import { twMerge } from "tailwind-merge";
+
+import { themeList } from "../models/settings";
+import { $settings } from "../nanostores/settings";
 
 export function ThemeButton() {
   const { theme } = useStore($settings);

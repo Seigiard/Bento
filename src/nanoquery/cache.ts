@@ -1,6 +1,6 @@
 import { get as dbGet, set as dbSet, keys as dbKeys } from "@isomorphic-git/idb-keyval";
-import { atom, onStart } from "nanostores";
 import { dequal } from "dequal/lite";
+import { atom, onStart } from "nanostores";
 
 const cacheKey = "BentoAppRaindrops-";
 

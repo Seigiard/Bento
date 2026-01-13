@@ -1,7 +1,9 @@
 import { batched } from "nanostores";
+
 import { $raindropCollections } from "../nanoquery/raindrop-collections-fetcher";
-import { $expandedCollections } from "./collection-states";
 import { CollectionType } from "../schemas/raindrop-schemas";
+
+import { $expandedCollections } from "./collection-states";
 import { $isOffline } from "./offline";
 
 /**
