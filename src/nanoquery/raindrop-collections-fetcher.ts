@@ -10,7 +10,7 @@ import { fetchFromRaindropApi } from "./fetchFromRaindropApi";
 import { createGenericFetcherStore } from "./generic-fetcher";
 
 export const $raindropCollections = createGenericFetcherStore([$raindropApiKey, "collections"], {
-  dedupeTime: 1000 * 60 * 60, // 1 hour
+  dedupeTime: 1000 * 60 * 5, // 5 min — only for request deduplication, SW handles caching
   fetcher: async (raindropApiKey) => {
     const fetchUser = fetchFromRaindropApi(raindropApiKey as string, "/user").then(
       safeParseUserResponse,
@@ -49,7 +49,6 @@ export const $raindropCollections = createGenericFetcherStore([$raindropApiKey, 
       throw buildError;
     }
   },
-  revalidateInterval: 1000,
 });
 
 /**

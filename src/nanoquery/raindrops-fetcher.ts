@@ -12,7 +12,7 @@ export function createRaindropsStore(collectionId: CollectionType["_id"]) {
   return createGenericFetcherStore<RaindropItemType[]>(
     [$raindropApiKey, "raindrops", collectionId],
     {
-      dedupeTime: 1000 * 60 * 60, // 1 hour
+      dedupeTime: 1000 * 60 * 5, // 5 min — only for request deduplication, SW handles caching
       fetcher: async (raindropApiKey, _, collectionId) => {
         return fetchFromRaindropApi(raindropApiKey as string, `/raindrops/${collectionId}`)
           .then(safeParseRaindropResponse)

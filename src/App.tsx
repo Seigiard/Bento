@@ -6,7 +6,6 @@ import { EditMode } from "./components/EditMode";
 import { Settings } from "./components/Settings";
 import { CategoryCardSkeleton } from "./components/Skeleton";
 import { ThemeButton } from "./components/ThemeButton";
-import { $cacheReady } from "./nanoquery/cache";
 import { $raindropCollections } from "./nanoquery/raindrop-collections-fetcher";
 import { fetchAllLinks } from "./nanoquery/raindrops-fetcher";
 import { $flatCategories } from "./nanostores/flat-categories";
@@ -22,7 +21,7 @@ export function App() {
     <div className="grid w-dvw h-dvh grid-rows-[1fr_min-content] md:grid-rows-[1fr] grid-cols-[1fr] md:grid-cols-[1fr_min-content]">
       <main
         class={twMerge(
-          "p-6 gap-8 snap-x [scroll-padding-left:1.5rem]",
+          "p-6 gap-8 snap-x scroll-pl-6",
           "[column-count:auto] [column-width:clamp(20rem,25vw,23rem)] [column-fill:auto]",
           "w-full h-full md:h-dvh md:overflow-x-scroll overflow-y-scroll md:overflow-y-auto",
         )}
@@ -52,12 +51,7 @@ export function App() {
 }
 
 function AppLoader() {
-  const cacheReady = useStore($cacheReady);
   const { raindropApiKey } = useStore($settings);
-
-  if (!cacheReady) {
-    return <CategoryCardSkeleton />;
-  }
 
   if (!raindropApiKey) {
     return (

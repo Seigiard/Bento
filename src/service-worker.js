@@ -2,6 +2,10 @@ import { manifest, version } from "@parcel/service-worker";
 
 // Cache names
 const CACHE_NAME = `bento-cache-${version}`;
+const API_CACHE_NAME = "bento-api-cache-v1";
+
+// API host for cross-origin caching
+const API_HOST = "api.raindrop.io";
 
 // Offline fallbacks
 const OFFLINE_PAGE = "/";
@@ -12,20 +16,20 @@ async function install() {
 }
 
 async function activate() {
-  // Delete old caches
+  // Delete old caches (keep API cache)
   const keys = await caches.keys();
   await Promise.all(
     keys.map((key) => {
-      if (key !== CACHE_NAME) {
+      if (key !== CACHE_NAME && key !== API_CACHE_NAME) {
         return caches.delete(key);
       }
     }),
   );
 }
 
-// Stale-while-revalidate strategy for same-origin requests
-async function handleFetch(request) {
-  const cache = await caches.open(CACHE_NAME);
+// Stale-while-revalidate strategy
+async function staleWhileRevalidate(request, cacheName) {
+  const cache = await caches.open(cacheName);
 
   // Try to get from cache first
   const cachedResponse = await cache.match(request);
@@ -41,12 +45,50 @@ async function handleFetch(request) {
       return networkResponse;
     })
     .catch(() => {
-      // Network failed, return cached or offline response
-      return cachedResponse || handleOfflineRequest(request);
+      // Network failed, return cached response
+      return cachedResponse;
     });
 
   // Return cached response immediately if available
   // The fetch continues in background to update cache
+  return cachedResponse || fetchPromise;
+}
+
+// Handle same-origin requests
+async function handleFetch(request) {
+  const response = await staleWhileRevalidate(request, CACHE_NAME);
+  return response || handleOfflineRequest(request);
+}
+
+// Handle API requests (cross-origin) with throttling
+const API_REVALIDATE_INTERVAL = 5 * 60 * 1000; // 5 minutes
+const apiLastFetched = new Map();
+
+async function handleApiFetch(request) {
+  const cache = await caches.open(API_CACHE_NAME);
+  const cachedResponse = await cache.match(request);
+
+  const cacheKey = request.url;
+  const lastFetched = apiLastFetched.get(cacheKey) || 0;
+  const now = Date.now();
+
+  // If we have cache and it's fresh enough, return without revalidating
+  if (cachedResponse && now - lastFetched < API_REVALIDATE_INTERVAL) {
+    return cachedResponse;
+  }
+
+  // Otherwise, do stale-while-revalidate
+  const fetchPromise = fetch(request)
+    .then(async (networkResponse) => {
+      if (networkResponse && networkResponse.status === 200) {
+        apiLastFetched.set(cacheKey, now);
+        const responseClone = networkResponse.clone();
+        await cache.put(request, responseClone);
+      }
+      return networkResponse;
+    })
+    .catch(() => cachedResponse);
+
   return cachedResponse || fetchPromise;
 }
 
@@ -85,12 +127,21 @@ addEventListener("activate", (e) => {
 addEventListener("fetch", (e) => {
   const requestUrl = new URL(e.request.url);
 
-  // Only handle same-origin GET requests
-  if (e.request.method !== "GET" || requestUrl.origin !== self.location.origin) {
+  // Only handle GET requests
+  if (e.request.method !== "GET") {
     return;
   }
 
-  e.respondWith(handleFetch(e.request));
+  // Handle API requests (cross-origin)
+  if (requestUrl.hostname === API_HOST) {
+    e.respondWith(handleApiFetch(e.request));
+    return;
+  }
+
+  // Handle same-origin requests
+  if (requestUrl.origin === self.location.origin) {
+    e.respondWith(handleFetch(e.request));
+  }
 });
 
 // Listen for messages from the client

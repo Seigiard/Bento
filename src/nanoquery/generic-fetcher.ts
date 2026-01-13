@@ -1,7 +1,5 @@
 import { nanoquery } from "@nanostores/query";
 
-import { cache } from "./cache";
-
-const [createGenericFetcherStore, , { revalidateKeys }] = nanoquery({ cache });
+const [createGenericFetcherStore, , { revalidateKeys }] = nanoquery();
 
 export { createGenericFetcherStore, revalidateKeys };
