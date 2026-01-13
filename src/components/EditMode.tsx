@@ -10,23 +10,22 @@ export function EditMode() {
   }
 
   return (
-    <div className="tooltip tooltip-left" data-tip="Edit mode (work in progress)">
-      <button
-        class="btn btn-ghost btn-circle"
-        onClick={handleEditModeToggle}
-        disabled
-        aria-label="Open settings"
+    <a
+      href="https://app.raindrop.io/"
+      class="btn btn-ghost font-normal btn-circle tooltip tooltip-left"
+      data-tip="Open settings"
+      onClick={handleEditModeToggle}
+      aria-label="Open settings"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <use href="#editIcon" />
-        </svg>
-      </button>
-    </div>
+        <use href="#editIcon" />
+      </svg>
+    </a>
   );
 }
