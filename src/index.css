@@ -4,6 +4,7 @@
   themes:
     light --default,
     dark --prefersdark;
+  include: alert, button, checkbox, collapse, input, modal, skeleton, swap, toggle, tooltip;
 }
 
 @plugin "daisyui/theme" {
