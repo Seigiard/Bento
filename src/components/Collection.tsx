@@ -22,10 +22,12 @@ export function Collection({ collection }: CategoryProps) {
         <button
           onClick={() => togglePin(categoryId)}
           class={twMerge(
-            "absolute right-full mr-2",
+            "absolute right-full mr-2 focus-visible:outline-accent outline-offset-4",
+            "tooltip tooltip-bottom font-normal font-sans text-secondary",
             "transition-opacity cursor-pointer",
             isPinned ? "opacity-100" : "opacity-0 group-hover:opacity-100",
           )}
+          data-tip={isPinned ? "Unpin category" : "Pin category"}
           aria-label={isPinned ? "Unpin category" : "Pin category"}
         >
           <svg class="w-4 h-4">

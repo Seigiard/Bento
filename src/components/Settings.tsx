@@ -24,7 +24,7 @@ export function Settings() {
     <>
       <button
         class={twMerge(
-          "btn btn-ghost btn-circle",
+          "btn btn-ghost btn-circle focus-visible:outline-accent",
           isOffline && "btn-disabled",
           "tooltip tooltip-bottom font-normal",
         )}

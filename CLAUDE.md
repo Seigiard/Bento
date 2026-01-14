@@ -84,7 +84,7 @@ bun run format   # Format code
 - **nanostores**: Lightweight state management solution for all application state
 - **Styling**: Components styled with DaisyUI kit. Use MCP Context7 for DaisyUI component documentation
 - **Preact Syntax**: Use `class` instead of `className`
-- **Icons**: Use SVG sprite defined in index.html. Icons are defined as `<symbol>` elements with IDs. To use an icon in components, use `<svg><use href="#iconId" /></svg>`. This reduces bundle size by avoiding icon libraries. Available icons: settingsIcon, closeIcon, editIcon, checkIcon, draggableIcon, day, night, system
+- **Icons**: Use SVG sprite defined in index.html. Icons are defined as `<symbol>` elements with IDs. To use an icon in components, use `<svg><use href="#iconId" /></svg>`. This reduces bundle size by avoiding icon libraries. Available icons: settingsIcon, closeIcon, editIcon, day, night, system
 - **No React Icons**: Use SVG icons directly from the sprite to avoid compatibility issues and reduce bundle size
 - **State**: nanostores for all state management
 - **API Data**: Use nanoquery stores, not direct API calls

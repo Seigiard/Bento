@@ -19,7 +19,7 @@ export function ThemeButton() {
   return (
     <button
       class={twMerge(
-        "btn btn-ghost btn-circle swap swap-rotate",
+        "btn btn-ghost btn-circle swap swap-rotate focus-visible:outline-accent",
         theme === "system" && "swap-default",
         theme === "light" && "swap-active",
         theme === "dark" && "swap-inactive",

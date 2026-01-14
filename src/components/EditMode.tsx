@@ -2,7 +2,7 @@ export function EditMode() {
   return (
     <a
       href="https://app.raindrop.io/"
-      class="btn btn-ghost font-normal btn-circle tooltip tooltip-bottom"
+      class="btn btn-ghost font-normal btn-circle focus-visible:outline-accent tooltip tooltip-bottom"
       data-tip="Open Raindrop.io"
       aria-label="Open Raindrop.io"
     >
