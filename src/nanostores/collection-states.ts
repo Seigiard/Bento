@@ -1,21 +1,21 @@
 import { persistentAtom } from "@nanostores/persistent";
 
-export const $expandedCollections = persistentAtom<string[]>("openCategories", [], {
+export const $pinnedCategories = persistentAtom<string[]>("pinnedCategories", [], {
   encode: JSON.stringify,
   decode: JSON.parse,
 });
 
-export function toggleCategory(categoryId: string) {
-  const current = $expandedCollections.get();
+export function togglePin(categoryId: string) {
+  const current = $pinnedCategories.get();
   const index = current.indexOf(categoryId);
 
   if (index === -1) {
-    $expandedCollections.set([...current, categoryId]);
+    $pinnedCategories.set([...current, categoryId]);
   } else {
-    $expandedCollections.set(current.filter((id) => id !== categoryId));
+    $pinnedCategories.set(current.filter((id) => id !== categoryId));
   }
 }
 
-export function isCategoryOpen(categoryId: string): boolean {
-  return $expandedCollections.get().includes(categoryId);
+export function isPinned(categoryId: string): boolean {
+  return $pinnedCategories.get().includes(categoryId);
 }

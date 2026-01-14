@@ -7,7 +7,7 @@ import { CategoryCardSkeleton } from "./components/Skeleton";
 import { ThemeButton } from "./components/ThemeButton";
 import { $raindropCollections } from "./nanoquery/raindrop-collections-fetcher";
 import { fetchAllLinks } from "./nanoquery/raindrops-fetcher";
-import { $flatCategories } from "./nanostores/flat-categories";
+import { $flatCategories, $sortedCollections } from "./nanostores/flat-categories";
 import { $isOffline } from "./nanostores/offline";
 import { $settings } from "./nanostores/settings";
 
@@ -60,9 +60,10 @@ function AppLoader() {
 
 function TheApp() {
   const isOffline = useStore($isOffline);
-  const { loading, data: collections, error } = useStore($raindropCollections);
+  const { loading, error } = useStore($raindropCollections);
+  const sortedCollections = useStore($sortedCollections);
 
-  if (!collections?.length && loading && !isOffline) {
+  if (!sortedCollections?.length && loading && !isOffline) {
     return <CategoryCardSkeleton />;
   }
 
@@ -70,7 +71,7 @@ function TheApp() {
     return <div class="alert alert-error">Error loading categories: {error.message}</div>;
   }
 
-  if (!collections?.length && isOffline) {
+  if (!sortedCollections?.length && isOffline) {
     return (
       <div class="alert alert-info">
         <span>No cached data available offline. Connect to internet to load your bookmarks.</span>
@@ -78,7 +79,7 @@ function TheApp() {
     );
   }
 
-  return collections?.map((collection) => (
+  return sortedCollections?.map((collection) => (
     <Collection key={collection._id} collection={collection} />
   ));
 }
