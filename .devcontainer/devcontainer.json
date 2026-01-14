@@ -1,0 +1,11 @@
+{
+  "name": "Bento Dev",
+  "runArgs": ["--name", "bento-dev", "-p", "1234:1234"],
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "forwardPorts": [1234],
+  "workspaceFolder": "/workspaces/Bento",
+  "postCreateCommand": "bun install"
+}

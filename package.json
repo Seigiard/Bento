@@ -10,6 +10,7 @@
     "clean:dist": "exec rm -rf ./dist/*",
     "clean:cache": "exec rm -rf ./.parcel-cache/*",
     "dev": "parcel ./src/index.html",
+    "dev:container": "parcel ./src/index.html --host 0.0.0.0",
     "build": "parcel build ./src/index.html --public-url ./ --no-source-maps",
     "build-dev": "parcel build ./src/index.html --no-optimize --public-url ./",
     "size": "bun run clean && bun run build && size-limit",
