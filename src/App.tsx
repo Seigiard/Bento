@@ -17,7 +17,7 @@ export function App() {
   const isOffline = useStore($isOffline);
 
   return (
-    <div class="grid min-h-svh grid-rows-[1fr_min-content] grid-cols-[1fr]">
+    <div class="max-w-5xl mx-auto grid min-h-svh grid-rows-[1fr_min-content] grid-cols-[1fr]">
       <aside class="border-b border-secondary/30 px-6 py-2 flex flex-row justify-between gap-2">
         <div>
           {isOffline && (

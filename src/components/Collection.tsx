@@ -18,19 +18,19 @@ export function Collection({ collection }: CategoryProps) {
 
   return (
     <div class="group">
-      <h2 class="font-serif font-semibold text-lg flex items-center gap-2 relative">
+      <h2 class="font-serif font-semibold text-lg flex items-center gap-2 py-2 relative">
         <button
           onClick={() => togglePin(categoryId)}
           class={twMerge(
-            "absolute right-full mr-2 focus-visible:outline-accent outline-offset-4",
+            "absolute right-full mr-1 focus-visible:outline-accent outline-offset-4",
             "tooltip tooltip-bottom font-normal font-sans text-secondary",
-            "transition-opacity cursor-pointer",
+            "transition-opacity duration-200 cursor-pointer",
             isPinned ? "opacity-100" : "opacity-0 group-hover:opacity-100",
           )}
           data-tip={isPinned ? "Unpin category" : "Pin category"}
           aria-label={isPinned ? "Unpin category" : "Pin category"}
         >
-          <svg class="w-4 h-4">
+          <svg class="w-4 h-4 hover:scale-110">
             <use href="#pinIcon" />
           </svg>
         </button>
