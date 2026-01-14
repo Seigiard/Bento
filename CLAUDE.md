@@ -29,7 +29,7 @@ When working with this codebase, use MCP Context7 to get up-to-date documentatio
 1. **Entry Point**: `src/index.html` → `src/main.tsx` → `src/App.tsx`
 
 2. **State Management**:
-   - **Persistent**: nanostores with localStorage (`$settings`, `$openCategories`)
+   - **Persistent**: nanostores with localStorage (`$settings`, `$pinnedCategories`)
    - **API Data**: @nanostores/query for fetching and caching
    - **Integration**: `useStore()` hook from @nanostores/preact
 
@@ -46,20 +46,25 @@ src/
 ├── App.tsx                      # Root component with error handling
 ├── components/
 │   ├── Settings.tsx            # Settings modal
-│   ├── Category.tsx            # Individual category with expand/collapse
-│   ├── NestedCategories.tsx    # Recursive nested categories
-│   ├── CategoryLinks.tsx       # Raindrop links for category
-│   └── Link.tsx                # Individual raindrop link
+│   ├── Collection.tsx          # Individual collection card
+│   ├── NestedCollections.tsx   # Recursive nested collections
+│   ├── CategoryLinks.tsx       # Raindrop links for collection
+│   ├── Link.tsx                # Individual raindrop link
+│   ├── EditMode.tsx            # Edit mode toggle
+│   └── ThemeButton.tsx         # Theme switcher
 ├── nanostores/
 │   ├── settings.ts             # Persistent user settings
-│   ├── category-state.ts       # Category open/closed state
-│   └── collections.ts          # Hierarchical collections with sorting
+│   ├── collection-states.ts    # Pinned categories state
+│   ├── flat-categories.ts      # Flattened sorted categories
+│   ├── editmode.ts             # Edit mode state
+│   └── offline.ts              # Offline detection
 ├── nanoquery/
-│   └── raindrop-fetcher.ts     # API fetching with nanoquery
+│   ├── raindrop-collections-fetcher.ts  # Collections API
+│   ├── raindrops-fetcher.ts    # Links API
+│   └── generic-fetcher.ts      # Base fetcher
 ├── models/                     # TypeScript types and settings
-├── services/raindrop/
-│   ├── raindrop-schemas.ts     # Valibot validation schemas
-│   └── openapi.yaml            # API documentation
+├── schemas/
+│   └── raindrop-schemas.ts     # Valibot validation schemas
 └── index.css                   # Tailwind entry point
 ```
 
@@ -84,6 +89,25 @@ bun run format   # Format code
 - **State**: nanostores for all state management
 - **API Data**: Use nanoquery stores, not direct API calls
 - **Error Handling**: All API calls have loading/error/data states
+
+## CSS Utilities
+
+- **twMerge**: Use `twMerge()` from `tailwind-merge` for conditional classes. Never use template literals for conditional CSS classes.
+
+```typescript
+// ✅ Correct
+import { twMerge } from "tailwind-merge";
+class={twMerge(
+  "base-classes",
+  condition && "conditional-classes",
+  anotherCondition && "more-classes",
+)}
+
+// ❌ Wrong - never use template literals
+class={`base ${condition ? 'conditional' : ''}`}
+```
+
+- **tailwind-variants**: Available but not yet used. Consider for complex component variants.
 
 ## Adding Features
 
