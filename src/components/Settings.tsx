@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/preact";
 import { useRef } from "preact/hooks";
+import { twMerge } from "tailwind-merge";
 
 import { revalidateKeys } from "../nanoquery/generic-fetcher";
 import { $isOffline } from "../nanostores/offline";
@@ -21,27 +22,27 @@ export function Settings() {
 
   return (
     <>
-      <div
-        className="tooltip tooltip-left"
+      <button
+        class={twMerge(
+          "btn btn-ghost btn-circle",
+          isOffline && "btn-disabled",
+          "tooltip tooltip-bottom font-normal",
+        )}
+        onClick={isOffline ? undefined : openModal}
+        aria-label="Open settings"
         data-tip={isOffline ? "Settings (offline)" : "Settings"}
+        disabled={isOffline}
       >
-        <button
-          class={`btn btn-ghost btn-circle ${isOffline ? "btn-disabled" : ""}`}
-          onClick={isOffline ? undefined : openModal}
-          aria-label="Open settings"
-          disabled={isOffline}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <use href="#settingsIcon" />
-          </svg>
-        </button>
-      </div>
+          <use href="#settingsIcon" />
+        </svg>
+      </button>
 
       <dialog ref={modalRef} class="modal">
         <div class="modal-box w-2xl max-w-10/12">
@@ -58,7 +59,7 @@ export function Settings() {
               </svg>
             </button>
           </form>
-          <div className="grid grid-cols-1 gap-4">
+          <div class="grid grid-cols-1 gap-4">
             <h3 class="font-bold text-lg">Settings</h3>
             <fieldset class="fieldset">
               <label class="label font-bold" for="raindrop-api-key">
@@ -78,7 +79,7 @@ export function Settings() {
               </p>
             </fieldset>
 
-            <fieldset class="fieldset">
+            <fieldset class="fieldset flex flex-row gap-2 items-center">
               <label class="label font-bold" for="raindrop-api-key">
                 Refresh all data
               </label>

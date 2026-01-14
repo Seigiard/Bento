@@ -12,7 +12,7 @@ export function EditMode() {
   return (
     <a
       href="https://app.raindrop.io/"
-      class="btn btn-ghost font-normal btn-circle tooltip tooltip-left"
+      class="btn btn-ghost font-normal btn-circle tooltip tooltip-bottom"
       data-tip="Open settings"
       onClick={handleEditModeToggle}
       aria-label="Open settings"

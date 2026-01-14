@@ -25,7 +25,7 @@ function NestedCollection({ collection }: { collection: CollectionType }) {
   return (
     <>
       <li>
-        <h3 className="px-3 pt-4 pb-2 font-serif font-semibold text-md text-base text-base-content/60">
+        <h3 class="px-3 pt-4 pb-2 font-serif font-semibold text-md text-base text-base-content/60">
           {collection.title}
         </h3>
       </li>
