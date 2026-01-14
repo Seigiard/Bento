@@ -17,12 +17,12 @@ export function App() {
   const isOffline = useStore($isOffline);
 
   return (
-    <div className="grid min-h-svh grid-rows-[1fr_min-content] grid-cols-[1fr]">
-      <aside className="border-b border-secondary/30 px-6 py-2 flex flex-row justify-between gap-2">
+    <div class="grid min-h-svh grid-rows-[1fr_min-content] grid-cols-[1fr]">
+      <aside class="border-b border-secondary/30 px-6 py-2 flex flex-row justify-between gap-2">
         <div>
           {isOffline && (
             <div
-              className="btn btn-circle btn-warning cursor-default tooltip tooltip-bottom"
+              class="btn btn-circle btn-warning cursor-default tooltip tooltip-bottom"
               data-tip="We are Offline"
             >
               <svg class="w-5 h-5">
@@ -31,7 +31,7 @@ export function App() {
             </div>
           )}
         </div>
-        <div className="flex flex-row gap-2">
+        <div class="flex flex-row gap-2">
           <EditMode />
           <Settings />
           <ThemeButton />

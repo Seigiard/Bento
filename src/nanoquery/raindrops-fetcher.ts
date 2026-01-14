@@ -29,6 +29,11 @@ export function createRaindropsStore(collectionId: CollectionType["_id"]) {
 // Store all created raindrop stores
 const raindropsStores = new Map<CollectionType["_id"], ReturnType<typeof createRaindropsStore>>();
 
+// Clear store registry when API key changes (user switches accounts)
+$raindropApiKey.subscribe(() => {
+  raindropsStores.clear();
+});
+
 /**
  * Fetches all raindrop links for visible categories
  * - Called when category list changes
@@ -65,7 +70,7 @@ export async function fetchAllLinks(flatCategories: readonly CollectionType["_id
       const store = createRaindropsStore(categoryId);
       raindropsStores.set(categoryId, store);
 
-      // Subscribe to trigger initial fetch
+      // Subscribe to trigger initial fetch (no cleanup needed — stores are long-lived singletons)
       store.subscribe(() => {});
     });
 

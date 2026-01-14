@@ -1,14 +1,13 @@
 import { useStore } from "@nanostores/preact";
-import { useState } from "preact/hooks";
 
-import { createRaindropsStore } from "../nanoquery/raindrops-fetcher";
+import { getRaindropsStore } from "../nanoquery/raindrops-fetcher";
 import { type CollectionType } from "../schemas/raindrop-schemas";
 
 import { Link } from "./Link";
 import { LinksSkeleton } from "./Skeleton";
 
 export function CollectionLinks({ collectionId }: { collectionId: CollectionType["_id"] }) {
-  const [$raindropStore] = useState(() => createRaindropsStore(collectionId));
+  const $raindropStore = getRaindropsStore(collectionId);
   const { loading, data, error } = useStore($raindropStore);
 
   if (!data?.length && loading) {

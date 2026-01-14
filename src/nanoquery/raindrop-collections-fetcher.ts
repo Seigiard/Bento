@@ -31,16 +31,9 @@ export const $raindropCollections = createGenericFetcherStore([$raindropApiKey, 
     ]);
 
     try {
-      // Этап 1: Собираем общий массив всех категорий
       const allCategories = [...rootCollections, ...childCollections];
-
-      // Этап 2: Строим иерархическую структуру
       const hierarchicalCategories = buildHierarchy(allCategories);
-
-      // Этап 3: Сортируем первый уровень по пользовательским группам
       const sortedByUserGroups = sortCollectionsByUserGroups(hierarchicalCategories, user);
-
-      // Этап 4: Сортируем все вложенные уровни по полю sort
       const finallySorted = sortAllNestedLevels(sortedByUserGroups);
 
       return finallySorted;
@@ -52,12 +45,9 @@ export const $raindropCollections = createGenericFetcherStore([$raindropApiKey, 
 });
 
 /**
- * Строит иерархическую структуру из плоского массива категорий
- * @param allCategories - все категории (root + child)
- * @returns массив root категорий с вложенными детьми
+ * Builds hierarchical structure from flat array of categories
  */
 function buildHierarchy(allCategories: CollectionType[]): CollectionType[] {
-  // Разделяем на root и child категории
   const rootCategories = allCategories.filter((cat) => !cat.parent);
   const childCategories = allCategories.filter((cat) => cat.parent);
 
@@ -72,11 +62,7 @@ function buildHierarchy(allCategories: CollectionType[]): CollectionType[] {
 }
 
 /**
- * Рекурсивно найти и добавить дочерние категории
- * @param parentId - ID родительской категории
- * @param allChildCategories - все дочерние категории
- * @param processedIds - уже обработанные ID (для предотвращения циклов)
- * @returns массив дочерних категорий с их детьми
+ * Recursively finds and adds child categories
  */
 function buildChildHierarchy(
   parentId: number,
@@ -84,19 +70,16 @@ function buildChildHierarchy(
   processedIds: Set<number> = new Set(),
 ): CollectionType[] {
   if (processedIds.has(parentId)) {
-    return []; // Предотвращаем бесконечную рекурсию
+    return [];
   }
 
   processedIds.add(parentId);
 
-  // Найти прямых детей и отсортировать по полю sort
   const directChildren = allChildCategories
     .filter((child) => child.parent?.$id === parentId && !processedIds.has(child._id))
     .sort((a, b) => (a.sort || 0) - (b.sort || 0));
 
-  // Добавить их детей рекурсивно
   return directChildren.map((child) => {
-    // Рекурсивно найти детей для текущего ребенка
     const grandChildren = buildChildHierarchy(child._id, allChildCategories, new Set(processedIds));
 
     return {
@@ -107,10 +90,7 @@ function buildChildHierarchy(
 }
 
 /**
- * Сортирует коллекции согласно пользовательским группам
- * @param collections - массив коллекций для сортировки
- * @param user - данные пользователя с группами
- * @returns отсортированный массив коллекций
+ * Sorts collections according to user groups order
  */
 function sortCollectionsByUserGroups(
   collections: CollectionType[],
@@ -119,20 +99,18 @@ function sortCollectionsByUserGroups(
   const collectionMap = new Map(collections.map((col) => [col._id, col]));
   const sortedCollections: CollectionType[] = [];
 
-  // Добавляем коллекции в порядке, определенном пользовательскими группами
   user.groups.forEach((group) => {
     if (!group.hidden && group.collections) {
       group.collections.forEach((colId) => {
         const collection = collectionMap.get(colId);
         if (collection) {
           sortedCollections.push(collection);
-          collectionMap.delete(colId); // Удаляем, чтобы не добавить дважды
+          collectionMap.delete(colId);
         }
       });
     }
   });
 
-  // Добавляем коллекции, которые не входят ни в одну группу
   collectionMap.forEach((collection) => {
     sortedCollections.push(collection);
   });
@@ -141,9 +119,7 @@ function sortCollectionsByUserGroups(
 }
 
 /**
- * Рекурсивно сортирует все вложенные уровни по полю sort
- * @param categories - категории с детьми
- * @returns категории с отсортированными детьми на всех уровнях
+ * Recursively sorts all nested levels by sort field
  */
 function sortAllNestedLevels(categories: CollectionType[]): CollectionType[] {
   return categories.map((category) => {
@@ -151,7 +127,6 @@ function sortAllNestedLevels(categories: CollectionType[]): CollectionType[] {
       return category;
     }
 
-    // Сортируем детей по полю sort и рекурсивно сортируем их детей
     const sortedChildren = category.children
       .sort((a: CollectionType, b: CollectionType) => (a.sort || 0) - (b.sort || 0))
       .map((child: CollectionType) => sortAllNestedLevels([child])[0]);

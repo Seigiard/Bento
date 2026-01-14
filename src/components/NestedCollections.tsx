@@ -7,7 +7,6 @@ interface NestedCategoriesProps {
 }
 
 export function NestedCollections({ parentCollection }: NestedCategoriesProps) {
-  // Если у родительской категории нет детей, не показываем ничего
   if (!parentCollection.children || parentCollection.children.length === 0) {
     return null;
   }

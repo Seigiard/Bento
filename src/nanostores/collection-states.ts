@@ -15,7 +15,3 @@ export function togglePin(categoryId: string) {
     $pinnedCategories.set(current.filter((id) => id !== categoryId));
   }
 }
-
-export function isPinned(categoryId: string): boolean {
-  return $pinnedCategories.get().includes(categoryId);
-}
