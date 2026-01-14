@@ -1,6 +1,3 @@
-import { useStore } from "@nanostores/preact";
-
-import { $expandedCollections, toggleCategory } from "../nanostores/collection-states";
 import type { CollectionType } from "../schemas/raindrop-schemas";
 
 import { CollectionLinks } from "./CategoryLinks";
@@ -11,27 +8,13 @@ interface CategoryProps {
 }
 
 export function Collection({ collection }: CategoryProps) {
-  const openCategories = useStore($expandedCollections);
-  const categoryId = collection._id.toString();
-  const isOpen = openCategories.includes(categoryId);
-
   return (
-    <div class="collapse hover:bg-base-100 focus-within:bg-base-100 hover:shadow-sm focus-within:shadow-sm has-[input:not(:checked):active]:shadow-xs has-[input:not(:checked):active]:transform-[translateY(-1px)] outline-offset-2 outline-2 outline-transparent transition-[background-color,box-shadow] duration-200 not-first:mt-1 max-h-full snap-start">
-      <input
-        type="checkbox"
-        name={categoryId}
-        checked={isOpen}
-        onChange={() => toggleCategory(categoryId)}
-      />
-      <div class="collapse-title px-5 font-serif font-semibold text-lg">{collection.title}</div>
-      <div class="collapse-content flex px-0 min-w-0 min-h-0 max-h-full overflow-y-scroll text-sm transform-[translateY(-0.75rem)]">
-        {isOpen && (
-          <ul class="px-2 pt-1 -mb-3 w-full max-h-full h-fit">
-            <CollectionLinks collectionId={collection._id} />
-            <NestedCollections parentCollection={collection} />
-          </ul>
-        )}
-      </div>
+    <div>
+      <h2 class="px-5 font-serif font-semibold text-lg">{collection.title}</h2>
+      <ul class="px-2 pt-1">
+        <CollectionLinks collectionId={collection._id} />
+        <NestedCollections parentCollection={collection} />
+      </ul>
     </div>
   );
 }

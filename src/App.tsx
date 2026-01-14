@@ -1,5 +1,4 @@
 import { useStore } from "@nanostores/preact";
-import { twMerge } from "tailwind-merge";
 
 import { Collection } from "./components/Collection";
 import { EditMode } from "./components/EditMode";
@@ -19,7 +18,7 @@ export function App() {
 
   return (
     <div className="grid min-h-svh grid-rows-[1fr_min-content] grid-cols-[1fr]">
-      <aside className="border-b border-secondary/30 p-2 flex flex-row justify-between gap-2">
+      <aside className="border-b border-secondary/30 px-6 py-2 flex flex-row justify-between gap-2">
         <div>
           {isOffline && (
             <div
@@ -38,12 +37,7 @@ export function App() {
           <ThemeButton />
         </div>
       </aside>
-      <main
-        class={twMerge(
-          "p-6 gap-8 snap-x scroll-pl-6",
-          "w-full h-full md:overflow-x-scroll overflow-y-scroll md:overflow-y-auto",
-        )}
-      >
+      <main class={"p-6 grid grid-cols-1 gap-6 snap-x scroll-pl-6"}>
         <AppLoader />
       </main>
     </div>
