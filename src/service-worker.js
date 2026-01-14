@@ -138,7 +138,13 @@ addEventListener("fetch", (e) => {
     return;
   }
 
-  // Handle same-origin requests
+  // In dev mode (localhost), don't cache assets — only API
+  const isDev = self.location.hostname === "localhost" || self.location.hostname === "127.0.0.1";
+  if (isDev) {
+    return;
+  }
+
+  // Handle same-origin requests (production only)
   if (requestUrl.origin === self.location.origin) {
     e.respondWith(handleFetch(e.request));
   }
