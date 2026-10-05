@@ -2,6 +2,7 @@ import { manifest, version } from "@parcel/service-worker";
 
 // Cache names
 const CACHE_NAME = `bento-cache-${version}`;
+
 const API_CACHE_NAME = "bento-api-cache-v1";
 
 // API host for cross-origin caching
@@ -42,6 +43,7 @@ async function staleWhileRevalidate(request, cacheName) {
         const responseClone = networkResponse.clone();
         await cache.put(request, responseClone);
       }
+
       return networkResponse;
     })
     .catch(() => {
@@ -57,11 +59,13 @@ async function staleWhileRevalidate(request, cacheName) {
 // Handle same-origin requests
 async function handleFetch(request) {
   const response = await staleWhileRevalidate(request, CACHE_NAME);
+
   return response || handleOfflineRequest(request);
 }
 
 // Handle API requests (cross-origin) with throttling
 const API_REVALIDATE_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
 const apiLastFetched = new Map();
 
 async function handleApiFetch(request) {
@@ -85,6 +89,7 @@ async function handleApiFetch(request) {
         const responseClone = networkResponse.clone();
         await cache.put(request, responseClone);
       }
+
       return networkResponse;
     })
     .catch(() => cachedResponse);
@@ -98,6 +103,7 @@ async function handleOfflineRequest(request) {
   if (request.destination === "document" || request.headers.get("accept")?.includes("text/html")) {
     const cache = await caches.open(CACHE_NAME);
     const cachedPage = await cache.match(OFFLINE_PAGE);
+
     if (cachedPage) {
       return cachedPage;
     }
@@ -135,11 +141,13 @@ addEventListener("fetch", (e) => {
   // Handle API requests (cross-origin)
   if (requestUrl.hostname === API_HOST) {
     e.respondWith(handleApiFetch(e.request));
+
     return;
   }
 
   // In dev mode (localhost), don't cache assets — only API
   const isDev = self.location.hostname === "localhost" || self.location.hostname === "127.0.0.1";
+
   if (isDev) {
     return;
   }

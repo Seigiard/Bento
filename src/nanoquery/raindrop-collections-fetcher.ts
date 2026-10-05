@@ -15,10 +15,12 @@ export const $raindropCollections = createGenericFetcherStore([$raindropApiKey, 
     const fetchUser = fetchFromRaindropApi(raindropApiKey as string, "/user").then(
       safeParseUserResponse,
     );
+
     const fetchRootCollections = fetchFromRaindropApi(
       raindropApiKey as string,
       "/collections",
     ).then(safeParseCollectionResponse);
+
     const fetchChildCollections = fetchFromRaindropApi(
       raindropApiKey as string,
       "/collections/childrens",
@@ -103,6 +105,7 @@ function sortCollectionsByUserGroups(
     if (!group.hidden && group.collections) {
       group.collections.forEach((colId) => {
         const collection = collectionMap.get(colId);
+
         if (collection) {
           sortedCollections.push(collection);
           collectionMap.delete(colId);

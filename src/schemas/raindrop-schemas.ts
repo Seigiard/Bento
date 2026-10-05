@@ -45,9 +45,11 @@ const UserSchemaResponse = v.object({
 });
 
 export type RaindropItemType = v.InferOutput<typeof RaindropItemSchema>;
+
 export type CollectionType = Omit<v.InferOutput<typeof CollectionBaseSchema>, "children"> & {
   children?: CollectionType[];
 };
+
 export type UserType = v.InferOutput<typeof UserSchema>;
 
 export function safeParseCollectionResponse(data: unknown): CollectionType[] {

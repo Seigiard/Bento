@@ -13,6 +13,7 @@ export const $sortedCollections = batched(
   [$isOffline, $raindropCollections, $pinnedCategories],
   (isOffline, collectionsStore, pinnedIds) => {
     const collections = collectionsStore.data;
+
     if (isOffline || !collections || !collections.length) {
       return [];
     }

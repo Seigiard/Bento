@@ -12,6 +12,7 @@ if ("serviceWorker" in navigator) {
 }
 
 const root = document.getElementById("app");
+
 if (root) {
   render(<App />, root);
 }
