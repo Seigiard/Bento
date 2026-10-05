@@ -3,6 +3,7 @@
 ## Problem
 
 При загрузке страницы пользователь видит лоадеры ~0.5 сек из-за:
+
 1. Ожидания загрузки IndexedDB (`$cacheReady`)
 2. Race condition между IndexedDB и nanoquery
 3. Истечения `dedupeTime` после простоя
@@ -14,11 +15,13 @@
 ## Architecture
 
 **Before (3 layers):**
+
 ```
 App → nanoquery → IndexedDB → fetch → SW → Network
 ```
 
 **After (1 layer):**
+
 ```
 App → nanoquery → fetch → SW (stale-while-revalidate) → Network
 ```
@@ -30,8 +33,8 @@ App → nanoquery → fetch → SW (stale-while-revalidate) → Network
 Добавить кеширование для `api.raindrop.io`:
 
 ```js
-const API_CACHE = 'bento-api-cache-v1';
-const API_HOST = 'api.raindrop.io';
+const API_CACHE = "bento-api-cache-v1";
+const API_HOST = "api.raindrop.io";
 
 // В fetch handler добавить:
 if (url.hostname === API_HOST) {
@@ -87,14 +90,14 @@ if (!cacheReady) {
 
 ## Files to modify
 
-| File | Action |
-|------|--------|
-| `src/service-worker.js` | Add API caching |
-| `src/nanoquery/cache.ts` | Delete |
-| `src/nanoquery/generic-fetcher.ts` | Simplify |
-| `src/App.tsx` | Remove $cacheReady |
-| `src/nanoquery/raindrop-collections-fetcher.ts` | Remove revalidateInterval |
-| `src/nanoquery/raindrops-fetcher.ts` | Remove revalidateInterval if present |
+| File                                            | Action                               |
+| ----------------------------------------------- | ------------------------------------ |
+| `src/service-worker.js`                         | Add API caching                      |
+| `src/nanoquery/cache.ts`                        | Delete                               |
+| `src/nanoquery/generic-fetcher.ts`              | Simplify                             |
+| `src/App.tsx`                                   | Remove $cacheReady                   |
+| `src/nanoquery/raindrop-collections-fetcher.ts` | Remove revalidateInterval            |
+| `src/nanoquery/raindrops-fetcher.ts`            | Remove revalidateInterval if present |
 
 ## Verification
 
