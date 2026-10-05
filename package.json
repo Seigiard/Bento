@@ -19,7 +19,8 @@
     "lint": "oxlint --type-aware",
     "lint:fix": "oxlint --type-aware --fix",
     "postinstall": "simple-git-hooks && bun run clean",
-    "postuninstall": "bun run clean"
+    "postuninstall": "bun run clean",
+    "lint:anti-slop": "oxlint --config .oxlintrc.anti-slop.json ."
   },
   "dependencies": {
     "@nanostores/logger": "^1.0.0",
@@ -34,14 +35,15 @@
     "tailwind-variants": "^3.2.2"
   },
   "devDependencies": {
+    "@oxlint/plugins": "1.87.0",
     "@size-limit/file": "^11.2.0",
     "@types/node": "^24.10.8",
     "daisyui": "^5.5.14",
     "file-loader": "^6.2.0",
     "nano-staged": "^0.9.0",
     "oxfmt": "^0.23.0",
-    "oxlint": "^1.39.0",
-    "oxlint-tsgolint": "^0.10.1",
+    "oxlint": "1.87.0",
+    "oxlint-tsgolint": "7.0.2003",
     "parcel": "^2.16.3",
     "parcel-reporter-static-files-copy": "^1.5.3",
     "postcss": "^8.5.6",
@@ -60,8 +62,8 @@
   },
   "nano-staged": {
     "*.{ts,tsx,js,jsx}": [
-      "oxlint --type-aware --fix",
-      "oxfmt"
+      "oxlint --type-aware --fix --no-error-on-unmatched-pattern",
+      "oxfmt --no-error-on-unmatched-pattern"
     ],
     "*.{json,css,html}": "oxfmt"
   },
