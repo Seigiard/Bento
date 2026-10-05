@@ -12,19 +12,17 @@ import { createGenericFetcherStore } from "./generic-fetcher";
 export const $raindropCollections = createGenericFetcherStore([$raindropApiKey, "collections"], {
   dedupeTime: 1000 * 60 * 5, // 5 min — only for request deduplication, SW handles caching
   fetcher: async (raindropApiKey) => {
-    const fetchUser = fetchFromRaindropApi(raindropApiKey as string, "/user").then(
-      safeParseUserResponse,
+    // SAFETY: The first key is the string-valued $raindropApiKey store; nanoquery preserves key order.
+    const apiKey = raindropApiKey as string;
+    const fetchUser = fetchFromRaindropApi(apiKey, "/user").then(safeParseUserResponse);
+
+    const fetchRootCollections = fetchFromRaindropApi(apiKey, "/collections").then(
+      safeParseCollectionResponse,
     );
 
-    const fetchRootCollections = fetchFromRaindropApi(
-      raindropApiKey as string,
-      "/collections",
-    ).then(safeParseCollectionResponse);
-
-    const fetchChildCollections = fetchFromRaindropApi(
-      raindropApiKey as string,
-      "/collections/childrens",
-    ).then(safeParseCollectionResponse);
+    const fetchChildCollections = fetchFromRaindropApi(apiKey, "/collections/childrens").then(
+      safeParseCollectionResponse,
+    );
 
     const [user, rootCollections, childCollections] = await Promise.all([
       fetchUser,

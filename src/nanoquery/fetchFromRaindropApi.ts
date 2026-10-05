@@ -10,5 +10,5 @@ export async function fetchFromRaindropApi(apiKey: string, path: string) {
     throw new Error(`Raindrop API error: ${response.status} ${response.statusText}`);
   }
 
-  return response.json();
+  return response;
 }

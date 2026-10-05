@@ -14,7 +14,10 @@ export function createRaindropsStore(collectionId: CollectionType["_id"]) {
     {
       dedupeTime: 1000 * 60 * 5, // 5 min — only for request deduplication, SW handles caching
       fetcher: async (raindropApiKey, _, collectionId) => {
-        return fetchFromRaindropApi(raindropApiKey as string, `/raindrops/${collectionId}`)
+        // SAFETY: The first key is the string-valued $raindropApiKey store; nanoquery preserves key order.
+        const apiKey = raindropApiKey as string;
+
+        return fetchFromRaindropApi(apiKey, `/raindrops/${collectionId}`)
           .then(safeParseRaindropResponse)
           .then((raindrops) =>
             raindrops

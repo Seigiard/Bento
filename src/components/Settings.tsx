@@ -1,4 +1,5 @@
 import { useStore } from "@nanostores/preact";
+import type { JSX } from "preact";
 import { useRef } from "preact/hooks";
 import { twMerge } from "tailwind-merge";
 
@@ -15,9 +16,8 @@ export function Settings() {
     modalRef.current?.showModal();
   };
 
-  const handleRaindropApiKeyChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    $settings.setKey("raindropApiKey", target.value);
+  const handleRaindropApiKeyChange = (event: JSX.TargetedEvent<HTMLInputElement>) => {
+    $settings.setKey("raindropApiKey", event.currentTarget.value);
   };
 
   return (
