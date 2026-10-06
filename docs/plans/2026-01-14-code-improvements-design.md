@@ -15,6 +15,7 @@ Fix bugs, improve store architecture, and clean up dead code based on architectu
 The component currently has both `href` and `onClick`, which conflicts. Keep only the link to Raindrop.io.
 
 **Changes:**
+
 - Remove `useStore($editMode)` usage
 - Remove `handleEditModeToggle` function
 - Remove `onClick` handler
@@ -37,6 +38,7 @@ Change `Invalid raindrop format:` to `Invalid user format:` (copy-paste error).
 **Problem:** Component creates store via `useState`, bypassing global registry. This causes duplicate stores and duplicate API requests.
 
 **Solution:**
+
 ```typescript
 // Before:
 const [$raindropStore] = useState(() => createRaindropsStore(collectionId));
@@ -48,6 +50,7 @@ const $raindropStore = getRaindropsStore(collectionId);
 ### 2.2 Clear registry on API key change
 
 Add function to clear stores in `raindrops-fetcher.ts`:
+
 ```typescript
 export function clearRaindropsStores() {
   raindropsStores.clear();
@@ -55,6 +58,7 @@ export function clearRaindropsStores() {
 ```
 
 Subscribe to API key changes in `settings.ts`:
+
 ```typescript
 $raindropApiKey.subscribe(() => {
   clearRaindropsStores();
@@ -64,6 +68,7 @@ $raindropApiKey.subscribe(() => {
 ### 2.3 Document intentional subscription pattern
 
 In `raindrops-fetcher.ts:69`, add comment explaining why cleanup is not needed:
+
 ```typescript
 // Intentionally no cleanup — stores are long-lived singletons
 store.subscribe(() => {});
@@ -80,6 +85,7 @@ Function is exported but never used. Components check pinned state directly via 
 ### 3.2 Remove unused code from EditMode.tsx
 
 After bug fix in Section 1, remove:
+
 - `useStore` import (if unused)
 - `$editMode`, `toggleEditMode` imports
 - `editMode` variable
@@ -88,6 +94,7 @@ After bug fix in Section 1, remove:
 ### 3.3 Translate Russian comments to English
 
 Files with Russian comments:
+
 - `src/schemas/raindrop-schemas.ts` (~10 comments)
 - `src/nanoquery/raindrop-collections-fetcher.ts` (~15 comments)
 - `src/components/NestedCollections.tsx` (1 comment)

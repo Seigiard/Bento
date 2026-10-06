@@ -14,7 +14,10 @@ export function createRaindropsStore(collectionId: CollectionType["_id"]) {
     {
       dedupeTime: 1000 * 60 * 5, // 5 min — only for request deduplication, SW handles caching
       fetcher: async (raindropApiKey, _, collectionId) => {
-        return fetchFromRaindropApi(raindropApiKey as string, `/raindrops/${collectionId}`)
+        // SAFETY: The first key is the string-valued $raindropApiKey store; nanoquery preserves key order.
+        const apiKey = raindropApiKey as string;
+
+        return fetchFromRaindropApi(apiKey, `/raindrops/${collectionId}`)
           .then(safeParseRaindropResponse)
           .then((raindrops) =>
             raindrops
@@ -47,6 +50,7 @@ export async function fetchAllLinks(flatCategories: readonly CollectionType["_id
 
   // Get API key to check if we should fetch
   const apiKey = $raindropApiKey.get();
+
   if (!apiKey) {
     return;
   }
@@ -90,5 +94,6 @@ export function getRaindropsStore(collectionId: CollectionType["_id"]) {
     const store = createRaindropsStore(collectionId);
     raindropsStores.set(collectionId, store);
   }
+
   return raindropsStores.get(collectionId)!;
 }

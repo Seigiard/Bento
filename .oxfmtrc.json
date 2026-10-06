@@ -1,4 +1,5 @@
 {
+  "ignorePatterns": ["tools/oxlint/anti-slop/**"],
   "experimentalSortImports": {
     "groups": [
       ["side-effect"],

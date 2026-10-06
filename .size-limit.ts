@@ -6,4 +6,4 @@ module.exports = [
     path: ["dist/**/*.*"],
     brotli: true,
   },
-] as SizeLimitConfig;
+] satisfies SizeLimitConfig;

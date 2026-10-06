@@ -45,12 +45,15 @@ const UserSchemaResponse = v.object({
 });
 
 export type RaindropItemType = v.InferOutput<typeof RaindropItemSchema>;
+
 export type CollectionType = Omit<v.InferOutput<typeof CollectionBaseSchema>, "children"> & {
   children?: CollectionType[];
 };
+
 export type UserType = v.InferOutput<typeof UserSchema>;
 
-export function safeParseCollectionResponse(data: unknown): CollectionType[] {
+export async function safeParseCollectionResponse(response: Response): Promise<CollectionType[]> {
+  const data = await response.json();
   const result = v.safeParse(CollectionSchemaResponse, data);
 
   if (!result.success) {
@@ -64,10 +67,11 @@ export function safeParseCollectionResponse(data: unknown): CollectionType[] {
   return result.output.items.map((collection) => ({
     ...collection,
     parent: collection?.parent || undefined,
-  })) as CollectionType[];
+  }));
 }
 
-export function safeParseRaindropResponse(data: unknown): RaindropItemType[] {
+export async function safeParseRaindropResponse(response: Response): Promise<RaindropItemType[]> {
+  const data = await response.json();
   const result = v.safeParse(RaindropItemSchemaResponse, data);
 
   if (!result.success) {
@@ -81,7 +85,8 @@ export function safeParseRaindropResponse(data: unknown): RaindropItemType[] {
   return result.output.items;
 }
 
-export function safeParseUserResponse(data: unknown): UserType {
+export async function safeParseUserResponse(response: Response): Promise<UserType> {
+  const data = await response.json();
   const result = v.safeParse(UserSchemaResponse, data);
 
   if (!result.success) {
