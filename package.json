@@ -18,7 +18,8 @@
     "format:check": "oxfmt --check",
     "lint": "oxlint --type-aware",
     "lint:fix": "oxlint --type-aware --fix",
-    "postinstall": "simple-git-hooks && bun run clean",
+    "postinstall": "bun run clean",
+    "prepare": "lefthook install",
     "postuninstall": "bun run clean",
     "lint:anti-slop": "oxlint --config .oxlintrc.anti-slop.json ."
   },
@@ -40,7 +41,7 @@
     "@types/node": "^24.10.8",
     "daisyui": "^5.5.14",
     "file-loader": "^6.2.0",
-    "nano-staged": "^0.9.0",
+    "lefthook": "^2.2.1",
     "oxfmt": "^0.23.0",
     "oxlint": "1.87.0",
     "oxlint-tsgolint": "7.0.2003",
@@ -48,7 +49,6 @@
     "parcel-reporter-static-files-copy": "^1.5.3",
     "postcss": "^8.5.6",
     "postcss-dark-theme-class": "^1.3.0",
-    "simple-git-hooks": "^2.13.1",
     "size-limit": "^11.2.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
@@ -56,16 +56,6 @@
   },
   "optionalDependencies": {
     "@parcel/watcher-darwin-x64": "^2.5.4"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "bunx nano-staged"
-  },
-  "nano-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "oxlint --type-aware --fix --no-error-on-unmatched-pattern",
-      "oxfmt --no-error-on-unmatched-pattern"
-    ],
-    "*.{json,css,html}": "oxfmt"
   },
   "alias": {
     "preact/jsx-dev-runtime": "preact/jsx-runtime",
